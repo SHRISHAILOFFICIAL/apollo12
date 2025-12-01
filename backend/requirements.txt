@@ -1,0 +1,8 @@
+django
+djangorestframework
+djangorestframework-simplejwt
+mysqlclient
+django-cors-headers
+pandas
+django-redis
+redis
