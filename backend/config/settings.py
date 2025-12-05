@@ -96,6 +96,7 @@ DATABASES = {
         "PASSWORD": "password",
         "HOST": "localhost",
         "PORT": "3306",
+        "CONN_MAX_AGE": 60,  # Keep connections alive for 60s to reduce overhead
     }
 }
 
@@ -142,6 +143,10 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.CustomUserBackend',
+]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",

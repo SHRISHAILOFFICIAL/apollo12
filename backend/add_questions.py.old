@@ -1,0 +1,79 @@
+"""
+Add sample questions to existing Test Exam (ID=1)
+"""
+import os
+import django
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+django.setup()
+
+from core.models import Test, Question
+
+# Get the exam
+exam = Test.objects.get(id=1)
+print(f"Adding questions to: {exam.title}")
+print(f"Current questions: {exam.questions.count()}")
+
+# Sample questions
+questions_data = [
+    {
+        'text': 'What is 2 + 2?',
+        'option_a': '3',
+        'option_b': '4',
+        'option_c': '5',
+        'option_d': '6',
+        'correct_option': 'B',
+        'marks': 1
+    },
+    {
+        'text': 'What is the capital of France?',
+        'option_a': 'London',
+        'option_b': 'Berlin',
+        'option_c': 'Paris',
+        'option_d': 'Madrid',
+        'correct_option': 'C',
+        'marks': 1
+    },
+    {
+        'text': 'What is 5 × 6?',
+        'option_a': '25',
+        'option_b': '30',
+        'option_c': '35',
+        'option_d': '40',
+        'correct_option': 'B',
+        'marks': 1
+    },
+    {
+        'text': 'Which planet is known as the Red Planet?',
+        'option_a': 'Venus',
+        'option_b': 'Mars',
+        'option_c': 'Jupiter',
+        'option_d': 'Saturn',
+        'correct_option': 'B',
+        'marks': 1
+    },
+    {
+        'text': 'What is the square root of 64?',
+        'option_a': '6',
+        'option_b': '7',
+        'option_c': '8',
+        'option_d': '9',
+        'correct_option': 'C',
+        'marks': 1
+    },
+]
+
+# Create questions
+for q_data in questions_data:
+    question, created = Question.objects.get_or_create(
+        test=exam,
+        text=q_data['text'],
+        defaults=q_data
+    )
+    if created:
+        print(f"✅ Created: {question.text}")
+    else:
+        print(f"⏭️  Already exists: {question.text}")
+
+print(f"\n✅ Done! Total questions: {exam.questions.count()}")
+print(f"Total marks: {sum(q.marks for q in exam.questions.all())}")

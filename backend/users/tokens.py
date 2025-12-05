@@ -14,6 +14,6 @@ class RefreshToken(BaseRefreshToken):
         token = cls()
         token['user_id'] = user.id
         token['username'] = user.username
-        token['role'] = user.role
+        token['email'] = user.email
         
         return token

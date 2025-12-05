@@ -1,0 +1,58 @@
+"""
+Quick script to test Redis connection from Django.
+Run this from the backend directory: python test_redis_connection.py
+"""
+
+import sys
+import os
+
+# Add Django project to path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+import django
+django.setup()
+
+from django_redis import get_redis_connection
+
+print("Testing Redis connection...")
+print("-" * 50)
+
+try:
+    redis_conn = get_redis_connection("default")
+    
+    # Test ping
+    if redis_conn.ping():
+        print("✅ Redis connection successful!")
+        print(f"✅ Redis is responding to PING")
+    
+    # Test database number
+    current_db = redis_conn.connection_pool.connection_kwargs.get('db', 0)
+    print(f"📊 Using Redis database: {current_db}")
+    
+    # Test write/read
+    test_key = "test:connection"
+    redis_conn.set(test_key, "Hello from Django", ex=10)
+    value = redis_conn.get(test_key)
+    print(f"✅ Write/Read test successful: {value.decode() if value else 'None'}")
+    
+    # Show all keys
+    keys = redis_conn.keys("*")
+    print(f"📋 Total keys in database {current_db}: {len(keys)}")
+    if keys:
+        print(f"   Keys: {[k.decode() for k in keys[:5]]}")
+    
+    print("\n" + "=" * 50)
+    print("✅ Redis is working correctly!")
+    print("=" * 50)
+    
+except Exception as e:
+    print(f"\n❌ Redis connection FAILED!")
+    print(f"Error: {str(e)}")
+    print("\nPossible causes:")
+    print("1. Redis is not running")
+    print("2. Redis is on WSL but Django is on Windows (use WSL IP)")
+    print("3. Redis is bound to 127.0.0.1 only (need to bind to 0.0.0.0)")
+    print("\nCurrent Redis config in settings.py:")
+    from django.conf import settings
+    print(f"   LOCATION: {settings.CACHES['default']['LOCATION']}")

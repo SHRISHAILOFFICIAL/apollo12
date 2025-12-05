@@ -1,159 +1,101 @@
 from rest_framework import serializers
-from .models import Subject, Exam, ExamSubject, Question, Option
-
-
-class SubjectSerializer(serializers.ModelSerializer):
-    """Serializer for Subject model"""
-    
-    class Meta:
-        model = Subject
-        fields = ['id', 'name', 'description', 'created_at']
-        read_only_fields = ['id', 'created_at']
-
-
-class OptionSerializer(serializers.ModelSerializer):
-    """Serializer for Option model"""
-    
-    class Meta:
-        model = Option
-        fields = ['id', 'question', 'option_text', 'is_correct']
-        read_only_fields = ['id']
-
-
-class OptionCreateSerializer(serializers.ModelSerializer):
-    """Serializer for creating options (without question FK in payload)"""
-    
-    class Meta:
-        model = Option
-        fields = ['id', 'option_text', 'is_correct']
-        read_only_fields = ['id']
+from .models import Exam, Section, Question
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    """Serializer for Question model with options"""
-    
-    options = OptionSerializer(many=True, read_only=True)
-    subject_name = serializers.CharField(source='subject.name', read_only=True)
+    """Serializer for Question model"""
     
     class Meta:
         model = Question
         fields = [
-            'id', 'exam', 'subject', 'subject_name', 'question_text',
-            'marks', 'difficulty', 'created_at', 'options'
+            'id', 'section', 'question_number', 'question_text', 'plain_text',
+            'option_a', 'option_b', 'option_c', 'option_d', 'correct_option',
+            'marks', 'diagram_url', 'created_at'
         ]
         read_only_fields = ['id', 'created_at']
 
 
-class QuestionCreateSerializer(serializers.ModelSerializer):
-    """Serializer for creating questions with options"""
-    
-    options = OptionCreateSerializer(many=True, required=False)
-    
-    class Meta:
-        model = Question
-        fields = ['id', 'exam', 'subject', 'question_text', 'marks', 'difficulty', 'options']
-        read_only_fields = ['id']
-    
-    def create(self, validated_data):
-        """Create question with options"""
-        options_data = validated_data.pop('options', [])
-        question = Question.objects.create(**validated_data)
-        
-        for option_data in options_data:
-            Option.objects.create(question=question, **option_data)
-        
-        return question
-
-
-class QuestionDetailSerializer(serializers.ModelSerializer):
-    """Detailed question serializer for exam-taking (without correct answers)"""
-    
-    options = serializers.SerializerMethodField()
-    subject_name = serializers.CharField(source='subject.name', read_only=True)
+class QuestionListSerializer(serializers.ModelSerializer):
+    """Simplified serializer for listing questions (without correct answer)"""
+    text = serializers.CharField(source='question_text', read_only=True)
+    section_name = serializers.CharField(source='section.name', read_only=True)
+    section_order = serializers.IntegerField(source='section.order', read_only=True)
     
     class Meta:
         model = Question
         fields = [
-            'id', 'subject', 'subject_name', 'question_text',
-            'marks', 'difficulty', 'options'
+            'id', 'question_number', 'text', 'question_text', 'plain_text',
+            'option_a', 'option_b', 'option_c', 'option_d',
+            'marks', 'diagram_url', 'section_name', 'section_order'
         ]
-    
-    def get_options(self, obj):
-        """Return options without is_correct field for students"""
-        options = obj.options.all()
-        return [{'id': opt.id, 'option_text': opt.option_text} for opt in options]
 
 
-class ExamSubjectSerializer(serializers.ModelSerializer):
-    """Serializer for ExamSubject mapping"""
-    
-    subject_name = serializers.CharField(source='subject.name', read_only=True)
+# Alias for backward compatibility
+QuestionResponseSerializer = QuestionListSerializer
+
+
+class SectionSerializer(serializers.ModelSerializer):
+    """Serializer for Section model"""
+    question_count = serializers.SerializerMethodField()
     
     class Meta:
-        model = ExamSubject
-        fields = ['id', 'exam', 'subject', 'subject_name']
+        model = Section
+        fields = ['id', 'exam', 'name', 'order', 'max_marks', 'question_count']
         read_only_fields = ['id']
+    
+    def get_question_count(self, obj):
+        return obj.questions.count()
+
+
+class SectionWithQuestionsSerializer(serializers.ModelSerializer):
+    """Section serializer with nested questions"""
+    questions = QuestionListSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Section
+        fields = ['id', 'name', 'order', 'max_marks', 'questions']
 
 
 class ExamSerializer(serializers.ModelSerializer):
     """Serializer for Exam model"""
-    
-    created_by_name = serializers.CharField(source='created_by.name', read_only=True)
-    subjects = SubjectSerializer(many=True, read_only=True, source='exam_subjects.subject')
-    questions_count = serializers.SerializerMethodField()
+    section_count = serializers.SerializerMethodField()
+    question_count = serializers.SerializerMethodField()
+    title = serializers.ReadOnlyField()
+    description = serializers.ReadOnlyField()
     
     class Meta:
         model = Exam
         fields = [
-            'id', 'title', 'description', 'duration_minutes', 'total_marks',
-            'is_published', 'created_by', 'created_by_name', 'created_at',
-            'updated_at', 'subjects', 'questions_count'
+            'id', 'name', 'year', 'title', 'description', 'total_marks', 'duration_minutes',
+            'is_published', 'section_count', 'question_count',
+            'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
     
-    def get_questions_count(self, obj):
-        return obj.questions.count()
+    def get_section_count(self, obj):
+        return obj.sections.count()
+    
+    def get_question_count(self, obj):
+        return Question.objects.filter(section__exam=obj).count()
 
 
 class ExamListSerializer(serializers.ModelSerializer):
-    """Lightweight serializer for listing exams"""
-    
-    questions_count = serializers.SerializerMethodField()
+    """Simplified serializer for listing exams"""
+    title = serializers.ReadOnlyField()
+    description = serializers.ReadOnlyField()
     
     class Meta:
         model = Exam
-        fields = [
-            'id', 'title', 'description', 'duration_minutes',
-            'total_marks', 'is_published', 'questions_count'
-        ]
-    
-    def get_questions_count(self, obj):
-        return obj.questions.count()
+        fields = ['id', 'name', 'year', 'title', 'description', 'total_marks', 'duration_minutes', 'is_published']
 
 
 class ExamDetailSerializer(serializers.ModelSerializer):
-    """Detailed exam serializer with all questions"""
-    
-    questions = QuestionSerializer(many=True, read_only=True)
-    subjects = SubjectSerializer(many=True, read_only=True, source='exam_subjects.subject')
-    created_by_name = serializers.CharField(source='created_by.name', read_only=True)
+    """Detailed exam serializer with sections and questions"""
+    sections = SectionWithQuestionsSerializer(many=True, read_only=True)
     
     class Meta:
         model = Exam
         fields = [
-            'id', 'title', 'description', 'duration_minutes', 'total_marks',
-            'is_published', 'created_by', 'created_by_name', 'created_at',
-            'updated_at', 'subjects', 'questions'
+            'id', 'name', 'year', 'total_marks', 'duration_minutes',
+            'is_published', 'sections', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at']
-
-
-class ExamTakingSerializer(serializers.ModelSerializer):
-    """Serializer for students taking an exam (questions without answers)"""
-    
-    questions = QuestionDetailSerializer(many=True, read_only=True)
-    
-    class Meta:
-        model = Exam
-        fields = ['id', 'title', 'description', 'duration_minutes', 'total_marks', 'questions']
-        read_only_fields = ['id']

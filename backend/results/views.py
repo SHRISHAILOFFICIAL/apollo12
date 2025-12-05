@@ -5,38 +5,35 @@ from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 from django.db.models import Count, Q
 
-from .models import ExamAttempt, AttemptResponse
+from .models import Attempt, AttemptAnswer
 from exams.models import Exam, Question
 from .serializers import (
-    ExamAttemptSerializer, ExamAttemptDetailSerializer,
-    ExamAttemptStartSerializer, ExamAttemptSubmitSerializer,
-    AttemptResponseSerializer, AttemptResponseCreateSerializer,
+    AttemptSerializer, AttemptDetailSerializer,
+    AttemptStartSerializer, AttemptSubmitSerializer,
+    AttemptAnswerSerializer, AttemptAnswerCreateSerializer,
     ExamResultSerializer
 )
 
 
-class ExamAttemptViewSet(viewsets.ModelViewSet):
+class AttemptViewSet(viewsets.ModelViewSet):
     """ViewSet for managing exam attempts"""
     
-    serializer_class = ExamAttemptSerializer
+    serializer_class = AttemptSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Return attempts for current user only (students) or all (admins)"""
-        user = self.request.user
-        if user.role == 'admin':
-            return ExamAttempt.objects.all()
-        return ExamAttempt.objects.filter(user=user)
+        """Return attempts for current user"""
+        return Attempt.objects.filter(user=self.request.user)
     
     def get_serializer_class(self):
         """Return appropriate serializer based on action"""
         if self.action == 'retrieve':
-            return ExamAttemptDetailSerializer
+            return AttemptDetailSerializer
         elif self.action == 'start_exam':
-            return ExamAttemptStartSerializer
+            return AttemptStartSerializer
         elif self.action == 'submit_exam':
-            return ExamAttemptSubmitSerializer
-        return ExamAttemptSerializer
+            return AttemptSubmitSerializer
+        return AttemptSerializer
     
     @action(detail=False, methods=['post'])
     def start_exam(self, request):
@@ -45,13 +42,13 @@ class ExamAttemptViewSet(viewsets.ModelViewSet):
         POST /api/attempts/start_exam/
         Body: {exam_id}
         """
-        serializer = ExamAttemptStartSerializer(data=request.data)
+        serializer = AttemptStartSerializer(data=request.data)
         if serializer.is_valid():
             exam_id = serializer.validated_data['exam_id']
             exam = Exam.objects.get(id=exam_id)
             
             # Check if user has an ongoing attempt
-            ongoing_attempt = ExamAttempt.objects.filter(
+            ongoing_attempt = Attempt.objects.filter(
                 user=request.user,
                 exam=exam,
                 status='in_progress'
@@ -60,27 +57,27 @@ class ExamAttemptViewSet(viewsets.ModelViewSet):
             if ongoing_attempt:
                 return Response({
                     'message': 'You have an ongoing attempt for this exam',
-                    'attempt': ExamAttemptDetailSerializer(ongoing_attempt).data
+                    'attempt': AttemptDetailSerializer(ongoing_attempt).data
                 }, status=status.HTTP_200_OK)
             
             # Create new attempt
-            attempt = ExamAttempt.objects.create(
+            attempt = Attempt.objects.create(
                 user=request.user,
                 exam=exam,
                 status='in_progress'
             )
             
-            # Create empty responses for all questions
-            questions = exam.questions.all()
+            # Create empty answers for all questions
+            questions = Question.objects.filter(section__exam=exam)
             for question in questions:
-                AttemptResponse.objects.create(
+                AttemptAnswer.objects.create(
                     attempt=attempt,
                     question=question
                 )
             
             return Response({
                 'message': 'Exam started successfully',
-                'attempt': ExamAttemptDetailSerializer(attempt).data
+                'attempt': AttemptDetailSerializer(attempt).data
             }, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -90,7 +87,7 @@ class ExamAttemptViewSet(viewsets.ModelViewSet):
         """
         Submit answer for a question
         POST /api/attempts/{id}/submit_answer/
-        Body: {question_id, selected_option_id}
+        Body: {question_id, selected_option} (A/B/C/D)
         """
         attempt = self.get_object()
         
@@ -100,39 +97,41 @@ class ExamAttemptViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_400_BAD_REQUEST)
         
         question_id = request.data.get('question_id')
-        selected_option_id = request.data.get('selected_option_id')
+        selected_option = request.data.get('selected_option')
         
         if not question_id:
             return Response({
                 'error': 'question_id is required'
             }, status=status.HTTP_400_BAD_REQUEST)
         
+        if selected_option and selected_option not in ['A', 'B', 'C', 'D']:
+            return Response({
+                'error': 'selected_option must be A, B, C, or D'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
         try:
-            response = AttemptResponse.objects.get(
+            answer = AttemptAnswer.objects.get(
                 attempt=attempt,
                 question_id=question_id
             )
             
             # Update selected option
-            response.selected_option_id = selected_option_id
+            answer.selected_option = selected_option
             
             # Check if answer is correct
-            if selected_option_id:
-                response.is_correct = response.question.options.filter(
-                    id=selected_option_id,
-                    is_correct=True
-                ).exists()
+            if selected_option:
+                answer.is_correct = (selected_option == answer.question.correct_option)
             else:
-                response.is_correct = None
+                answer.is_correct = False
             
-            response.save()
+            answer.save()
             
             return Response({
                 'message': 'Answer submitted successfully',
-                'response': AttemptResponseSerializer(response).data
+                'answer': AttemptAnswerSerializer(answer).data
             })
         
-        except AttemptResponse.DoesNotExist:
+        except AttemptAnswer.DoesNotExist:
             return Response({
                 'error': 'Question not found in this attempt'
             }, status=status.HTTP_404_NOT_FOUND)
@@ -156,14 +155,13 @@ class ExamAttemptViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_400_BAD_REQUEST)
         
         # Calculate score
-        correct_answers = attempt.responses.filter(is_correct=True).count()
         total_marks = sum([
-            response.question.marks 
-            for response in attempt.responses.filter(is_correct=True)
+            answer.question.marks 
+            for answer in attempt.answers.filter(is_correct=True)
         ])
         
         # Update attempt
-        attempt.end_time = timezone.now()
+        attempt.finished_at = timezone.now()
         attempt.score = total_marks
         attempt.status = 'submitted'
         attempt.save()
@@ -179,7 +177,7 @@ class ExamAttemptViewSet(viewsets.ModelViewSet):
         Get all attempts for current user
         GET /api/attempts/my_attempts/
         """
-        attempts = self.get_queryset().filter(user=request.user)
+        attempts = self.get_queryset()
         serializer = self.get_serializer(attempts, many=True)
         return Response(serializer.data)
     
@@ -189,11 +187,8 @@ class ExamAttemptViewSet(viewsets.ModelViewSet):
         Get ongoing attempts for current user
         GET /api/attempts/in_progress/
         """
-        attempts = self.get_queryset().filter(
-            user=request.user,
-            status='in_progress'
-        )
-        serializer = ExamAttemptDetailSerializer(attempts, many=True)
+        attempts = self.get_queryset().filter(status='in_progress')
+        serializer = AttemptDetailSerializer(attempts, many=True)
         return Response(serializer.data)
     
     @action(detail=False, methods=['get'])
@@ -202,10 +197,7 @@ class ExamAttemptViewSet(viewsets.ModelViewSet):
         Get completed attempts for current user
         GET /api/attempts/completed/
         """
-        attempts = self.get_queryset().filter(
-            user=request.user,
-            status__in=['submitted', 'timeout']
-        )
+        attempts = self.get_queryset().filter(status__in=['submitted', 'timeout'])
         serializer = self.get_serializer(attempts, many=True)
         return Response(serializer.data)
     
@@ -226,28 +218,27 @@ class ExamAttemptViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class AttemptResponseViewSet(viewsets.ModelViewSet):
-    """ViewSet for managing attempt responses"""
+class AttemptAnswerViewSet(viewsets.ModelViewSet):
+    """ViewSet for managing attempt answers"""
     
-    queryset = AttemptResponse.objects.all()
+    queryset = AttemptAnswer.objects.all()
     permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
         """Return appropriate serializer based on action"""
         if self.action in ['create', 'update', 'partial_update']:
-            return AttemptResponseCreateSerializer
-        return AttemptResponseSerializer
+            return AttemptAnswerCreateSerializer
+        return AttemptAnswerSerializer
     
     def get_queryset(self):
-        """Filter responses by attempt if provided"""
-        queryset = AttemptResponse.objects.all()
+        """Filter answers by attempt if provided"""
+        queryset = AttemptAnswer.objects.all()
         attempt_id = self.request.query_params.get('attempt_id')
         
         if attempt_id:
             queryset = queryset.filter(attempt_id=attempt_id)
         
-        # Students can only see their own responses
-        if self.request.user.role != 'admin':
-            queryset = queryset.filter(attempt__user=self.request.user)
+        # Students can only see their own answers
+        queryset = queryset.filter(attempt__user=self.request.user)
         
         return queryset

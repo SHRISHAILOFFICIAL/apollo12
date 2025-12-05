@@ -19,17 +19,11 @@ from django.utils import timezone
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 
-from core.models import Test, Attempt, Question, Response as AnswerResponse
+from exams.models import Exam, Question
+from exams.serializers import QuestionResponseSerializer
+from results.models import Attempt, AttemptAnswer
 from .redis_utils import timer_manager
-from .serializers_exam_timer import (
-    StartExamSerializer,
-    StartExamResponseSerializer,
-    RemainingTimeResponseSerializer,
-    SubmitAnswerSerializer,
-    SubmitExamSerializer,
-    SubmitExamResponseSerializer,
-    QuestionResponseSerializer,
-)
+from .serializers import SubmitAnswerSerializer
 
 import logging
 
@@ -75,7 +69,7 @@ class StartExamView(APIView):
         """Start a new exam attempt with Redis timer."""
         
         # Validate exam exists and is published
-        exam = get_object_or_404(Test, id=exam_id)
+        exam = get_object_or_404(Exam, id=exam_id)
         
         if not exam.is_published:
             return Response(
@@ -86,8 +80,8 @@ class StartExamView(APIView):
         # Check for existing ongoing attempt
         existing_attempt = Attempt.objects.filter(
             user=request.user,
-            test=exam,
-            status='ongoing'
+            exam=exam,
+            status='in_progress'
         ).first()
         
         if existing_attempt:
@@ -100,38 +94,35 @@ class StartExamView(APIView):
                     {
                         "attempt_id": existing_attempt.id,
                         "exam_id": exam.id,
-                        "exam_title": exam.title,
-                        "duration_minutes": exam.duration,
+                        "exam_title": f"{exam.name} {exam.year}",
+                        "duration_minutes": exam.duration_minutes,
                         "remaining_seconds": remaining,
-                        "total_questions": exam.questions.count(),
+                        "total_questions": Question.objects.filter(section__exam=exam).count(),
                         "total_marks": exam.total_marks,
                         "message": "Resuming existing exam attempt"
                     },
                     status=status.HTTP_200_OK
                 )
             else:
-                # Timer expired, mark as timeout
+                # Timer expired, mark as timeout and allow new attempt
                 existing_attempt.status = 'timeout'
                 existing_attempt.completed_at = timezone.now()
                 existing_attempt.save()
-                
-                return Response(
-                    {"error": "Your previous attempt has timed out. Please start a new attempt."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+                logger.info(f"Marked expired attempt {existing_attempt.id} as timeout, allowing new attempt")
+                # Continue to create new attempt below
+        
         
         # Create new attempt in MySQL
         try:
             with transaction.atomic():
                 attempt = Attempt.objects.create(
                     user=request.user,
-                    test=exam,
-                    status='ongoing',
-                    created_at=timezone.now()
+                    exam=exam,
+                    status='in_progress'
                 )
                 
                 # Calculate duration in seconds
-                duration_seconds = exam.duration * 60
+                duration_seconds = exam.duration_minutes * 60
                 
                 # Create Redis timer with TTL
                 timer_created = timer_manager.create_timer(
@@ -155,10 +146,10 @@ class StartExamView(APIView):
                     {
                         "attempt_id": attempt.id,
                         "exam_id": exam.id,
-                        "exam_title": exam.title,
-                        "duration_minutes": exam.duration,
+                        "exam_title": f"{exam.name} {exam.year}",
+                        "duration_minutes": exam.duration_minutes,
                         "remaining_seconds": duration_seconds,
-                        "total_questions": exam.questions.count(),
+                        "total_questions": Question.objects.filter(section__exam=exam).count(),
                         "total_marks": exam.total_marks,
                     },
                     status=status.HTTP_201_CREATED
@@ -241,10 +232,10 @@ class GetRemainingTimeView(APIView):
         
         if remaining == -2:
             # Timer expired or missing
-            if attempt.status == 'ongoing':
+            if attempt.status == 'in_progress':
                 # Update to timeout in MySQL
                 attempt.status = 'timeout'
-                attempt.completed_at = timezone.now()
+                attempt.finished_at = timezone.now()
                 attempt.save()
                 logger.info(f"Attempt {attempt_id} timed out")
             
@@ -337,7 +328,7 @@ class SubmitAnswerView(APIView):
             )
         
         # Check if already completed
-        if attempt.status == 'completed':
+        if attempt.status == 'submitted':
             return Response(
                 {"error": "Exam already submitted. Cannot modify answers."},
                 status=status.HTTP_400_BAD_REQUEST
@@ -348,9 +339,9 @@ class SubmitAnswerView(APIView):
         
         if remaining == -2:
             # Timer expired
-            if attempt.status == 'ongoing':
+            if attempt.status == 'in_progress':
                 attempt.status = 'timeout'
-                attempt.completed_at = timezone.now()
+                attempt.finished_at = timezone.now()
                 attempt.save()
             
             return Response(
@@ -361,7 +352,7 @@ class SubmitAnswerView(APIView):
         # Validate question belongs to this exam
         question = get_object_or_404(Question, id=question_id)
         
-        if question.test_id != attempt.test_id:
+        if question.section.exam_id != attempt.exam_id:
             return Response(
                 {"error": "This question does not belong to this exam."},
                 status=status.HTTP_400_BAD_REQUEST
@@ -369,10 +360,14 @@ class SubmitAnswerView(APIView):
         
         # Save or update answer
         try:
-            answer, created = AnswerResponse.objects.update_or_create(
+            is_correct = (selected_option == question.correct_option) if selected_option else False
+            answer, created = AttemptAnswer.objects.update_or_create(
                 attempt=attempt,
                 question=question,
-                defaults={'selected_option': selected_option}
+                defaults={
+                    'selected_option': selected_option,
+                    'is_correct': is_correct
+                }
             )
             
             action = "saved" if created else "updated"
@@ -443,13 +438,13 @@ class SubmitExamView(APIView):
             )
         
         # Check if already submitted
-        if attempt.status == 'completed':
+        if attempt.status == 'submitted':
             return Response(
                 {
                     "status": "already_completed",
                     "score": attempt.score or 0,
-                    "total_marks": attempt.test.total_marks,
-                    "percentage": round((attempt.score or 0) / attempt.test.total_marks * 100, 2),
+                    "total_marks": attempt.exam.total_marks,
+                    "percentage": round((attempt.score or 0) / attempt.exam.total_marks * 100, 2),
                     "message": "Exam was already submitted"
                 },
                 status=status.HTTP_200_OK
@@ -474,37 +469,37 @@ class SubmitExamView(APIView):
             with transaction.atomic():
                 score = 0
                 correct_count = 0
-                total_questions = attempt.test.questions.count()
+                total_questions = Question.objects.filter(section__exam=attempt.exam).count()
                 
-                # Get all responses for this attempt
-                responses = AnswerResponse.objects.filter(attempt=attempt).select_related('question')
+                # Get all answers for this attempt
+                answers = AttemptAnswer.objects.filter(attempt=attempt).select_related('question')
                 
-                for response in responses:
-                    if response.selected_option == response.question.correct_option:
-                        score += response.question.marks
+                for answer in answers:
+                    if answer.is_correct:
+                        score += answer.question.marks
                         correct_count += 1
                 
                 # Calculate time taken
                 time_taken = None
-                if attempt.created_at:
-                    time_delta = timezone.now() - attempt.created_at
+                if attempt.started_at:
+                    time_delta = timezone.now() - attempt.started_at
                     time_taken = int(time_delta.total_seconds() / 60)  # Convert to minutes
                 
                 # Update attempt
                 attempt.score = score
-                attempt.status = 'completed'
-                attempt.completed_at = timezone.now()
+                attempt.status = 'submitted'
+                attempt.finished_at = timezone.now()
                 attempt.save()
                 
                 # Calculate percentage
-                percentage = round((score / attempt.test.total_marks * 100), 2) if attempt.test.total_marks > 0 else 0
+                percentage = round((score / attempt.exam.total_marks * 100), 2) if attempt.exam.total_marks > 0 else 0
                 
-                logger.info(f"Exam submitted - Attempt {attempt_id}, Score: {score}/{attempt.test.total_marks}")
+                logger.info(f"Exam submitted - Attempt {attempt_id}, Score: {score}/{attempt.exam.total_marks}")
                 
                 response_data = {
                     "status": submission_status,
                     "score": score,
-                    "total_marks": attempt.test.total_marks,
+                    "total_marks": attempt.exam.total_marks,
                     "percentage": percentage,
                     "correct_answers": correct_count,
                     "total_questions": total_questions,
@@ -574,11 +569,11 @@ class GetExamQuestionsView(APIView):
             )
         
         # Check if timer expired
-        if attempt.status == 'ongoing':
+        if attempt.status == 'in_progress':
             remaining = timer_manager.get_remaining_time(attempt_id)
             if remaining == -2:
                 attempt.status = 'timeout'
-                attempt.completed_at = timezone.now()
+                attempt.finished_at = timezone.now()
                 attempt.save()
                 
                 return Response(
@@ -587,19 +582,19 @@ class GetExamQuestionsView(APIView):
                 )
         
         # Get questions (without correct answers)
-        questions = attempt.test.questions.all()
+        questions = Question.objects.filter(section__exam=attempt.exam).order_by('section__order', 'question_number')
         questions_data = QuestionResponseSerializer(questions, many=True).data
         
         # Get user's saved answers
         saved_answers = {}
-        responses = AnswerResponse.objects.filter(attempt=attempt)
-        for response in responses:
-            saved_answers[response.question_id] = response.selected_option
+        answers = AttemptAnswer.objects.filter(attempt=attempt)
+        for answer in answers:
+            saved_answers[answer.question_id] = answer.selected_option
         
         return Response(
             {
                 "attempt_id": attempt_id,
-                "exam_title": attempt.test.title,
+                "exam_title": f"{attempt.exam.name} {attempt.exam.year}",
                 "questions": questions_data,
                 "saved_answers": saved_answers
             },

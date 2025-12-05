@@ -1,10 +1,12 @@
 from rest_framework import generics, permissions
-from core.models import Test, Attempt
-from .serializers_test import TestSerializer, AttemptSerializer
+from exams.models import Exam
+from results.models import Attempt
+from exams.serializers import ExamListSerializer
+from results.serializers import AttemptSerializer
 
-class TestListView(generics.ListAPIView):
-    queryset = Test.objects.filter(is_published=True)
-    serializer_class = TestSerializer
+class ExamListView(generics.ListAPIView):
+    queryset = Exam.objects.filter(is_published=True)
+    serializer_class = ExamListSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 class UserAttemptListView(generics.ListAPIView):

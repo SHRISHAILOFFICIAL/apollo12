@@ -1,122 +1,122 @@
 from rest_framework import serializers
-from .models import ExamAttempt, AttemptResponse
-from exams.models import Question, Option, Exam
+from .models import Attempt, AttemptAnswer
+from exams.models import Question, Exam
 from users.models import User
 
 
-class AttemptResponseSerializer(serializers.ModelSerializer):
-    """Serializer for individual question responses"""
+class AttemptAnswerSerializer(serializers.ModelSerializer):
+    """Serializer for individual question answers"""
     
     question_text = serializers.CharField(source='question.question_text', read_only=True)
-    selected_option_text = serializers.CharField(source='selected_option.option_text', read_only=True)
-    correct_answer = serializers.SerializerMethodField()
+    question_number = serializers.IntegerField(source='question.question_number', read_only=True)
+    correct_option = serializers.SerializerMethodField()
     
     class Meta:
-        model = AttemptResponse
+        model = AttemptAnswer
         fields = [
-            'id', 'attempt', 'question', 'question_text',
-            'selected_option', 'selected_option_text',
-            'is_correct', 'correct_answer'
+            'id', 'attempt', 'question', 'question_number', 'question_text',
+            'selected_option', 'is_correct', 'correct_option'
         ]
         read_only_fields = ['id', 'is_correct']
-    
-    def get_correct_answer(self, obj):
+
+    def get_correct_option(self, obj):
         """Return correct option only after attempt is submitted"""
         if obj.attempt.status in ['submitted', 'timeout']:
-            correct_option = obj.question.options.filter(is_correct=True).first()
-            if correct_option:
-                return {
-                    'id': correct_option.id,
-                    'option_text': correct_option.option_text
-                }
+            return obj.question.correct_option
         return None
 
 
-class AttemptResponseCreateSerializer(serializers.ModelSerializer):
-    """Serializer for creating/updating responses during exam"""
+class AttemptAnswerCreateSerializer(serializers.ModelSerializer):
+    """Serializer for creating/updating answers during exam"""
     
     class Meta:
-        model = AttemptResponse
+        model = AttemptAnswer
         fields = ['id', 'attempt', 'question', 'selected_option']
         read_only_fields = ['id']
     
     def create(self, validated_data):
-        """Create response and check if answer is correct"""
-        response = AttemptResponse(**validated_data)
+        """Create answer and check if it's correct"""
+        answer = AttemptAnswer(**validated_data)
         
         # Check if selected option is correct
-        if response.selected_option:
-            response.is_correct = response.selected_option.is_correct
+        if answer.selected_option:
+            answer.is_correct = (answer.selected_option == answer.question.correct_option)
         
-        response.save()
-        return response
+        answer.save()
+        return answer
     
     def update(self, instance, validated_data):
-        """Update response and recheck correctness"""
+        """Update answer and recheck correctness"""
         instance.selected_option = validated_data.get('selected_option', instance.selected_option)
         
         # Recheck correctness
         if instance.selected_option:
-            instance.is_correct = instance.selected_option.is_correct
+            instance.is_correct = (instance.selected_option == instance.question.correct_option)
         else:
-            instance.is_correct = None
+            instance.is_correct = False
         
         instance.save()
         return instance
 
 
-class ExamAttemptSerializer(serializers.ModelSerializer):
+class AttemptSerializer(serializers.ModelSerializer):
     """Serializer for exam attempts"""
     
-    user_name = serializers.CharField(source='user.name', read_only=True)
-    exam_title = serializers.CharField(source='exam.title', read_only=True)
-    responses_count = serializers.SerializerMethodField()
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    exam_name = serializers.SerializerMethodField()
+    answers_count = serializers.SerializerMethodField()
     duration_minutes = serializers.IntegerField(source='exam.duration_minutes', read_only=True)
     
     class Meta:
-        model = ExamAttempt
+        model = Attempt
         fields = [
-            'id', 'user', 'user_name', 'exam', 'exam_title',
-            'start_time', 'end_time', 'score', 'status',
-            'responses_count', 'duration_minutes'
+            'id', 'user', 'user_name', 'exam', 'exam_name',
+            'started_at', 'finished_at', 'score', 'status',
+            'answers_count', 'duration_minutes', 'randomized_order'
         ]
-        read_only_fields = ['id', 'start_time', 'score']
+        read_only_fields = ['id', 'started_at', 'score']
     
-    def get_responses_count(self, obj):
-        return obj.responses.count()
+    def get_exam_name(self, obj):
+        return f"{obj.exam.name} {obj.exam.year}"
+    
+    def get_answers_count(self, obj):
+        return obj.answers.count()
 
 
-class ExamAttemptDetailSerializer(serializers.ModelSerializer):
-    """Detailed exam attempt with all responses"""
+class AttemptDetailSerializer(serializers.ModelSerializer):
+    """Detailed attempt with all answers"""
     
-    responses = AttemptResponseSerializer(many=True, read_only=True)
-    user_name = serializers.CharField(source='user.name', read_only=True)
-    exam_title = serializers.CharField(source='exam.title', read_only=True)
+    answers = AttemptAnswerSerializer(many=True, read_only=True)
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    exam_name = serializers.SerializerMethodField()
     total_questions = serializers.SerializerMethodField()
     answered_questions = serializers.SerializerMethodField()
     correct_answers = serializers.SerializerMethodField()
     
     class Meta:
-        model = ExamAttempt
+        model = Attempt
         fields = [
-            'id', 'user', 'user_name', 'exam', 'exam_title',
-            'start_time', 'end_time', 'score', 'status',
+            'id', 'user', 'user_name', 'exam', 'exam_name',
+            'started_at', 'finished_at', 'score', 'status',
             'total_questions', 'answered_questions', 'correct_answers',
-            'responses'
+            'randomized_order', 'answers'
         ]
-        read_only_fields = ['id', 'start_time']
+        read_only_fields = ['id', 'started_at']
+    
+    def get_exam_name(self, obj):
+        return f"{obj.exam.name} {obj.exam.year}"
     
     def get_total_questions(self, obj):
-        return obj.exam.questions.count()
+        return Question.objects.filter(section__exam=obj.exam).count()
     
     def get_answered_questions(self, obj):
-        return obj.responses.filter(selected_option__isnull=False).count()
+        return obj.answers.filter(selected_option__isnull=False).count()
     
     def get_correct_answers(self, obj):
-        return obj.responses.filter(is_correct=True).count()
+        return obj.answers.filter(is_correct=True).count()
 
 
-class ExamAttemptStartSerializer(serializers.Serializer):
+class AttemptStartSerializer(serializers.Serializer):
     """Serializer for starting an exam"""
     
     exam_id = serializers.IntegerField()
@@ -132,7 +132,7 @@ class ExamAttemptStartSerializer(serializers.Serializer):
             raise serializers.ValidationError("Exam not found")
 
 
-class ExamAttemptSubmitSerializer(serializers.Serializer):
+class AttemptSubmitSerializer(serializers.Serializer):
     """Serializer for submitting an exam"""
     
     attempt_id = serializers.IntegerField()
@@ -141,19 +141,19 @@ class ExamAttemptSubmitSerializer(serializers.Serializer):
         """Validate attempt exists and belongs to user"""
         user = self.context.get('user')
         try:
-            attempt = ExamAttempt.objects.get(id=value, user=user)
+            attempt = Attempt.objects.get(id=value, user=user)
             if attempt.status != 'in_progress':
                 raise serializers.ValidationError("This attempt is already completed")
             return value
-        except ExamAttempt.DoesNotExist:
+        except Attempt.DoesNotExist:
             raise serializers.ValidationError("Attempt not found")
 
 
 class ExamResultSerializer(serializers.ModelSerializer):
     """Serializer for exam results/summary"""
     
-    user_name = serializers.CharField(source='user.name', read_only=True)
-    exam_title = serializers.CharField(source='exam.title', read_only=True)
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    exam_name = serializers.SerializerMethodField()
     total_questions = serializers.SerializerMethodField()
     correct_answers = serializers.SerializerMethodField()
     wrong_answers = serializers.SerializerMethodField()
@@ -161,27 +161,30 @@ class ExamResultSerializer(serializers.ModelSerializer):
     percentage = serializers.SerializerMethodField()
     
     class Meta:
-        model = ExamAttempt
+        model = Attempt
         fields = [
-            'id', 'user_name', 'exam_title', 'start_time', 'end_time',
+            'id', 'user_name', 'exam_name', 'started_at', 'finished_at',
             'score', 'total_questions', 'correct_answers', 'wrong_answers',
             'unanswered', 'percentage', 'status'
         ]
     
+    def get_exam_name(self, obj):
+        return f"{obj.exam.name} {obj.exam.year}"
+    
     def get_total_questions(self, obj):
-        return obj.exam.questions.count()
+        return Question.objects.filter(section__exam=obj.exam).count()
     
     def get_correct_answers(self, obj):
-        return obj.responses.filter(is_correct=True).count()
+        return obj.answers.filter(is_correct=True).count()
     
     def get_wrong_answers(self, obj):
-        return obj.responses.filter(is_correct=False).count()
+        return obj.answers.filter(is_correct=False, selected_option__isnull=False).count()
     
     def get_unanswered(self, obj):
-        return obj.responses.filter(selected_option__isnull=True).count()
+        return obj.answers.filter(selected_option__isnull=True).count()
     
     def get_percentage(self, obj):
-        total = self.get_total_questions(obj)
+        total = obj.exam.total_marks
         if total == 0:
             return 0
-        return round((obj.score / obj.exam.total_marks) * 100, 2)
+        return round((obj.score / total) * 100, 2)

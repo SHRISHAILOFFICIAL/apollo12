@@ -82,18 +82,8 @@ class AuthViewSet(viewsets.ViewSet):
                 'error': 'Invalid username or password'
             }, status=status.HTTP_401_UNAUTHORIZED)
         
-        # Step 5: Check if account is active
-        if not user.is_active:
-            return Response({
-                'error': 'Account disabled'
-            }, status=status.HTTP_403_FORBIDDEN)
-        
-        # Step 6: Generate JWT tokens
+        # Step 5: Generate JWT tokens
         refresh = RefreshToken.for_user(user)
-        
-        # Step 7: Update last_login
-        user.last_login = timezone.now()
-        user.save(update_fields=['last_login'])
         
         # Log activity
         UserActivity.objects.create(
@@ -103,7 +93,7 @@ class AuthViewSet(viewsets.ViewSet):
             user_agent=request.META.get('HTTP_USER_AGENT')
         )
         
-        # Step 8: Return response
+        # Step 6: Return response
         return Response({
             'message': 'Login successful',
             'access': str(refresh.access_token),
@@ -112,8 +102,6 @@ class AuthViewSet(viewsets.ViewSet):
                 'id': user.id,
                 'username': user.username,
                 'email': user.email,
-                'name': user.name,
-                'role': user.role
             }
         }, status=status.HTTP_200_OK)
     
