@@ -106,6 +106,9 @@ export default function ExamPage() {
           startResponse.attempt_id
         );
 
+        console.log("Questions response:", questionsResponse);
+        console.log("First question:", questionsResponse.questions[0]);
+
         setQuestions(questionsResponse.questions);
         setAnswers(questionsResponse.saved_answers || {});
 
@@ -507,7 +510,9 @@ export default function ExamPage() {
                 {typeof window !== 'undefined' ? localStorage.getItem('username')?.charAt(0).toUpperCase() || 'U' : 'U'}
               </div>
               <div>
-                <h3 className="font-bold text-gray-900">Student</h3>
+                <h3 className="font-bold text-gray-900">
+                  {localStorage.getItem("username") || "Student"}
+                </h3>
                 <div className="text-xs text-gray-500 mt-1">
                   <span className="text-blue-600 font-medium">{answeredCount}/{questions.length}</span> Attempted
                 </div>

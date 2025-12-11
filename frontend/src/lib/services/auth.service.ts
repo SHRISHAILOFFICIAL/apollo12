@@ -12,6 +12,7 @@ export const authService = {
         if (response.data.access) {
             localStorage.setItem('access_token', response.data.access);
             localStorage.setItem('refresh_token', response.data.refresh);
+            localStorage.setItem('username', credentials.username); // Save username
         }
         return response.data;
     },
@@ -47,5 +48,27 @@ export const authService = {
         } catch (e) {
             return null;
         }
+    },
+
+    // OTP Methods
+    async sendSignupOTP(email: string) {
+        const response = await api.post('/users/send-signup-otp/', { email });
+        return response.data;
+    },
+
+    async verifySignupOTP(email: string, otp: string) {
+        const response = await api.post('/users/verify-signup-otp/', { email, otp });
+        return response.data;
+    },
+
+    async sendPasswordResetOTP(email: string) {
+        const response = await api.post('/users/send-password-reset-otp/', { email });
+        return response.data;
+    },
+
+    async resetPassword(email: string, otp: string, new_password: string) {
+        const response = await api.post('/users/reset-password/', { email, otp, new_password });
+        return response.data;
     }
 };
+

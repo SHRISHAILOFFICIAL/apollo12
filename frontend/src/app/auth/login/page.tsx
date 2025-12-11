@@ -77,6 +77,11 @@ export default function LoginPage() {
                 required
                 className="bg-background/50"
               />
+              <div className="text-right">
+                <Link href="/auth/forgot-password" className="text-xs text-primary hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
             </div>
 
             {error && (

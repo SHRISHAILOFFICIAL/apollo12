@@ -50,15 +50,17 @@ class AttemptResultsView(APIView):
         
         exam = attempt.exam
         
-        # Get all answers for this attempt
-        answers = AttemptAnswer.objects.filter(attempt=attempt).select_related('question', 'question__section')
+        # Get all answers with optimized query (select_related to avoid N+1)
+        answers = AttemptAnswer.objects.filter(attempt=attempt).select_related(
+            'question', 'question__section'
+        )
         
         # Calculate scores
         total_score = sum(answer.question.marks for answer in answers if answer.is_correct)
         total_marks = exam.total_marks
         percentage = (total_score / total_marks * 100) if total_marks > 0 else 0
         
-        # Section-wise performance
+        # Section-wise performance (optimized with prefetch_related)
         sections = Section.objects.filter(exam=exam).prefetch_related('questions')
         section_performance = []
         

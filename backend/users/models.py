@@ -139,6 +139,41 @@ class UserActivity(models.Model):
         return f"{self.user.username} - {self.activity}"
 
 
+class EmailOTP(models.Model):
+    """Email OTP verification codes for signup and password reset"""
+    
+    email = models.EmailField(db_index=True)
+    otp = models.CharField(max_length=6)
+    purpose = models.CharField(max_length=20, choices=[
+        ('signup', 'Signup Verification'),
+        ('password_reset', 'Password Reset'),
+    ], default='signup')
+    is_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    
+    class Meta:
+        db_table = 'email_otps'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['email', 'created_at']),
+            models.Index(fields=['email', 'purpose', 'is_verified']),
+        ]
+    
+    def is_valid(self):
+        """Check if OTP is still valid (10 minutes expiration)"""
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        if self.is_verified:
+            return False
+        
+        expiry_time = self.created_at + timedelta(minutes=10)
+        return timezone.now() < expiry_time
+    
+    def __str__(self):
+        return f"OTP for {self.email} - {self.purpose}"
+
+
 class Notification(models.Model):
     """User notifications"""
     

@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
+    "anymail",  # Email backend
     # Local apps
     "core",
     "api",
@@ -96,7 +102,14 @@ DATABASES = {
         "PASSWORD": "password",
         "HOST": "localhost",
         "PORT": "3306",
-        "CONN_MAX_AGE": 60,  # Keep connections alive for 60s to reduce overhead
+        # Connection pooling - reuse connections for better performance
+        "CONN_MAX_AGE": 600,  # Keep connections alive for 10 minutes
+        "OPTIONS": {
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+            "charset": "utf8mb4",
+            # Connection timeout
+            "connect_timeout": 10,
+        },
     }
 }
 
@@ -152,14 +165,21 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-# Redis Cache Configuration
+# Redis Cache Configuration (Optimized for Performance)
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # Connection pool settings
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 50,
+                "retry_on_timeout": True,
+            },
         },
+        # Default timeout: 1 hour
+        "TIMEOUT": 3600,
     }
 }
 
@@ -181,3 +201,15 @@ SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+# Email Configuration (Brevo)
+import os
+
+EMAIL_BACKEND = 'anymail.backends.brevo.EmailBackend'
+
+ANYMAIL = {
+    'BREVO_API_KEY': os.getenv('BREVO_API_KEY', ''),
+}
+
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@apollo11.com')
+

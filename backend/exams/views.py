@@ -3,6 +3,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.db.models import Count
+from django.core.cache import cache
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from .models import Exam, Section, Question
 from .serializers import (
@@ -10,6 +13,7 @@ from .serializers import (
     SectionSerializer, SectionWithQuestionsSerializer,
     QuestionSerializer, QuestionListSerializer
 )
+from utils.cache import cache_response, get_cached_exam, cache_exam_data
 
 
 class ExamViewSet(viewsets.ModelViewSet):
@@ -25,11 +29,36 @@ class ExamViewSet(viewsets.ModelViewSet):
         return ExamSerializer
     
     def get_queryset(self):
-        queryset = Exam.objects.all()
+        # Optimize with select_related for better performance
+        queryset = Exam.objects.select_related('subject').prefetch_related('sections')
         # Non-admin users only see published exams
         if not self.request.user.is_staff:
             queryset = queryset.filter(is_published=True)
         return queryset.order_by('-year', 'name')
+    
+    @method_decorator(cache_page(3600))  # Cache for 1 hour
+    def list(self, request, *args, **kwargs):
+        """Cached exam list"""
+        return super().list(request, *args, **kwargs)
+    
+    def retrieve(self, request, *args, **kwargs):
+        """Cached exam detail with questions"""
+        exam_id = kwargs.get('pk')
+        cache_key = f"apollo11:exam:{exam_id}:detail"
+        
+        # Try cache first
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            return Response(cached_data)
+        
+        # Get from database with optimized query
+        response = super().retrieve(request, *args, **kwargs)
+        
+        # Cache successful response for 1 hour
+        if response.status_code == 200:
+            cache.set(cache_key, response.data, 3600)
+        
+        return response
     
     @action(detail=True, methods=['get'])
     def sections(self, request, pk=None):
@@ -41,10 +70,22 @@ class ExamViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def questions(self, request, pk=None):
-        """Get all questions for an exam"""
+        """Get all questions for an exam (cached)"""
+        cache_key = f"apollo11:exam:{pk}:questions"
+        
+        # Try cache first
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            return Response(cached_data)
+        
         exam = self.get_object()
-        questions = Question.objects.filter(section__exam=exam).order_by('section__order', 'question_number')
+        # Optimize query with select_related
+        questions = Question.objects.filter(section__exam=exam).select_related('section').order_by('section__order', 'question_number')
         serializer = QuestionListSerializer(questions, many=True)
+        
+        # Cache for 1 hour
+        cache.set(cache_key, serializer.data, 3600)
+        
         return Response(serializer.data)
 
 

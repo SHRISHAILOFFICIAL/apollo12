@@ -557,10 +557,14 @@ class GetExamQuestionsView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request, attempt_id):
-        """Get all questions for exam attempt."""
+        """Get all questions for exam attempt with Redis caching."""
+        from django.core.cache import cache
         
-        # Get attempt and validate ownership
-        attempt = get_object_or_404(Attempt, id=attempt_id)
+        # Get attempt with exam in one query (optimization)
+        attempt = get_object_or_404(
+            Attempt.objects.select_related('exam'), 
+            id=attempt_id
+        )
         
         if attempt.user != request.user:
             return Response(
@@ -581,15 +585,52 @@ class GetExamQuestionsView(APIView):
                     status=status.HTTP_410_GONE
                 )
         
-        # Get questions (without correct answers)
-        questions = Question.objects.filter(section__exam=attempt.exam).order_by('section__order', 'question_number')
-        questions_data = QuestionResponseSerializer(questions, many=True).data
+        # Try to get questions from Redis cache first
+        exam_id = attempt.exam.id
+        cache_key = f'exam_{exam_id}_questions'
+        questions_data = cache.get(cache_key)
         
-        # Get user's saved answers
-        saved_answers = {}
-        answers = AttemptAnswer.objects.filter(attempt=attempt)
-        for answer in answers:
-            saved_answers[answer.question_id] = answer.selected_option
+        if not questions_data:
+            # Cache miss - fetch from database with optimizations
+            logger.info(f"Cache miss for exam {exam_id}, fetching from DB")
+            
+            # Optimized query: select_related to avoid N+1, values() for speed
+            questions_data = list(
+                Question.objects.filter(section__exam=attempt.exam)
+                .select_related('section')
+                .values(
+                    'id', 'question_text', 'option_a', 'option_b',
+                    'option_c', 'option_d', 'marks', 'question_number',
+                    'section__name', 'section__order'
+                )
+                .order_by('section__order', 'question_number')
+            )
+            
+            # Rename fields for frontend compatibility
+            for q in questions_data:
+                q['text'] = q.pop('question_text')  # Frontend expects 'text'
+                q['section_name'] = q.pop('section__name')
+                q['section_order'] = q.pop('section__order')
+            
+            # Cache for 1 hour (questions rarely change)
+            cache.set(cache_key, questions_data, 3600)
+            logger.info(f"Cached {len(questions_data)} questions for exam {exam_id}")
+        else:
+            logger.info(f"Cache hit for exam {exam_id}, serving from Redis")
+            # Also rename fields from cache (in case cache has old format)
+            for q in questions_data:
+                if 'question_text' in q and 'text' not in q:
+                    q['text'] = q.pop('question_text')
+                if 'section__name' in q and 'section_name' not in q:
+                    q['section_name'] = q.pop('section__name')
+                if 'section__order' in q and 'section_order' not in q:
+                    q['section_order'] = q.pop('section__order')
+        
+        # Get user's saved answers (optimized with values_list)
+        saved_answers = dict(
+            AttemptAnswer.objects.filter(attempt=attempt)
+            .values_list('question_id', 'selected_option')
+        )
         
         return Response(
             {
