@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-jhd^i!q34%-s1w65pc#z-6(0hj(z$y5_lxet5&&6p$t&(u=umy"
+SECRET_KEY = os.getenv('SECRET_KEY', "django-insecure-jhd^i!q34%-s1w65pc#z-6(0hj(z$y5_lxet5&266p$t&(u=umy")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -205,6 +205,7 @@ SIMPLE_JWT = {
 # Email Configuration (Brevo)
 import os
 
+# Brevo email backend via Anymail
 EMAIL_BACKEND = 'anymail.backends.brevo.EmailBackend'
 
 ANYMAIL = {
@@ -212,4 +213,7 @@ ANYMAIL = {
 }
 
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@apollo11.com')
+
+# Note: Make sure BREVO_API_KEY starts with 'xkeysib-' (API key)
+# NOT 'xsmtpsib-' (SMTP key)
 

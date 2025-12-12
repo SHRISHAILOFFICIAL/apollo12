@@ -26,7 +26,7 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name='token_refresh'),
     
     # App URLs
-    path("api/", include("users.urls")),
+    path("api/users/", include("users.urls")),  # Changed: Added users/ prefix
     path("api/", include("exams.urls")),
     path("api/", include("results.urls")),
     path("api/", include("api.urls")),  # Keep existing API URLs if any
