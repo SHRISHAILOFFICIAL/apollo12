@@ -12,6 +12,26 @@ class Exam(models.Model):
     total_marks = models.IntegerField(default=0)
     duration_minutes = models.IntegerField()
     
+    # Video solution
+    solution_video_url = models.URLField(
+        blank=True,
+        null=True,
+        help_text="YouTube URL for complete paper solution video"
+    )
+    
+    # Access control
+    ACCESS_TIER_CHOICES = [
+        ('FREE', 'Free Access'),
+        ('PRO', 'Pro Access'),
+    ]
+    access_tier = models.CharField(
+        max_length=10,
+        choices=ACCESS_TIER_CHOICES,
+        default='PRO',
+        db_index=True,
+        help_text="Minimum tier required to access this exam"
+    )
+    
     is_published = models.BooleanField(default=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -22,7 +42,13 @@ class Exam(models.Model):
         indexes = [
             models.Index(fields=['is_published']),
             models.Index(fields=['year']),
+            models.Index(fields=['access_tier']),
         ]
+    
+    @property
+    def is_premium(self):
+        """Check if exam requires PRO tier"""
+        return self.access_tier == 'PRO'
     
     @property
     def title(self):

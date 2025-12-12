@@ -14,11 +14,11 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
@@ -216,4 +216,9 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@apollo11.com')
 
 # Note: Make sure BREVO_API_KEY starts with 'xkeysib-' (API key)
 # NOT 'xsmtpsib-' (SMTP key)
+
+# Razorpay Configuration
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', '')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', '')
+RAZORPAY_WEBHOOK_SECRET = os.getenv('RAZORPAY_WEBHOOK_SECRET', '')
 

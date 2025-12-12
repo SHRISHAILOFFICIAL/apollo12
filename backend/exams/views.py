@@ -14,6 +14,7 @@ from .serializers import (
     QuestionSerializer, QuestionListSerializer
 )
 from utils.cache import cache_response, get_cached_exam, cache_exam_data
+from .permissions import can_access_exam
 
 
 class ExamViewSet(viewsets.ModelViewSet):
@@ -30,7 +31,7 @@ class ExamViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         # Optimize with select_related for better performance
-        queryset = Exam.objects.select_related('subject').prefetch_related('sections')
+        queryset = Exam.objects.all().prefetch_related('sections')
         # Non-admin users only see published exams
         if not self.request.user.is_staff:
             queryset = queryset.filter(is_published=True)
@@ -42,7 +43,20 @@ class ExamViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
     
     def retrieve(self, request, *args, **kwargs):
-        """Cached exam detail with questions"""
+        """Cached exam detail with questions - with access control"""
+        exam = self.get_object()
+        
+        # Check if user has access to this exam
+        can_access, reason = can_access_exam(request.user, exam)
+        if not can_access:
+            return Response({
+                'success': False,
+                'error': reason,
+                'requires_pro': exam.is_premium,
+                'exam_id': exam.id,
+                'exam_name': exam.name
+            }, status=status.HTTP_403_FORBIDDEN)
+        
         exam_id = kwargs.get('pk')
         cache_key = f"apollo11:exam:{exam_id}:detail"
         
@@ -70,7 +84,18 @@ class ExamViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def questions(self, request, pk=None):
-        """Get all questions for an exam (cached)"""
+        """Get all questions for an exam (cached) - with access control"""
+        exam = self.get_object()
+        
+        # Check if user has access to this exam
+        can_access, reason = can_access_exam(request.user, exam)
+        if not can_access:
+            return Response({
+                'success': False,
+                'error': reason,
+                'requires_pro': exam.is_premium
+            }, status=status.HTTP_403_FORBIDDEN)
+        
         cache_key = f"apollo11:exam:{pk}:questions"
         
         # Try cache first
@@ -78,7 +103,6 @@ class ExamViewSet(viewsets.ModelViewSet):
         if cached_data:
             return Response(cached_data)
         
-        exam = self.get_object()
         # Optimize query with select_related
         questions = Question.objects.filter(section__exam=exam).select_related('section').order_by('section__order', 'question_number')
         serializer = QuestionListSerializer(questions, many=True)

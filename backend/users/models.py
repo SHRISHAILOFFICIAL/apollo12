@@ -14,6 +14,19 @@ class User(models.Model):
     
     email_verified = models.BooleanField(default=False)
     
+    # User tier for access control
+    USER_TIER_CHOICES = [
+        ('FREE', 'Free User'),
+        ('PRO', 'Pro User'),
+    ]
+    user_tier = models.CharField(
+        max_length=10,
+        choices=USER_TIER_CHOICES,
+        default='FREE',
+        db_index=True,
+        help_text="User subscription tier"
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -61,6 +74,7 @@ class User(models.Model):
         indexes = [
             models.Index(fields=['username']),
             models.Index(fields=['email']),
+            models.Index(fields=['user_tier']),
         ]
     
     def set_password(self, raw_password):
@@ -78,6 +92,17 @@ class User(models.Model):
     def has_module_perms(self, app_label):
         """Required for Django admin"""
         return True
+    
+    def is_pro(self):
+        """Check if user has PRO tier"""
+        return self.user_tier == 'PRO'
+    
+    def has_tier_access(self, required_tier):
+        """Check if user's tier meets the required tier"""
+        tier_hierarchy = {'FREE': 0, 'PRO': 1}
+        user_level = tier_hierarchy.get(self.user_tier, 0)
+        required_level = tier_hierarchy.get(required_tier, 0)
+        return user_level >= required_level
     
     def __str__(self):
         return self.username

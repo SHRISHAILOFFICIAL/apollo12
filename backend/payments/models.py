@@ -7,10 +7,16 @@ from django.conf import settings
 class Plan(models.Model):
     """Subscription plans for users"""
     
-    key = models.CharField(max_length=50, unique=True, db_index=True)  # e.g., "monthly", "yearly"
-    name = models.CharField(max_length=100)
+    key = models.CharField(max_length=50, unique=True, db_index=True)  # e.g., "pro_yearly"
+    name = models.CharField(max_length=100)  # e.g., "PRO Plan"
     price_in_paisa = models.IntegerField(help_text="Price in paisa (1 rupee = 100 paisa)")
     duration_days = models.IntegerField(help_text="Subscription duration in days")
+    features = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="List of features included in this plan"
+    )
+    is_active = models.BooleanField(default=True, db_index=True, help_text="Whether this plan is available for purchase")
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:

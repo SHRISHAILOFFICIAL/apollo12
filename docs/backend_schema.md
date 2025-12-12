@@ -18,7 +18,6 @@ ________________________________________
 A custom user model with fields:
 •	id (PK)
 •	username (unique)
-•	full_name   
 •	email (unique)
 •	phone
 •	password_hash (Django default hashing)
@@ -26,7 +25,6 @@ A custom user model with fields:
 •	created_at
 •	updated_at
 Use JWT (access + refresh) for authentication.
-
 2.2 Profile
 One-to-one with User.
 Stores subscription/payment status.
@@ -49,7 +47,6 @@ Fields:
 •	name
 •	price_in_paisa
 •	duration_days
-
 3.2 Payment
 Stores transactions.
 Fields:
@@ -86,8 +83,7 @@ Represents each exam/QP.
 •	name (e.g., “DCET”)
 •	year (e.g., 2023)
 •	total_marks
-•	duration_minutes (is fixed 180 min or 3 hr )
-
+•	duration_minutes
 5.2 Section
 Each exam contains multiple sections.
 •	id (PK)
@@ -96,7 +92,6 @@ Each exam contains multiple sections.
 •	order
 •	max_marks (default 20)
 Sections should be autocreated during CSV import if missing.
-
 5.3 Question
 Each section contains multiple questions.
 Fields:
@@ -149,7 +144,6 @@ correct_option
 marks
 diagram_url
 Must be UTF-8.
-
 7.2 Import Behavior
 When importing:
 •	Auto-create exam if missing

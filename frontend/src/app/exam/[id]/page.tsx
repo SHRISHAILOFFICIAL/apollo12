@@ -67,10 +67,7 @@ export default function ExamPage() {
         clearInterval(localCountdownRef.current);
       }
 
-      alert(
-        `Exam Submitted!\n\nScore: ${result.score}/${result.total_marks}\nPercentage: ${result.percentage}%\nCorrect Answers: ${result.correct_answers}/${result.total_questions}`
-      );
-
+      // Redirect directly to results page (no popup needed)
       router.push(`/results/${attemptId}`);
     } catch (err: any) {
       console.error("Failed to submit exam", err);

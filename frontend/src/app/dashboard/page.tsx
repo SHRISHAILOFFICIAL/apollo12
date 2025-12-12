@@ -13,6 +13,8 @@ interface Exam {
   total_marks: number;
   total_questions: number;
   sections_count: number;
+  access_tier: string;
+  is_premium: boolean;
 }
 
 interface Attempt {
@@ -35,6 +37,13 @@ interface DashboardData {
   user: {
     username: string;
     email: string;
+    tier: string;
+    is_pro: boolean;
+  };
+  subscription: {
+    is_paid: boolean;
+    subscription_end: string | null;
+    is_active: boolean;
   };
   stats: {
     total_attempts: number;
@@ -123,6 +132,47 @@ export default function DashboardPage() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* PRO Upgrade Banner for FREE users */}
+        {!dashboardData.user.is_pro && (
+          <div className="mb-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">🚀 Upgrade to PRO</h2>
+                <p className="text-blue-100">
+                  Get unlimited access to all 3 PYQs, 10 Mock Tests, and Video Solutions for just ₹149/year
+                </p>
+              </div>
+              <button
+                onClick={() => router.push("/pricing")}
+                className="px-8 py-3 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100 transition-colors shadow-md"
+              >
+                Upgrade Now
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* User Tier Badge */}
+        {dashboardData.user.is_pro && (
+          <div className="mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl shadow-lg p-4 text-white">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">⭐</span>
+                <div>
+                  <h3 className="text-xl font-bold">PRO Member</h3>
+                  <p className="text-sm text-yellow-100">
+                    {dashboardData.subscription.subscription_end
+                      ? `Valid until ${new Date(dashboardData.subscription.subscription_end).toLocaleDateString()}`
+                      : "Active"}
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-yellow-100">Enjoying PRO benefits</p>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-md p-6">
@@ -177,11 +227,21 @@ export default function DashboardPage() {
                 {dashboardData.available_exams.map((exam) => (
                   <div
                     key={exam.id}
-                    className="border-2 border-gray-200 rounded-xl p-6 hover:border-blue-500 transition-colors"
+                    className={`border-2 rounded-xl p-6 transition-colors ${exam.is_premium && !dashboardData.user.is_pro
+                        ? "border-gray-300 bg-gray-50 opacity-75"
+                        : "border-gray-200 hover:border-blue-500"
+                      }`}
                   >
                     <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">{exam.name}</h3>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="text-xl font-bold text-gray-900">{exam.name}</h3>
+                          {exam.is_premium && (
+                            <span className="px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold rounded">
+                              PRO
+                            </span>
+                          )}
+                        </div>
                         <div className="flex gap-4 mt-2 text-sm text-gray-600">
                           <span>⏱️ {exam.duration_minutes} mins</span>
                           <span>📝 {exam.total_questions} questions</span>
@@ -189,12 +249,28 @@ export default function DashboardPage() {
                           <span>📑 {exam.sections_count} sections</span>
                         </div>
                       </div>
-                      <button
-                        onClick={() => router.push(`/exam/${exam.id}`)}
-                        className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-colors"
-                      >
-                        Start Exam
-                      </button>
+                      {exam.is_premium && !dashboardData.user.is_pro ? (
+                        <button
+                          onClick={() => router.push("/pricing")}
+                          className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-md transition-colors flex items-center gap-2"
+                        >
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                              fillRule="evenodd"
+                              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          Unlock with PRO
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => router.push(`/exam/${exam.id}`)}
+                          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-colors"
+                        >
+                          Start Exam
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}

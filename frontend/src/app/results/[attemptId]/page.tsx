@@ -51,6 +51,7 @@ interface ResultsData {
         improvements: string[];
         overall_performance: string;
     };
+    solution_video_url?: string | null;
 }
 
 export default function ResultsPage() {
@@ -156,10 +157,10 @@ export default function ResultsPage() {
                     <div className="mt-6 text-center">
                         <span
                             className={`inline-block px-6 py-2 rounded-full text-lg font-semibold ${results.percentage >= 80
-                                    ? "bg-green-100 text-green-800"
-                                    : results.percentage >= 60
-                                        ? "bg-blue-100 text-blue-800"
-                                        : "bg-yellow-100 text-yellow-800"
+                                ? "bg-green-100 text-green-800"
+                                : results.percentage >= 60
+                                    ? "bg-blue-100 text-blue-800"
+                                    : "bg-yellow-100 text-yellow-800"
                                 }`}
                         >
                             {results.insights.overall_performance}
@@ -206,10 +207,10 @@ export default function ResultsPage() {
                                                 <div className="w-24 bg-gray-200 rounded-full h-2">
                                                     <div
                                                         className={`h-2 rounded-full ${section.accuracy >= 80
-                                                                ? "bg-green-500"
-                                                                : section.accuracy >= 60
-                                                                    ? "bg-blue-500"
-                                                                    : "bg-yellow-500"
+                                                            ? "bg-green-500"
+                                                            : section.accuracy >= 60
+                                                                ? "bg-blue-500"
+                                                                : "bg-yellow-500"
                                                             }`}
                                                         style={{ width: `${section.accuracy}%` }}
                                                     ></div>
@@ -277,8 +278,8 @@ export default function ResultsPage() {
                         <button
                             onClick={() => setActiveSection("")}
                             className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${activeSection === ""
-                                    ? "bg-blue-600 text-white"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 }`}
                         >
                             All Questions
@@ -288,8 +289,8 @@ export default function ResultsPage() {
                                 key={section.section_name}
                                 onClick={() => setActiveSection(section.section_name)}
                                 className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${activeSection === section.section_name
-                                        ? "bg-blue-600 text-white"
-                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                     }`}
                             >
                                 {section.section_name}
@@ -303,10 +304,10 @@ export default function ResultsPage() {
                             <div
                                 key={question.question_id}
                                 className={`border-2 rounded-xl p-6 ${question.is_correct
-                                        ? "border-green-200 bg-green-50"
-                                        : question.user_answer
-                                            ? "border-red-200 bg-red-50"
-                                            : "border-gray-200 bg-gray-50"
+                                    ? "border-green-200 bg-green-50"
+                                    : question.user_answer
+                                        ? "border-red-200 bg-red-50"
+                                        : "border-gray-200 bg-gray-50"
                                     }`}
                             >
                                 {/* Question Header */}
@@ -355,10 +356,10 @@ export default function ResultsPage() {
                                             <div
                                                 key={option}
                                                 className={`p-3 rounded-lg border-2 ${isCorrectAnswer
-                                                        ? "border-green-500 bg-green-100"
-                                                        : isUserAnswer
-                                                            ? "border-red-500 bg-red-100"
-                                                            : "border-gray-200 bg-white"
+                                                    ? "border-green-500 bg-green-100"
+                                                    : isUserAnswer
+                                                        ? "border-red-500 bg-red-100"
+                                                        : "border-gray-200 bg-white"
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-3">
@@ -385,6 +386,56 @@ export default function ResultsPage() {
                         ))}
                     </div>
                 </div>
+
+                {/* Video Solution Section */}
+                {results.solution_video_url && (
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl shadow-lg p-8 mt-6">
+                        <div className="flex items-center gap-3 mb-6">
+                            <span className="text-4xl">📹</span>
+                            <div>
+                                <h2 className="text-2xl font-bold text-gray-900">
+                                    Complete Paper Solution Video
+                                </h2>
+                                <p className="text-gray-600 mt-1">
+                                    Watch the complete solution walkthrough for this exam
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Video Player with Copy Protection */}
+                        <div
+                            className="relative bg-black rounded-xl overflow-hidden shadow-2xl"
+                            onContextMenu={(e) => e.preventDefault()}
+                            style={{ userSelect: 'none' }}
+                        >
+                            <iframe
+                                width="100%"
+                                height="600"
+                                src={`https://www.youtube.com/embed/${results.solution_video_url.split('/').pop()?.split('?')[0] || ''}?rel=0&modestbranding=1`}
+                                title="Complete Paper Solution"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                className="w-full"
+                            />
+                        </div>
+
+                        {/* Watch on YouTube Link */}
+                        <div className="mt-4 text-center">
+                            <a
+                                href={results.solution_video_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                            >
+                                <span>Open in YouTube</span>
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                )}
 
                 {/* Actions */}
                 <div className="mt-6 flex gap-4 justify-center">

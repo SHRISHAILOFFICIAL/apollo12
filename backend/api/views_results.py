@@ -134,7 +134,9 @@ class AttemptResultsView(APIView):
                 'strengths': strengths,
                 'improvements': improvements,
                 'overall_performance': 'Excellent' if percentage >= 80 else 'Good' if percentage >= 60 else 'Needs Improvement',
-            }
+            },
+            # Video solution (only for completed exams)
+            'solution_video_url': exam.solution_video_url if exam.solution_video_url else None,
         }
         
         logger.info(f"Results retrieved for attempt {attempt_id} by user {request.user.id}")
@@ -188,6 +190,8 @@ class UserDashboardView(APIView):
                 'total_marks': exam.total_marks,
                 'total_questions': total_questions,
                 'sections_count': sections_count,
+                'access_tier': exam.access_tier,
+                'is_premium': exam.is_premium,
             })
         
         # Recent attempts (last 10)
@@ -223,6 +227,13 @@ class UserDashboardView(APIView):
             'user': {
                 'username': user.username,
                 'email': user.email,
+                'tier': user.user_tier,
+                'is_pro': user.is_pro(),
+            },
+            'subscription': {
+                'is_paid': user.profile.is_paid if hasattr(user, 'profile') else False,
+                'subscription_end': user.profile.subscription_end.isoformat() if hasattr(user, 'profile') and user.profile.subscription_end else None,
+                'is_active': user.profile.is_subscription_active if hasattr(user, 'profile') else False,
             },
             'stats': {
                 'total_attempts': total_attempts,

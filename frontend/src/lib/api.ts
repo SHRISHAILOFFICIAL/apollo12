@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -11,7 +11,15 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
     // Don't attach token for public endpoints
-    const publicEndpoints = ['/auth/login/', '/auth/register/'];
+    const publicEndpoints = [
+        '/auth/login/',
+        '/auth/register/',
+        '/users/send-signup-otp/',
+        '/users/verify-signup-otp/',
+        '/users/send-password-reset-otp/',
+        '/users/verify-password-reset-otp/',
+        '/users/reset-password/'
+    ];
     if (publicEndpoints.some(endpoint => config.url?.includes(endpoint))) {
         return config;
     }

@@ -20,13 +20,18 @@ class StartExamView(APIView):
                 status='in_progress'
             )
             if created:
-                # Create empty answers for all questions
+                # Create empty answers for all questions using bulk_create (optimized)
                 questions = Question.objects.filter(section__exam=exam)
-                for question in questions:
-                    AttemptAnswer.objects.create(
+                answers = [
+                    AttemptAnswer(
                         attempt=attempt,
-                        question=question
+                        question=question,
+                        selected_option=None,
+                        is_correct=False
                     )
+                    for question in questions
+                ]
+                AttemptAnswer.objects.bulk_create(answers)
             
             # Return exam data and attempt id
             questions = Question.objects.filter(section__exam=exam).order_by('section__order', 'question_number')
