@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { motion } from "framer-motion";
+import { Check, Shield, Zap, RefreshCw, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
@@ -121,7 +124,7 @@ export default function PricingPage() {
                     contact: "",
                 },
                 theme: {
-                    color: "#2563eb",
+                    color: "#3b82f6",
                 },
                 modal: {
                     ondismiss: function () {
@@ -141,146 +144,128 @@ export default function PricingPage() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-gray-50">
+            <div className="flex min-h-screen items-center justify-center bg-background">
                 <div className="text-center">
-                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-                    <p className="text-gray-500 font-medium">Loading plans...</p>
+                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
+                    <p className="text-muted-foreground font-medium">Loading available plans...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="min-h-screen bg-background text-foreground bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-100/50 via-background to-background">
             {/* Header */}
-            <header className="bg-white shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <header className="glass fixed top-0 w-full z-50 border-b border-white/20">
+                <div className="container mx-auto px-6 h-16 flex justify-between items-center">
                     <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push("/dashboard")}>
-                        <img
-                            src="/logo.jpg"
-                            alt="DCET Platform Logo"
-                            className="h-10 w-10 rounded-lg object-cover"
-                        />
-                        <h1 className="text-xl font-bold text-gray-900">DCET Platform</h1>
+                        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-lg">D</div>
+                        <h1 className="text-xl font-heading font-bold">DCET Pricing</h1>
                     </div>
-                    <button
-                        onClick={() => router.push("/dashboard")}
-                        className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                        ← Back to Dashboard
-                    </button>
+                    <Button variant="ghost" onClick={() => router.push("/dashboard")} className="gap-2">
+                        <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+                    </Button>
                 </div>
             </header>
 
             {/* Hero Section */}
-            <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-                <h1 className="text-5xl font-bold text-gray-900 mb-4">
-                    Upgrade to <span className="text-blue-600">PRO</span>
-                </h1>
-                <p className="text-xl text-gray-600 mb-2">
-                    Get unlimited access to all exams, mock tests, and video solutions
-                </p>
-                <p className="text-lg text-gray-500">
-                    One-time payment. No recurring charges. 1 year access.
-                </p>
+            <div className="container mx-auto px-6 py-32 text-center max-w-4xl">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                >
+                    <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6">
+                        Invest in Your <span className="text-primary">Future</span>
+                    </h1>
+                    <p className="text-xl text-muted-foreground mb-4 max-w-2xl mx-auto">
+                        Unlock unlimited possibilities with our PRO plan. Practice more, score better.
+                    </p>
+                    <p className="text-lg font-medium text-foreground/80">
+                        One-time payment • No recurring charges • 1 year access
+                    </p>
+                </motion.div>
             </div>
 
             {/* Pricing Cards */}
-            <div className="max-w-4xl mx-auto px-4 pb-20">
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
-                    {plans.map((plan) => (
-                        <div
+            <div className="container mx-auto px-6 pb-20 max-w-5xl">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-8 justify-center">
+                    {plans.map((plan, index) => (
+                        <motion.div
                             key={plan.id}
-                            className="relative bg-white rounded-2xl shadow-2xl border-4 border-blue-500 overflow-hidden transform hover:scale-105 transition-transform duration-300"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: index * 0.1 }}
+                            className="relative bg-card rounded-3xl shadow-2xl border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 max-w-3xl mx-auto w-full"
                         >
                             {/* Recommended Badge */}
-                            <div className="absolute top-0 right-0 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-bl-2xl font-bold text-sm">
-                                ⭐ RECOMMENDED
+                            <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-6 py-2 rounded-bl-2xl font-bold text-sm tracking-wide shadow-lg">
+                                ⭐ MOST POPULAR
                             </div>
 
-                            <div className="p-8">
-                                {/* Plan Header */}
-                                <div className="text-center mb-8">
-                                    <h3 className="text-3xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                                    <div className="flex items-baseline justify-center gap-2">
-                                        <span className="text-5xl font-bold text-blue-600">₹{plan.price_in_rupees}</span>
-                                        <span className="text-gray-500 text-lg">/ {plan.duration_days} days</span>
+                            <div className="p-8 md:p-12 flex flex-col md:flex-row gap-8 items-center">
+                                {/* Plan Info */}
+                                <div className="flex-1 text-center md:text-left">
+                                    <h3 className="text-3xl font-bold font-heading mb-2">{plan.name}</h3>
+                                    <div className="flex items-baseline justify-center md:justify-start gap-2 mb-4">
+                                        <span className="text-5xl font-extrabold text-primary">₹{plan.price_in_rupees}</span>
+                                        <span className="text-muted-foreground text-lg">/ {plan.duration_days} days</span>
                                     </div>
-                                    <p className="text-sm text-gray-500 mt-2">One-time payment • No hidden charges</p>
+                                    <p className="text-sm text-muted-foreground">Secure payment via Razorpay • Instant Activation</p>
                                 </div>
 
+                                {/* Divider */}
+                                <div className="w-full h-px bg-border md:w-px md:h-32"></div>
+
                                 {/* Features */}
-                                <div className="space-y-4 mb-8">
-                                    {plan.features.map((feature, index) => (
-                                        <div key={index} className="flex items-start gap-3">
-                                            <svg
-                                                className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M5 13l4 4L19 7"
-                                                />
-                                            </svg>
-                                            <span className="text-gray-700 text-lg">{feature}</span>
+                                <div className="flex-1 space-y-4">
+                                    {plan.features.map((feature, i) => (
+                                        <div key={i} className="flex items-start gap-3">
+                                            <div className="mt-1 bg-green-100 p-1 rounded-full">
+                                                <Check className="w-4 h-4 text-green-600" />
+                                            </div>
+                                            <span className="text-foreground/90 font-medium">{feature}</span>
                                         </div>
                                     ))}
                                 </div>
+                            </div>
 
-                                {/* CTA Button */}
-                                <button
+                            <div className="px-8 md:px-12 pb-12">
+                                <Button
                                     onClick={() => handleBuyNow(plan)}
                                     disabled={processing}
-                                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+                                    size="lg"
+                                    className="w-full h-16 text-lg font-bold rounded-xl shadow-xl shadow-primary/20 hover:shadow-primary/40"
                                 >
-                                    {processing ? "Processing..." : "🚀 Buy Now"}
-                                </button>
-
-                                <p className="text-center text-sm text-gray-500 mt-4">
-                                    Secure payment powered by Razorpay
+                                    {processing ? "Processing Request..." : "🚀 Upgrade to PRO Now"}
+                                </Button>
+                                <p className="text-center text-xs text-muted-foreground mt-4">
+                                    Full refund available within 7 days if not satisfied. T&C apply.
                                 </p>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
 
                 {/* Trust Indicators */}
-                <div className="mt-16 text-center">
-                    <p className="text-gray-600 mb-4">Trusted by thousands of DCET aspirants</p>
-                    <div className="flex justify-center gap-8 text-sm text-gray-500">
-                        <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    fillRule="evenodd"
-                                    d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                            <span>Secure Payment</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                                <path
-                                    fillRule="evenodd"
-                                    d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                            <span>Instant Activation</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                            </svg>
-                            <span>Money-back Guarantee</span>
-                        </div>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="mt-20 flex flex-wrap justify-center gap-8 md:gap-16 opacity-80"
+                >
+                    <div className="flex items-center gap-3 text-muted-foreground">
+                        <Shield className="w-6 h-6 text-primary" />
+                        <span className="font-semibold">Secure Payment</span>
                     </div>
-                </div>
+                    <div className="flex items-center gap-3 text-muted-foreground">
+                        <Zap className="w-6 h-6 text-yellow-500" />
+                        <span className="font-semibold">Instant Access</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-muted-foreground">
+                        <RefreshCw className="w-6 h-6 text-green-500" />
+                        <span className="font-semibold">Money-back Guarantee</span>
+                    </div>
+                </motion.div>
             </div>
         </div>
     );

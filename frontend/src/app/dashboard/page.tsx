@@ -3,6 +3,20 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { motion } from "framer-motion";
+import {
+  LogOut,
+  Crown,
+  Clock,
+  FileText,
+  Award,
+  BarChart2,
+  Lock,
+  PlayCircle,
+  TrendingUp,
+  Calendar
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
@@ -97,234 +111,240 @@ export default function DashboardPage() {
 
   if (loading || !dashboardData) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-gray-500 font-medium">Loading Dashboard...</p>
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
+          <p className="text-muted-foreground font-medium">Loading Dashboard...</p>
         </div>
       </div>
     );
   }
 
+  const user = dashboardData.user;
+  const isPro = user.is_pro;
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <header className="fixed top-0 w-full z-40 glass border-b border-border/50">
+        <div className="container mx-auto px-6 h-16 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <img
-              src="/logo.jpg"
-              alt="DCET Platform Logo"
-              className="h-10 w-10 rounded-lg object-cover"
-            />
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-lg">D</div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">DCET Platform</h1>
-              <p className="text-sm text-gray-600">{dashboardData.user.username}</p>
+              <h1 className="text-lg font-heading font-bold leading-tight">DCET Platform</h1>
+              <p className="text-xs text-muted-foreground">Welcome back, {user.username}</p>
             </div>
           </div>
-          <button
+          <Button
+            variant="ghost"
             onClick={handleLogout}
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            className="text-muted-foreground hover:text-destructive gap-2"
           >
-            Logout
-          </button>
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">Logout</span>
+          </Button>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <main className="container mx-auto px-6 pt-24 pb-12">
         {/* PRO Upgrade Banner for FREE users */}
-        {!dashboardData.user.is_pro && (
-          <div className="mb-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">🚀 Upgrade to PRO</h2>
-                <p className="text-blue-100">
-                  Get unlimited access to all 3 PYQs, 10 Mock Tests, and Video Solutions for just ₹149/year
+        {!isPro && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8 rounded-2xl bg-gradient-to-r from-primary to-purple-600 p-1 shadow-lg"
+          >
+            <div className="bg-background/10 backdrop-blur-sm rounded-xl p-6 sm:flex items-center justify-between text-white">
+              <div className="mb-4 sm:mb-0">
+                <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
+                  <Crown className="w-6 h-6 text-yellow-300 fill-yellow-300" />
+                  Upgrade to PRO
+                </h2>
+                <p className="text-white/90 max-w-xl">
+                  Get unlimited access to all 3 PYQs, 10 Mock Tests, and Video Solutions for a full year.
                 </p>
               </div>
-              <button
+              <Button
                 onClick={() => router.push("/pricing")}
-                className="px-8 py-3 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100 transition-colors shadow-md"
+                className="bg-white text-primary hover:bg-white/90 font-bold border-0 shadow-xl"
+                size="lg"
               >
                 Upgrade Now
-              </button>
+              </Button>
             </div>
-          </div>
+          </motion.div>
         )}
 
-        {/* User Tier Badge */}
-        {dashboardData.user.is_pro && (
-          <div className="mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl shadow-lg p-4 text-white">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-3xl">⭐</span>
-                <div>
-                  <h3 className="text-xl font-bold">PRO Member</h3>
-                  <p className="text-sm text-yellow-100">
-                    {dashboardData.subscription.subscription_end
-                      ? `Valid until ${new Date(dashboardData.subscription.subscription_end).toLocaleDateString()}`
-                      : "Active"}
-                  </p>
-                </div>
+        {/* User Tier Badge - Only visible if PRO */}
+        {isPro && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mb-8 bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/20 dark:to-orange-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-yellow-400 rounded-full text-white shadow-sm">
+                <Crown className="w-5 h-5 fill-white" />
               </div>
-              <div className="text-right">
-                <p className="text-sm text-yellow-100">Enjoying PRO benefits</p>
+              <div>
+                <h3 className="font-heading font-bold text-yellow-800 dark:text-yellow-200">PRO Member</h3>
+                <span className="text-xs text-yellow-600 dark:text-yellow-300 font-medium">
+                  {dashboardData.subscription.subscription_end
+                    ? `Valid until ${new Date(dashboardData.subscription.subscription_end).toLocaleDateString()}`
+                    : "Active"}
+                </span>
               </div>
             </div>
-          </div>
+            <span className="text-sm font-medium text-yellow-700 dark:text-yellow-400">Premium Access Unlocked</span>
+          </motion.div>
         )}
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total Attempts</p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">
-                  {dashboardData.stats.total_attempts}
-                </p>
-              </div>
-              <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <span className="text-2xl">📝</span>
-              </div>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Average Score</p>
-                <p className="text-3xl font-bold text-blue-600 mt-2">
-                  {dashboardData.stats.average_score}%
-                </p>
-              </div>
-              <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <span className="text-2xl">📊</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Best Score</p>
-                <p className="text-3xl font-bold text-green-600 mt-2">
-                  {dashboardData.stats.best_score}%
-                </p>
-              </div>
-              <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <span className="text-2xl">🏆</span>
-              </div>
-            </div>
-          </div>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <StatCard
+            title="Total Attempts"
+            value={dashboardData.stats.total_attempts}
+            icon={<FileText className="w-6 h-6 text-blue-500" />}
+            delay={0.1}
+          />
+          <StatCard
+            title="Average Score"
+            value={`${dashboardData.stats.average_score}%`}
+            icon={<BarChart2 className="w-6 h-6 text-purple-500" />}
+            delay={0.2}
+          />
+          <StatCard
+            title="Best Score"
+            value={`${dashboardData.stats.best_score}%`}
+            icon={<Award className="w-6 h-6 text-green-500" />}
+            delay={0.3}
+          />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Available Exams */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Available Exams</h2>
-              <div className="space-y-4">
-                {dashboardData.available_exams.map((exam) => (
-                  <div
+          {/* Available Exams Column */}
+          <div className="lg:col-span-2 space-y-6">
+            <h2 className="text-2xl font-heading font-bold flex items-center gap-2">
+              <FileText className="w-6 h-6 text-primary" /> Available Exams
+            </h2>
+
+            <div className="grid gap-4">
+              {dashboardData.available_exams.map((exam, index) => {
+                const isLocked = exam.is_premium && !isPro;
+                return (
+                  <motion.div
                     key={exam.id}
-                    className={`border-2 rounded-xl p-6 transition-colors ${exam.is_premium && !dashboardData.user.is_pro
-                        ? "border-gray-300 bg-gray-50 opacity-75"
-                        : "border-gray-200 hover:border-blue-500"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={`group relative rounded-2xl border p-6 transition-all duration-200 ${isLocked
+                        ? "bg-muted/50 border-border opacity-75"
+                        : "bg-card border-border hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
                       }`}
                   >
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="text-xl font-bold text-gray-900">{exam.name}</h3>
+                    <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                      <div>
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-xl font-bold font-heading">{exam.name}</h3>
                           {exam.is_premium && (
-                            <span className="px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold rounded">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-sm">
                               PRO
                             </span>
                           )}
                         </div>
-                        <div className="flex gap-4 mt-2 text-sm text-gray-600">
-                          <span>⏱️ {exam.duration_minutes} mins</span>
-                          <span>📝 {exam.total_questions} questions</span>
-                          <span>📊 {exam.total_marks} marks</span>
-                          <span>📑 {exam.sections_count} sections</span>
+                        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {exam.duration_minutes} mins</span>
+                          <span className="flex items-center gap-1"><FileText className="w-4 h-4" /> {exam.total_questions} Qs</span>
+                          <span className="flex items-center gap-1"><Award className="w-4 h-4" /> {exam.total_marks} Marks</span>
                         </div>
                       </div>
-                      {exam.is_premium && !dashboardData.user.is_pro ? (
-                        <button
+
+                      {isLocked ? (
+                        <Button
                           onClick={() => router.push("/pricing")}
-                          className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-md transition-colors flex items-center gap-2"
+                          className="bg-muted-foreground/10 text-foreground hover:bg-primary hover:text-white transition-colors gap-2"
+                          variant="outline"
                         >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                              fillRule="evenodd"
-                              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          Unlock with PRO
-                        </button>
+                          <Lock className="w-4 h-4" /> Unlock
+                        </Button>
                       ) : (
-                        <button
+                        <Button
                           onClick={() => router.push(`/exam/${exam.id}`)}
-                          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-colors"
+                          className="gap-2 shadow-md shadow-primary/20"
                         >
-                          Start Exam
-                        </button>
+                          <PlayCircle className="w-4 h-4" /> Start Exam
+                        </Button>
                       )}
                     </div>
-                  </div>
-                ))}
-                {dashboardData.available_exams.length === 0 && (
-                  <p className="text-center text-gray-500 py-8">
-                    No exams available at the moment
-                  </p>
-                )}
-              </div>
+                  </motion.div>
+                );
+              })}
+
+              {dashboardData.available_exams.length === 0 && (
+                <div className="text-center py-12 bg-muted/20 rounded-2xl border border-dashed border-border text-muted-foreground">
+                  No exams available at the moment.
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Recent Attempts */}
-          <div>
-            <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Attempts</h2>
-              <div className="space-y-3">
-                {dashboardData.recent_attempts.slice(0, 5).map((attempt) => (
-                  <div
-                    key={attempt.id}
-                    className="border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition-colors cursor-pointer"
-                    onClick={() => router.push(`/results/${attempt.id}`)}
-                  >
-                    <div className="flex justify-between items-start mb-2">
-                      <p className="font-semibold text-gray-900 text-sm">
-                        {attempt.exam_name}
-                      </p>
-                      <span
-                        className={`text-xs px-2 py-1 rounded font-semibold ${attempt.percentage >= 80
-                          ? "bg-green-100 text-green-800"
-                          : attempt.percentage >= 60
-                            ? "bg-blue-100 text-blue-800"
-                            : "bg-yellow-100 text-yellow-800"
-                          }`}
-                      >
-                        {attempt.percentage}%
-                      </span>
+          {/* Recent Attempts Column */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-heading font-bold flex items-center gap-2">
+              <TrendingUp className="w-6 h-6 text-primary" /> Recents
+            </h2>
+
+            <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+              {dashboardData.recent_attempts.length > 0 ? (
+                <div className="divide-y divide-border">
+                  {dashboardData.recent_attempts.slice(0, 5).map((attempt) => (
+                    <div
+                      key={attempt.id}
+                      className="p-4 hover:bg-muted/50 transition-colors cursor-pointer group"
+                      onClick={() => router.push(`/results/${attempt.id}`)}
+                    >
+                      <div className="flex justify-between items-start mb-1">
+                        <p className="font-semibold text-sm group-hover:text-primary transition-colors">{attempt.exam_name}</p>
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded ${attempt.percentage >= 80 ? "bg-green-100 text-green-700" :
+                            attempt.percentage >= 60 ? "bg-blue-100 text-blue-700" :
+                              "bg-orange-100 text-orange-700"
+                          }`}>
+                          {attempt.percentage}%
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {attempt.date}</span>
+                        <span className="font-medium">Score: {attempt.score}/{attempt.total_marks}</span>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600">{attempt.date}</p>
-                    <p className="text-xs text-gray-600 mt-1">
-                      Score: {attempt.score}/{attempt.total_marks}
-                    </p>
-                  </div>
-                ))}
-                {dashboardData.recent_attempts.length === 0 && (
-                  <p className="text-center text-gray-500 py-4 text-sm">
-                    No attempts yet
-                  </p>
-                )}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-8 text-center text-muted-foreground text-sm">
+                  No attempts yet. Start an exam to see your progress here!
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
+}
+
+function StatCard({ title, value, icon, delay }: { title: string, value: string | number, icon: React.ReactNode, delay: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay }}
+      className="bg-card p-6 rounded-2xl border border-border shadow-sm hover:shadow-md transition-shadow"
+    >
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
+        <div className="p-2 bg-muted/50 rounded-lg">{icon}</div>
+      </div>
+      <p className="text-3xl font-bold font-heading tracking-tight">{value}</p>
+    </motion.div>
+  )
 }
