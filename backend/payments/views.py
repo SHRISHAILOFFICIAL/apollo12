@@ -6,8 +6,13 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from django.conf import settings
+from django.db import transaction
 from datetime import timedelta
 import logging
+import json
 
 from .models import Plan, Payment
 from .serializers import (
@@ -17,6 +22,7 @@ from .serializers import (
     VerifyPaymentSerializer
 )
 from .razorpay_client import razorpay_client
+from .webhook_handler import WebhookHandler
 from users.models import User
 
 logger = logging.getLogger(__name__)
@@ -76,7 +82,7 @@ def create_order(request):
         payment = Payment.objects.create(
             user=request.user,
             provider='razorpay',
-            provider_payment_id='',  # Will be updated after payment
+            provider_payment_id=None,  # Will be updated after payment (NULL to avoid unique constraint)
             order_id=razorpay_order['id'],
             amount=plan.price_in_paisa,
             currency='INR',
@@ -165,29 +171,33 @@ def verify_payment(request):
         payment.provider_payment_id = data['razorpay_payment_id']
         payment.status = 'paid'
         payment.metadata['verified_at'] = timezone.now().isoformat()
+        payment.metadata['verification_method'] = 'manual'
         payment.save()
         
-        # Upgrade user to PRO tier
-        user = request.user
-        user.user_tier = 'PRO'
-        user.save()
+        # Create Subscription record (single source of truth for tier)
+        from .models import Subscription
+        subscription = Subscription.objects.create(
+            user=request.user,
+            plan=plan,
+            payment=payment,
+            status='active',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timedelta(days=plan.duration_days),
+            auto_renew=False
+        )
         
-        # Update user profile
-        profile = user.profile
-        profile.is_paid = True
-        profile.plan = plan
-        profile.subscription_start = timezone.now()
-        profile.subscription_end = timezone.now() + timedelta(days=plan.duration_days)
-        profile.save()
+        # Update payment status to activated
+        payment.status = 'activated'
+        payment.save()
         
-        logger.info(f"Payment verified and user {user.username} upgraded to PRO")
+        logger.info(f"Payment verified and user {request.user.username} upgraded to PRO (Subscription ID: {subscription.id})")
         
         return Response({
             'success': True,
             'message': 'Payment verified successfully! You are now a PRO user.',
             'user': {
-                'tier': user.user_tier,
-                'subscription_end': profile.subscription_end.isoformat()
+                'tier': request.user.current_tier,
+                'subscription_end': subscription.end_date.isoformat()
             }
         })
     
@@ -230,18 +240,90 @@ def subscription_status(request):
     
     GET /api/payments/subscription-status/
     """
+    from .models import Subscription
     user = request.user
-    profile = user.profile
+    
+    # Get active subscription
+    active_sub = Subscription.objects.filter(
+        user=user,
+        status='active',
+        end_date__gt=timezone.now()
+    ).select_related('plan').first()
     
     return Response({
         'success': True,
         'subscription': {
-            'tier': user.user_tier,
+            'tier': user.current_tier,
             'is_pro': user.is_pro(),
-            'is_paid': profile.is_paid,
-            'plan': PlanSerializer(profile.plan).data if profile.plan else None,
-            'subscription_start': profile.subscription_start,
-            'subscription_end': profile.subscription_end,
-            'is_active': profile.is_subscription_active
+            'plan': PlanSerializer(active_sub.plan).data if active_sub else None,
+            'subscription_start': active_sub.start_date if active_sub else None,
+            'subscription_end': active_sub.end_date if active_sub else None,
+            'is_active': active_sub.is_active if active_sub else False,
+            'days_remaining': active_sub.days_remaining if active_sub else 0
         }
     })
+
+
+@csrf_exempt
+@api_view(['POST'])
+def razorpay_webhook(request):
+    """
+    Handle Razorpay webhook events
+    
+    POST /api/payments/webhook/razorpay/
+    
+    Events handled:
+    - payment.captured: Payment successful
+    - payment.failed: Payment failed
+    - refund.created: Refund initiated
+    """
+    try:
+        # Get webhook signature from headers
+        webhook_signature = request.META.get('HTTP_X_RAZORPAY_SIGNATURE')
+        webhook_secret = settings.RAZORPAY_WEBHOOK_SECRET
+        
+        if not webhook_signature:
+            logger.error("Webhook signature missing")
+            return HttpResponse('Signature missing', status=400)
+        
+        if not webhook_secret:
+            logger.error("Webhook secret not configured")
+            return HttpResponse('Webhook not configured', status=500)
+        
+        # Get raw payload
+        payload = request.body
+        
+        # Verify signature
+        is_valid = WebhookHandler.verify_signature(
+            payload=payload,
+            signature=webhook_signature,
+            secret=webhook_secret
+        )
+        
+        if not is_valid:
+            logger.error("Invalid webhook signature")
+            return HttpResponse('Invalid signature', status=400)
+        
+        # Parse event data
+        event_data = json.loads(payload)
+        event_type = event_data.get('event')
+        
+        logger.info(f"Received webhook event: {event_type}")
+        
+        # Process webhook
+        success, message = WebhookHandler.process_webhook(event_type, event_data)
+        
+        if success:
+            logger.info(f"Webhook processed successfully: {event_type}")
+            return HttpResponse('OK', status=200)
+        else:
+            logger.error(f"Webhook processing failed: {message}")
+            return HttpResponse(f'Processing failed: {message}', status=400)
+    
+    except json.JSONDecodeError:
+        logger.error("Invalid JSON in webhook payload")
+        return HttpResponse('Invalid JSON', status=400)
+    
+    except Exception as e:
+        logger.error(f"Webhook error: {str(e)}", exc_info=True)
+        return HttpResponse('Internal error', status=500)

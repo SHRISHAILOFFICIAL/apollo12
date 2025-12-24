@@ -10,4 +10,5 @@ urlpatterns = [
     path('verify-payment/', views.verify_payment, name='verify_payment'),
     path('history/', views.payment_history, name='payment_history'),
     path('subscription-status/', views.subscription_status, name='subscription_status'),
+    path('webhook/razorpay/', views.razorpay_webhook, name='razorpay_webhook'),
 ]

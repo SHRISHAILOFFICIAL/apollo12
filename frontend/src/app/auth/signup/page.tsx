@@ -236,9 +236,12 @@ export default function SignupPage() {
               <div className="space-y-2">
                 <Input
                   type="tel"
-                  placeholder="Phone Number (optional)"
+                  placeholder="Phone Number"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  required
+                  minLength={10}
+                  maxLength={15}
                   className="bg-background/50"
                 />
               </div>

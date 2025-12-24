@@ -69,6 +69,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Custom middleware
+    "core.middleware.SubscriptionExpiryMiddleware",
+    "core.middleware.ActiveExamSessionMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -187,6 +190,18 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/hour",
+        "user": "1000/hour",
+        "login": "5/min",
+        "otp": "3/5min",
+        "payment": "10/min",
+        "exam_start": "5/min",
+    },
 }
 
 # Simple JWT Configuration

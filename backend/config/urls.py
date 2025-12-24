@@ -28,6 +28,7 @@ urlpatterns = [
     # App URLs
     path("api/users/", include("users.urls")),  # Changed: Added users/ prefix
     path("api/payments/", include("payments.urls")),  # Payment endpoints
+    path("api/admin/", include("adminpanel.admin_urls")),  # Admin analytics
     path("api/", include("exams.urls")),
     path("api/", include("results.urls")),
     path("api/", include("api.urls")),  # Keep existing API URLs if any

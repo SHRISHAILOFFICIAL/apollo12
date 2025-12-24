@@ -25,9 +25,11 @@ export default function PricingPage() {
     const [plans, setPlans] = useState<Plan[]>([]);
     const [loading, setLoading] = useState(true);
     const [processing, setProcessing] = useState(false);
+    const [userData, setUserData] = useState<any>(null);
 
     useEffect(() => {
         fetchPlans();
+        fetchUserProfile();
         loadRazorpayScript();
     }, []);
 
@@ -41,6 +43,20 @@ export default function PricingPage() {
         } catch (error) {
             console.error("Failed to fetch plans", error);
             setLoading(false);
+        }
+    };
+
+    const fetchUserProfile = async () => {
+        try {
+            const token = localStorage.getItem("access_token");
+            if (!token) return;
+
+            const response = await axios.get(`${API_BASE_URL}/users/auth/me/`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setUserData(response.data);
+        } catch (error) {
+            console.error("Failed to fetch user profile", error);
         }
     };
 
@@ -119,9 +135,9 @@ export default function PricingPage() {
                     }
                 },
                 prefill: {
-                    name: "",
-                    email: "",
-                    contact: "",
+                    name: userData?.username || "",
+                    email: userData?.email || "",
+                    contact: userData?.phone || "",
                 },
                 theme: {
                     color: "#3b82f6",
@@ -187,37 +203,104 @@ export default function PricingPage() {
             </div>
 
             {/* Pricing Cards */}
-            <div className="container mx-auto px-6 pb-20 max-w-5xl">
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-8 justify-center">
+            <div className="container mx-auto px-6 pb-20 max-w-6xl">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* FREE Plan */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0 }}
+                        className="relative bg-card rounded-3xl shadow-lg border border-border overflow-hidden hover:shadow-xl transition-all duration-300"
+                    >
+                        <div className="p-8">
+                            {/* Plan Info */}
+                            <div className="text-center mb-6">
+                                <h3 className="text-3xl font-bold font-heading mb-2">FREE Plan</h3>
+                                <div className="flex items-baseline justify-center gap-2 mb-4">
+                                    <span className="text-5xl font-extrabold text-foreground">₹0</span>
+                                    <span className="text-muted-foreground text-lg">forever</span>
+                                </div>
+                                <p className="text-sm text-muted-foreground">Get started with basics</p>
+                            </div>
+
+                            {/* Features */}
+                            <div className="space-y-3 mb-8">
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-1 bg-green-100 p-1 rounded-full">
+                                        <Check className="w-4 h-4 text-green-600" />
+                                    </div>
+                                    <span className="text-foreground/90">1 Previous Year Question Paper</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-1 bg-green-100 p-1 rounded-full">
+                                        <Check className="w-4 h-4 text-green-600" />
+                                    </div>
+                                    <span className="text-foreground/90">Basic performance tracking</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-1 bg-green-100 p-1 rounded-full">
+                                        <Check className="w-4 h-4 text-green-600" />
+                                    </div>
+                                    <span className="text-foreground/90">Limited attempts per exam</span>
+                                </div>
+                                <div className="flex items-start gap-3 opacity-40">
+                                    <div className="mt-1 bg-gray-100 p-1 rounded-full">
+                                        <span className="w-4 h-4 block text-gray-400">✕</span>
+                                    </div>
+                                    <span className="text-foreground/50 line-through">Mock Tests</span>
+                                </div>
+                                <div className="flex items-start gap-3 opacity-40">
+                                    <div className="mt-1 bg-gray-100 p-1 rounded-full">
+                                        <span className="w-4 h-4 block text-gray-400">✕</span>
+                                    </div>
+                                    <span className="text-foreground/50 line-through">Video Solutions</span>
+                                </div>
+                                <div className="flex items-start gap-3 opacity-40">
+                                    <div className="mt-1 bg-gray-100 p-1 rounded-full">
+                                        <span className="w-4 h-4 block text-gray-400">✕</span>
+                                    </div>
+                                    <span className="text-foreground/50 line-through">Detailed Analytics</span>
+                                </div>
+                            </div>
+
+                            <Button
+                                onClick={() => router.push("/dashboard")}
+                                variant="outline"
+                                size="lg"
+                                className="w-full h-14 text-lg font-semibold rounded-xl"
+                            >
+                                Current Plan
+                            </Button>
+                        </div>
+                    </motion.div>
+
+                    {/* PRO Plan */}
                     {plans.map((plan, index) => (
                         <motion.div
                             key={plan.id}
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="relative bg-card rounded-3xl shadow-2xl border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 max-w-3xl mx-auto w-full"
+                            transition={{ delay: 0.1 }}
+                            className="relative bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 rounded-3xl shadow-2xl border-2 border-primary/50 overflow-hidden hover:border-primary transition-all duration-300 hover:scale-[1.02]"
                         >
                             {/* Recommended Badge */}
                             <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-6 py-2 rounded-bl-2xl font-bold text-sm tracking-wide shadow-lg">
                                 ⭐ MOST POPULAR
                             </div>
 
-                            <div className="p-8 md:p-12 flex flex-col md:flex-row gap-8 items-center">
+                            <div className="p-8">
                                 {/* Plan Info */}
-                                <div className="flex-1 text-center md:text-left">
+                                <div className="text-center mb-6">
                                     <h3 className="text-3xl font-bold font-heading mb-2">{plan.name}</h3>
-                                    <div className="flex items-baseline justify-center md:justify-start gap-2 mb-4">
+                                    <div className="flex items-baseline justify-center gap-2 mb-4">
                                         <span className="text-5xl font-extrabold text-primary">₹{plan.price_in_rupees}</span>
                                         <span className="text-muted-foreground text-lg">/ {plan.duration_days} days</span>
                                     </div>
                                     <p className="text-sm text-muted-foreground">Secure payment via Razorpay • Instant Activation</p>
                                 </div>
 
-                                {/* Divider */}
-                                <div className="w-full h-px bg-border md:w-px md:h-32"></div>
-
                                 {/* Features */}
-                                <div className="flex-1 space-y-4">
+                                <div className="space-y-3 mb-8">
                                     {plan.features.map((feature, i) => (
                                         <div key={i} className="flex items-start gap-3">
                                             <div className="mt-1 bg-green-100 p-1 rounded-full">
@@ -227,20 +310,15 @@ export default function PricingPage() {
                                         </div>
                                     ))}
                                 </div>
-                            </div>
 
-                            <div className="px-8 md:px-12 pb-12">
                                 <Button
                                     onClick={() => handleBuyNow(plan)}
                                     disabled={processing}
                                     size="lg"
-                                    className="w-full h-16 text-lg font-bold rounded-xl shadow-xl shadow-primary/20 hover:shadow-primary/40"
+                                    className="w-full h-14 text-lg font-bold rounded-xl shadow-xl shadow-primary/20 hover:shadow-primary/40"
                                 >
                                     {processing ? "Processing Request..." : "🚀 Upgrade to PRO Now"}
                                 </Button>
-                                <p className="text-center text-xs text-muted-foreground mt-4">
-                                    Full refund available within 7 days if not satisfied. T&C apply.
-                                </p>
                             </div>
                         </motion.div>
                     ))}

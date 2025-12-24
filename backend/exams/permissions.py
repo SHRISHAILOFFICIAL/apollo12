@@ -57,7 +57,7 @@ def can_access_exam(user, exam):
     if exam.access_tier == 'FREE':
         return True, ""
     
-    if user.user_tier == 'PRO':
+    if user.is_pro():
         return True, ""
     
     return False, "This exam requires PRO membership. Upgrade to access all exams!"

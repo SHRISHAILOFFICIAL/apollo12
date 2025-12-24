@@ -223,17 +223,28 @@ class UserDashboardView(APIView):
             })
         
         # Build response
+        from payments.models import Subscription
+        from django.utils import timezone
+        
+        # Get active subscription
+        active_sub = Subscription.objects.filter(
+            user=user,
+            status='active',
+            end_date__gt=timezone.now()
+        ).select_related('plan').first()
+        
         dashboard_data = {
             'user': {
                 'username': user.username,
                 'email': user.email,
-                'tier': user.user_tier,
+                'tier': user.current_tier,
                 'is_pro': user.is_pro(),
             },
             'subscription': {
-                'is_paid': user.profile.is_paid if hasattr(user, 'profile') else False,
-                'subscription_end': user.profile.subscription_end.isoformat() if hasattr(user, 'profile') and user.profile.subscription_end else None,
-                'is_active': user.profile.is_subscription_active if hasattr(user, 'profile') else False,
+                'plan': active_sub.plan.name if active_sub else None,
+                'subscription_end': active_sub.end_date.isoformat() if active_sub else None,
+                'is_active': active_sub.is_active if active_sub else False,
+                'days_remaining': active_sub.days_remaining if active_sub else 0,
             },
             'stats': {
                 'total_attempts': total_attempts,

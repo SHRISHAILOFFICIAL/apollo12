@@ -17,21 +17,25 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
     
     def validate(self, attrs):
-        # Get username and password
-        username = attrs.get('username')
+        # Get username/email and password
+        username_or_email = attrs.get('username')
         password = attrs.get('password')
         
-        # Authenticate user
+        # Authenticate user - try username first, then email
+        user = None
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(username=username_or_email)
         except User.DoesNotExist:
-            from rest_framework.exceptions import AuthenticationFailed
-            raise AuthenticationFailed('No account found with this username')
+            try:
+                user = User.objects.get(email=username_or_email)
+            except User.DoesNotExist:
+                from rest_framework.exceptions import AuthenticationFailed
+                raise AuthenticationFailed('Invalid credentials')
         
         # Check password
         if not user.check_password(password):
             from rest_framework.exceptions import AuthenticationFailed
-            raise AuthenticationFailed('Incorrect password')
+            raise AuthenticationFailed('Invalid credentials')
         
         # Get tokens
         refresh = self.get_token(user)

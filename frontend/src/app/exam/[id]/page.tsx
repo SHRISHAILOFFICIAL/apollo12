@@ -401,7 +401,7 @@ export default function ExamPage() {
           </div>
 
           {/* Question Area */}
-          <div className="flex-1 overflow-y-auto p-6 md:p-10">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden p-6 md:p-10">
             <div className="max-w-4xl mx-auto">
               <div className="flex justify-between items-start mb-6">
                 <div className="text-gray-500 font-medium">
@@ -428,10 +428,16 @@ export default function ExamPage() {
                 </div>
               </div>
 
-              <div className="mb-8">
-                <h2 className="text-xl md:text-2xl font-medium text-gray-800 leading-relaxed">
-                  {currentQuestionIndex + 1}. <MathText text={currentQuestion.text} />
-                </h2>
+              <div className="mb-8 w-full">
+                <p className="text-xl md:text-2xl font-medium text-gray-800 leading-relaxed" style={{
+                  wordWrap: 'break-word',
+                  whiteSpace: 'pre-wrap',
+                  maxWidth: '100%',
+                  overflowWrap: 'break-word'
+                }}>
+                  <span style={{ display: 'inline' }}>{currentQuestionIndex + 1}. </span>
+                  <span style={{ display: 'inline' }}><MathText text={currentQuestion.text} /></span>
+                </p>
               </div>
 
               <div className="space-y-4">

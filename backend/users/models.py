@@ -13,19 +13,7 @@ class User(models.Model):
     password_hash = models.CharField(max_length=255)
     
     email_verified = models.BooleanField(default=False)
-    
-    # User tier for access control
-    USER_TIER_CHOICES = [
-        ('FREE', 'Free User'),
-        ('PRO', 'Pro User'),
-    ]
-    user_tier = models.CharField(
-        max_length=10,
-        choices=USER_TIER_CHOICES,
-        default='FREE',
-        db_index=True,
-        help_text="User subscription tier"
-    )
+    is_staff = models.BooleanField(default=False, help_text="Admin/staff access")
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -49,14 +37,9 @@ class User(models.Model):
         return True
     
     @property
-    def is_staff(self):
-        """Required for admin access"""
-        return False
-    
-    @property
     def is_superuser(self):
         """Required for admin access"""
-        return False
+        return self.is_staff  # Superuser if staff
     
     # JWT expects 'password' field, so we create a property
     @property
@@ -74,7 +57,6 @@ class User(models.Model):
         indexes = [
             models.Index(fields=['username']),
             models.Index(fields=['email']),
-            models.Index(fields=['user_tier']),
         ]
     
     def set_password(self, raw_password):
@@ -93,14 +75,31 @@ class User(models.Model):
         """Required for Django admin"""
         return True
     
+    @property
+    def current_tier(self):
+        """Compute current tier from active subscriptions (single source of truth)"""
+        from django.utils import timezone
+        
+        # Avoid circular import
+        from payments.models import Subscription
+        
+        # Check for active subscription
+        active_sub = Subscription.objects.filter(
+            user=self,
+            status='active',
+            end_date__gt=timezone.now()
+        ).exists()
+        
+        return 'PRO' if active_sub else 'FREE'
+    
     def is_pro(self):
         """Check if user has PRO tier"""
-        return self.user_tier == 'PRO'
+        return self.current_tier == 'PRO'
     
     def has_tier_access(self, required_tier):
         """Check if user's tier meets the required tier"""
         tier_hierarchy = {'FREE': 0, 'PRO': 1}
-        user_level = tier_hierarchy.get(self.user_tier, 0)
+        user_level = tier_hierarchy.get(self.current_tier, 0)
         required_level = tier_hierarchy.get(required_tier, 0)
         return user_level >= required_level
     
@@ -109,27 +108,16 @@ class User(models.Model):
 
 
 class Profile(models.Model):
-    """User profile with subscription information"""
+    """User profile - simplified, subscription data moved to Subscription model"""
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', db_index=True)
-    is_paid = models.BooleanField(default=False, db_index=True)
-    plan = models.ForeignKey('payments.Plan', on_delete=models.SET_NULL, null=True, blank=True, related_name='subscribers')
-    subscription_start = models.DateTimeField(null=True, blank=True)
-    subscription_end = models.DateTimeField(null=True, blank=True)
+    # Future: Add profile-specific fields like avatar, bio, preferences, etc.
     
     class Meta:
         db_table = 'profiles'
     
     def __str__(self):
-        return f"{self.user.username} - {'Paid' if self.is_paid else 'Free'}"
-    
-    @property
-    def is_subscription_active(self):
-        """Check if subscription is currently active"""
-        from django.utils import timezone
-        if self.subscription_end:
-            return self.subscription_end > timezone.now()
-        return False
+        return f"{self.user.username} - {self.user.current_tier}"
 
 
 class PasswordResetRequest(models.Model):

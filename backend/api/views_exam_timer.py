@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
-from django.db import transaction
+from django.db import transaction, models
 from django.shortcuts import get_object_or_404
 
 from exams.models import Exam, Question
@@ -115,9 +115,18 @@ class StartExamView(APIView):
         # Create new attempt in MySQL
         try:
             with transaction.atomic():
+                # Calculate attempt number (get max attempt number for this user-exam combo)
+                max_attempt = Attempt.objects.filter(
+                    user=request.user,
+                    exam=exam
+                ).aggregate(models.Max('attempt_number'))['attempt_number__max']
+                
+                next_attempt_number = (max_attempt or 0) + 1
+                
                 attempt = Attempt.objects.create(
                     user=request.user,
                     exam=exam,
+                    attempt_number=next_attempt_number,
                     status='in_progress'
                 )
                 
@@ -360,13 +369,11 @@ class SubmitAnswerView(APIView):
         
         # Save or update answer
         try:
-            is_correct = (selected_option == question.correct_option) if selected_option else False
             answer, created = AttemptAnswer.objects.update_or_create(
                 attempt=attempt,
                 question=question,
                 defaults={
                     'selected_option': selected_option,
-                    'is_correct': is_correct
                 }
             )
             

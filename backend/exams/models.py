@@ -33,6 +33,19 @@ class Exam(models.Model):
     )
     
     is_published = models.BooleanField(default=False, db_index=True)
+    
+    # Availability window for scheduling
+    available_from = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Exam becomes available from this time"
+    )
+    available_until = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Exam available until this time"
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -49,6 +62,23 @@ class Exam(models.Model):
     def is_premium(self):
         """Check if exam requires PRO tier"""
         return self.access_tier == 'PRO'
+    
+    @property
+    def is_available(self):
+        """Check if exam is currently available based on time window"""
+        from django.utils import timezone
+        now = timezone.now()
+        
+        if not self.is_published:
+            return False
+        
+        if self.available_from and now < self.available_from:
+            return False
+        
+        if self.available_until and now > self.available_until:
+            return False
+        
+        return True
     
     @property
     def title(self):

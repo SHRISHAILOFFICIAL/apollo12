@@ -1,0 +1,5 @@
+section_name,question_number,question_text,plain_text,option_a,option_b,option_c,option_d,correct_option,marks,diagram_url
+ENGINEERING MATHEMATICS,1,"$\text{If } |A|\neq 0,\text{ then the matrix }A\text{ is}$","Property of determinant","$\text{Singular}$","$\text{Zero matrix}$","$\text{Diagonal}$","$\text{Non-singular}$","D",1,
+ENGINEERING MATHEMATICS,2,"$\text{The value of } \begin{vmatrix}1 & 2 & 3\\2 & 4 & 6\\1 & 1 & 1\end{vmatrix} \text{ is}$","Find determinant of 3x3 matrix","$0$","$3$","$-3$","$6$","A",1,
+ENGINEERING MATHEMATICS,3,"$\text{If } A=\begin{bmatrix}1 & 2\\2 & 4\end{bmatrix}, \text{ then } A^{-1} \text{ does not exist because}$","Inverse does not exist","$\text{the matrix is not square}$","$\text{the determinant is zero}$","$\text{the matrix is identity}$","$\text{the matrix is diagonal}$","B",1,
+ENGINEERING MATHEMATICS,4,"$\text{Cramer's rule is applicable when}$","Condition for Cramer's rule","$\text{the determinant of coefficient matrix is zero}$","$\text{the system has more variables than equations}$","$\text{the determinant of coefficient matrix is non-zero}$","$\text{the equations are inconsistent}$","C",1,

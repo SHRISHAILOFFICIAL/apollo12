@@ -1,95 +1,155 @@
-🔒 1. Payment Flow Hardening (Very Important)
+🔴 STILL REQUIRED / STRONGLY RECOMMENDED FIXES
+1️⃣ email_otps still stores OTP in plaintext (SECURITY ISSUE)
 
-You already integrated payments, now secure & verify them.
+❌ Current:
 
-Must-do checklist
-✅ Server-side payment verification
-Verify Razorpay/Stripe signature on backend
-Never trust frontend success alone
-✅ Idempotency
-If webhook hits twice → don’t create duplicate orders
-✅ Order status states
-created → paid → activated → refunded
-✅ Webhook handling
-Payment success
-Payment failed
-Refund initiated
-👉 This avoids free access exploits.
+otp VARCHAR(6) NOT NULL
 
-🧾 2. Subscription & Access Control
 
-Now connect payments → features.
+✔ Fix:
 
-Implement:
+Remove plaintext OTP
 
-Subscription table:
-user_id
-plan
-start_date
-end_date
-status
+Store hash + expiry
 
-Middleware / API guard:
-❌ Block mock tests if not paid
-✅ Allow preview tests (1 free)
-Rule of thumb
-“Payment gives access, not frontend state”
+ALTER TABLE email_otps
+DROP COLUMN otp;
 
-🧪 3. End-to-End Testing (Critical)
+ALTER TABLE email_otps
+ADD COLUMN otp_hash VARCHAR(255) NOT NULL,
+ADD COLUMN expires_at DATETIME(6) NOT NULL;
 
-You’re at the stage where bugs cost reputation.
-Test these flows:
-New user → register → OTP → buy → attempt test
-Payment success but page refresh
-Payment success but network failure
-Two tabs payment attempt
-Timer expiry + auto-submit
-Resume test after refresh
+2️⃣ attempt_answers.is_correct should NOT be stored
 
-⚡ 4. Performance & Load Readiness
-Because exam traffic comes in spikes.
-Backend
-Redis caching for:
-Questions
-Exam metadata
-DB indexes on:
-attempt_id
-user_id
-exam_id
+You re-introduced a derived column (bug-prone).
 
-Frontend
-Lazy-load questions
-Disable re-render loops
-Optimize images & fonts
+❌ Current:
 
-🔐 5. Security & Abuse Prevention
+is_correct BOOLEAN NOT NULL DEFAULT FALSE
 
-This is where most student platforms fail.
 
-Add:
-Rate limiting (login, OTP, submit)
-CSRF protection
-JWT expiry + refresh
+✔ Fix (recommended):
 
-Disable:
+ALTER TABLE attempt_answers
+DROP COLUMN is_correct;
 
-Right-click
-Copy (optional, not bulletproof)
 
-Prevent:
+✔ Compute correctness using:
 
-Multiple logins in same exam
+selected_option = questions.correct_option
 
-📊 6. Analytics & Admin Controls
 
-You’ll need visibility.
+If you want snapshotted results, use a results table instead.
 
-Admin dashboard:
-Daily revenue optional
-Active users
-issue reports on questions
+3️⃣ Missing negative marking support (DCET requires this)
 
-Logs:
-Payment failures
-Exam crashes
-Timeout events
+❌ No negative marks support currently.
+
+✔ Fix:
+
+ALTER TABLE questions
+ADD COLUMN negative_marks DECIMAL(4,2) DEFAULT 0;
+
+4️⃣ No restriction on multiple attempts per exam
+
+Right now:
+
+Same user can start unlimited attempts for same exam
+
+✔ Choose ONE:
+
+Option A – Only one attempt allowed
+
+ALTER TABLE attempts
+ADD UNIQUE KEY unique_user_exam (user_id, exam_id);
+
+
+Option B – Multiple attempts allowed
+
+ALTER TABLE attempts
+ADD COLUMN attempt_number INT NOT NULL DEFAULT 1,
+ADD UNIQUE KEY unique_user_exam_attempt (user_id, exam_id, attempt_number);
+
+5️⃣ Exams lack availability window (only is_published)
+
+This limits scheduling.
+
+✔ Fix:
+
+ALTER TABLE exams
+ADD COLUMN available_from DATETIME(6) NULL,
+ADD COLUMN available_until DATETIME(6) NULL;
+
+6️⃣ No soft-delete support (important for admin & GDPR)
+
+Right now deletes are hard deletes.
+
+✔ Add soft delete:
+
+ALTER TABLE users ADD COLUMN deleted_at DATETIME(6) NULL;
+ALTER TABLE exams ADD COLUMN deleted_at DATETIME(6) NULL;
+ALTER TABLE questions ADD COLUMN deleted_at DATETIME(6) NULL;
+ALTER TABLE payments ADD COLUMN deleted_at DATETIME(6) NULL;
+
+7️⃣ access_tier should be ENUM, not VARCHAR
+
+❌ Current:
+
+access_tier VARCHAR(10)
+
+
+✔ Fix:
+
+ALTER TABLE exams
+MODIFY access_tier ENUM('FREE','PRO') NOT NULL DEFAULT 'PRO';
+
+🟡 OPTIONAL BUT HIGH-VALUE ADDITIONS
+8️⃣ Result snapshot table (performance + analytics)
+
+Avoid recalculating scores repeatedly.
+
+CREATE TABLE results (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    attempt_id BIGINT UNIQUE,
+    correct_count INT,
+    wrong_count INT,
+    unattempted_count INT,
+    total_score INT,
+    percentile DECIMAL(5,2),
+    rank INT,
+    created_at DATETIME(6),
+    FOREIGN KEY (attempt_id) REFERENCES attempts(id)
+);
+
+9️⃣ Admin audit logging (recommended for production)
+CREATE TABLE admin_logs (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    admin_id BIGINT,
+    action VARCHAR(255),
+    target_table VARCHAR(50),
+    target_id BIGINT,
+    created_at DATETIME(6),
+    FOREIGN KEY (admin_id) REFERENCES users(id)
+);
+
+🔟 Rate limiting table (OTP / login abuse protection)
+CREATE TABLE rate_limits (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    identifier VARCHAR(100),
+    action VARCHAR(50),
+    attempts INT,
+    last_attempt DATETIME(6)
+);
+
+✅ FINAL COPILOT SUMMARY (ONE BLOCK)
+Remaining improvements:
+- Remove plaintext OTP, store hashed OTP + expiry
+- Remove derived column attempt_answers.is_correct
+- Add negative marking support to questions
+- Restrict or version multiple exam attempts
+- Add exam availability window (from / until)
+- Add soft delete (deleted_at) to core tables
+- Change exams.access_tier to ENUM
+- (Optional) Add results snapshot table
+- (Optional) Add admin audit logs
+- (Optional) Add rate-limit tracking

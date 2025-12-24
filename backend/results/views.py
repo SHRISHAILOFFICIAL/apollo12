@@ -119,15 +119,8 @@ class AttemptViewSet(viewsets.ModelViewSet):
                 question_id=question_id
             )
             
-            # Update selected option
+            # Update selected option (is_correct is computed automatically)
             answer.selected_option = selected_option
-            
-            # Check if answer is correct
-            if selected_option:
-                answer.is_correct = (selected_option == answer.question.correct_option)
-            else:
-                answer.is_correct = False
-            
             answer.save()
             
             return Response({
@@ -158,8 +151,10 @@ class AttemptViewSet(viewsets.ModelViewSet):
                 'error': 'This attempt is already completed'
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        # Calculate score (optimized query)
-        correct_answers = attempt.answers.filter(is_correct=True).select_related('question')
+        # Calculate score by comparing selected_option with correct_option
+        correct_answers = attempt.answers.filter(
+            selected_option=models.F('question__correct_option')
+        ).select_related('question')
         total_marks = sum(answer.question.marks for answer in correct_answers)
         
         # Update attempt

@@ -57,32 +57,39 @@ class AuthViewSet(viewsets.ViewSet):
         User login endpoint
         POST /api/auth/login/
         Body: {username, password}
+        Note: username can be either username or email
         """
         serializer = LoginSerializer(data=request.data)
         
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        username = serializer.validated_data['username']
+        username_or_email = serializer.validated_data['username']
         password = serializer.validated_data['password']
         
+        user = None
+        
         try:
-            # Step 1: Find user by username
-            user = User.objects.get(username=username)
+            # Step 1: Try to find user by username
+            user = User.objects.get(username=username_or_email)
         except User.DoesNotExist:
-            # Step 2: If not found, return error
-            return Response({
-                'error': 'Invalid username or password'
-            }, status=status.HTTP_401_UNAUTHORIZED)
+            try:
+                # Step 2: If not found, try to find by email
+                user = User.objects.get(email=username_or_email)
+            except User.DoesNotExist:
+                # Step 3: If still not found, return error
+                return Response({
+                    'error': 'Invalid credentials'
+                }, status=status.HTTP_401_UNAUTHORIZED)
         
-        # Step 3: Check password
+        # Step 4: Check password
         if not check_password(password, user.password_hash):
-            # Step 4: If incorrect, return same error
+            # Step 5: If incorrect, return same error
             return Response({
-                'error': 'Invalid username or password'
+                'error': 'Invalid credentials'
             }, status=status.HTTP_401_UNAUTHORIZED)
         
-        # Step 5: Generate JWT tokens
+        # Step 6: Generate JWT tokens
         refresh = RefreshToken.for_user(user)
         
         # Log activity
@@ -93,7 +100,7 @@ class AuthViewSet(viewsets.ViewSet):
             user_agent=request.META.get('HTTP_USER_AGENT')
         )
         
-        # Step 6: Return response
+        # Step 7: Return response
         return Response({
             'message': 'Login successful',
             'access': str(refresh.access_token),
@@ -168,12 +175,20 @@ def send_signup_otp(request):
     """
     from .models import EmailOTP
     from .email_service import generate_otp, send_otp_email
+    from .disposable_emails import is_allowed_email
     
     email = request.data.get('email')
     
     if not email:
         return Response(
             {'error': 'Email is required'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    # Check if email is from an allowed provider
+    if not is_allowed_email(email):
+        return Response(
+            {'error': 'Please use an email from a trusted provider (e.g., Gmail, Outlook, Yahoo). Temporary email addresses are not allowed.'},
             status=status.HTTP_400_BAD_REQUEST
         )
     

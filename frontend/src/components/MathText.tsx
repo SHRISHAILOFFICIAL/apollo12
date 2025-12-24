@@ -70,6 +70,6 @@ export function MathText({ text, className = '' }: MathTextProps) {
         );
     }
 
-    return <span className={className}>{parts}</span>;
+    return <span className={`inline ${className}`} style={{ display: 'inline' }}>{parts}</span>;
 }
 

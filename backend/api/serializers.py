@@ -41,11 +41,19 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.CharField(source='user.email', read_only=True)
+    tier = serializers.SerializerMethodField()
+    is_pro = serializers.SerializerMethodField()
     
     class Meta:
         model = Profile
-        fields = ['id', 'username', 'email', 'is_paid', 'plan', 'subscription_start', 'subscription_end']
-        read_only_fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'tier', 'is_pro']
+        read_only_fields = ['id', 'username', 'email', 'tier', 'is_pro']
+    
+    def get_tier(self, obj):
+        return obj.user.current_tier
+    
+    def get_is_pro(self, obj):
+        return obj.user.is_pro()
 
 
 class SubmitAnswerSerializer(serializers.Serializer):

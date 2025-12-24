@@ -13,12 +13,13 @@
   /* Cards & Surfaces: Pure white for contrast against the slightly tinted background */
   --color-card: hsl(0 0% 100%);
   --color-card-foreground: hsl(222 47% 11%);
-  
+
   --color-popover: hsl(0 0% 100%);
   --color-popover-foreground: hsl(222 47% 11%);
 
   /* Primary: Trustworthy Deep Royal Blue */
-  --color-primary: hsl(221 83% 53%); /* #3b82f6 - vibrant but serious */
+  --color-primary: hsl(221 83% 53%);
+  /* #3b82f6 - vibrant but serious */
   --color-primary-foreground: hsl(210 40% 98%);
 
   /* Secondary: Soft Slate/Blue for subtle elements */
@@ -48,7 +49,7 @@
   --color-chart-3: hsl(199 89% 48%);
   --color-chart-4: hsl(340 75% 55%);
   --color-chart-5: hsl(26 90% 55%);
-  
+
   --radius-lg: 0.75rem;
   --radius-md: 0.6rem;
   --radius-sm: 0.4rem;
@@ -65,10 +66,37 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans tracking-tight;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading tracking-tight;
   }
+}
+
+/* Force KaTeX math to wrap properly */
+.katex-display,
+.katex {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  max-width: 100% !important;
+}
+
+.katex-html {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Ensure inline math wraps */
+.katex .base {
+  display: inline !important;
+  white-space: normal !important;
 }

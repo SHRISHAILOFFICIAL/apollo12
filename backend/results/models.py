@@ -16,6 +16,7 @@ class Attempt(models.Model):
     
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='attempts', db_index=True)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name='attempts', db_index=True)
+    attempt_number = models.IntegerField(default=1, help_text="Attempt number for this user-exam combination")
     
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(blank=True, null=True)
@@ -27,13 +28,15 @@ class Attempt(models.Model):
     class Meta:
         db_table = 'attempts'
         ordering = ['-started_at']
+        unique_together = [['user', 'exam', 'attempt_number']]
         indexes = [
             models.Index(fields=['user', 'exam']),
             models.Index(fields=['status']),
+            models.Index(fields=['user', 'exam', 'attempt_number']),
         ]
     
     def __str__(self):
-        return f"{self.user.username} - {self.exam.name} {self.exam.year} - {self.status}"
+        return f"{self.user.username} - {self.exam.name} {self.exam.year} - Attempt {self.attempt_number} - {self.status}"
 
 
 class AttemptAnswer(models.Model):
@@ -47,7 +50,6 @@ class AttemptAnswer(models.Model):
         null=True,
         choices=[('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')]
     )
-    is_correct = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'attempt_answers'
@@ -55,6 +57,13 @@ class AttemptAnswer(models.Model):
         indexes = [
             models.Index(fields=['attempt', 'question']),
         ]
+    
+    @property
+    def is_correct(self):
+        """Compute correctness dynamically by comparing with correct answer"""
+        if not self.selected_option:
+            return False
+        return self.selected_option == self.question.correct_option
     
     def __str__(self):
         return f"Answer for Q{self.question.question_number} in Attempt {self.attempt.id}"
