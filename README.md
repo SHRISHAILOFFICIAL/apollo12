@@ -64,7 +64,7 @@ cp backend/.env.example backend/.env
 # 3. Deploy
 sudo ./deploy/deploy.sh
 
-# Access at: http://192.168.1.18
+# Access at: http://192.168.54.75
 ```
 
 ## Project Structure

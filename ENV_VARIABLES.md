@@ -23,7 +23,7 @@ Complete reference for all environment variables used in the DCET Platform.
 - **Description**: Comma-separated list of allowed host/domain names
 - **Production**: Your server IP or domain
 - **Format**: Comma-separated, no spaces
-- **Example**: `ALLOWED_HOSTS=192.168.1.18,localhost,127.0.0.1`
+- **Example**: `ALLOWED_HOSTS=192.168.54.75,localhost,127.0.0.1`
 
 ---
 
@@ -77,7 +77,7 @@ Complete reference for all environment variables used in the DCET Platform.
 #### `CORS_ALLOWED_ORIGINS` (Required)
 - **Description**: Comma-separated list of allowed origins for CORS
 - **Format**: Full URLs with protocol, comma-separated
-- **Example**: `CORS_ALLOWED_ORIGINS=http://192.168.1.18,http://localhost:3000`
+- **Example**: `CORS_ALLOWED_ORIGINS=http://192.168.54.75,http://localhost:3000`
 
 ---
 
@@ -140,8 +140,8 @@ Complete reference for all environment variables used in the DCET Platform.
 - **Description**: Backend API base URL
 - **Format**: Full URL with protocol, ending with `/api`
 - **Development**: `http://localhost:8000/api`
-- **Production**: `http://192.168.1.18/api` or `https://yourdomain.com/api`
-- **Example**: `NEXT_PUBLIC_API_URL=http://192.168.1.18/api`
+- **Production**: `http://192.168.54.75/api` or `https://yourdomain.com/api`
+- **Example**: `NEXT_PUBLIC_API_URL=http://192.168.54.75/api`
 
 #### `NEXT_PUBLIC_DEBUG` (Optional)
 - **Description**: Enable debug mode in frontend
@@ -178,7 +178,7 @@ Complete reference for all environment variables used in the DCET Platform.
 # Django Core
 SECRET_KEY=your-generated-secret-key-here
 DEBUG=False
-ALLOWED_HOSTS=192.168.1.18,yourdomain.com
+ALLOWED_HOSTS=192.168.54.75,yourdomain.com
 
 # Database
 DB_NAME=dcet_platform
@@ -191,7 +191,7 @@ DB_PORT=3306
 REDIS_URL=redis://127.0.0.1:6379/1
 
 # CORS
-CORS_ALLOWED_ORIGINS=http://192.168.1.18,https://yourdomain.com
+CORS_ALLOWED_ORIGINS=http://192.168.54.75,https://yourdomain.com
 
 # Email
 BREVO_API_KEY=xkeysib-your-actual-key

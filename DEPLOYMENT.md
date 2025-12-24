@@ -6,7 +6,7 @@ Complete guide for deploying the DCET Platform on Ubuntu server (VM or VPS).
 
 - Ubuntu 20.04 or later
 - Root or sudo access
-- VM/Server IP: `192.168.1.18`
+- VM/Server IP: `192.168.54.75`
 - Minimum 2GB RAM, 2 CPU cores
 
 ---
@@ -32,7 +32,7 @@ Then, on your Ubuntu VM:
 
 ```bash
 # SSH into the server
-ssh user@192.168.1.18
+ssh user@192.168.54.75
 
 # Install git if not already installed
 sudo apt update
@@ -99,7 +99,7 @@ SECRET_KEY=$(python3 -c 'from django.core.management.utils import get_random_sec
 DEBUG=False
 
 # Already configured
-ALLOWED_HOSTS=192.168.1.18,localhost,127.0.0.1
+ALLOWED_HOSTS=192.168.54.75,localhost,127.0.0.1
 
 # Update database credentials
 DB_USER=dcet_user
@@ -181,17 +181,17 @@ sudo tail -f /var/log/nginx/dcet-error.log
 
 ```bash
 # Health check
-curl http://192.168.1.18/health
+curl http://192.168.54.75/health
 
 # API endpoint
-curl http://192.168.1.18/api/
+curl http://192.168.54.75/api/
 ```
 
 ### 2. Test Frontend
 
 Open browser and navigate to:
 ```
-http://192.168.1.18
+http://192.168.54.75
 ```
 
 ### 3. Test Admin Panel
@@ -203,7 +203,7 @@ source ../venv/bin/activate
 python manage.py createsuperuser
 ```
 
-Access admin at: `http://192.168.1.18/admin/`
+Access admin at: `http://192.168.54.75/admin/`
 
 ---
 
