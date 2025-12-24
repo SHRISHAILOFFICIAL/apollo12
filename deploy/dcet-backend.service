@@ -1,0 +1,21 @@
+[Unit]
+Description=DCET Platform Gunicorn Service
+After=network.target mysql.service redis.service
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/dcet-platform/backend
+Environment="PATH=/var/www/dcet-platform/venv/bin"
+EnvironmentFile=/var/www/dcet-platform/backend/.env
+ExecStart=/var/www/dcet-platform/venv/bin/gunicorn -c gunicorn.conf.py config.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

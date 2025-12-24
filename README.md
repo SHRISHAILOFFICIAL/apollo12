@@ -1,53 +1,91 @@
-# Apollo11 DCET Platform
+# DCET Mock Test Platform
 
-A comprehensive DCET exam preparation platform with mock tests, previous year questions, and video solutions.
+A comprehensive EdTech platform for DCET exam preparation with mock tests, previous year questions, and detailed analytics.
 
-## 🚀 Quick Links
+## Tech Stack
 
-- **Documentation:** [docs/](docs/) - All project documentation
-- **Backend:** [backend/](backend/) - Django REST API
-- **Frontend:** [frontend/](frontend/) - Next.js application
+- **Frontend**: Next.js 16, React 19, TypeScript, TailwindCSS
+- **Backend**: Django 5.2, Django REST Framework
+- **Database**: MySQL
+- **Cache**: Redis
+- **Payment**: Razorpay
+- **Email**: Brevo (Anymail)
+- **Server**: Nginx + Gunicorn
 
-## 📋 Quick Start
+## Features
 
-See [docs/QUICK_START.md](docs/QUICK_START.md) for detailed setup instructions.
+- 🎯 Mock Tests & Previous Year Questions
+- 📊 Detailed Performance Analytics
+- 💳 Payment Integration (FREE & PRO tiers)
+- 📧 Email Notifications (OTP, Results)
+- 🔐 JWT Authentication
+- ⚡ Redis Caching for Performance
+- 📱 Responsive Design
+- 🎨 LaTeX Math Rendering
 
-## 📚 Documentation
+## Development Setup
 
-All documentation has been organized in the [`docs/`](docs/) folder:
-- Project status and reports
-- Setup guides
-- Value proposition analysis
-- Deployment instructions
+### Backend
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env  # Configure your environment
+python manage.py migrate
+python manage.py runserver
+```
 
-Backend-specific docs are in [`backend/docs/`](backend/docs/).
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## 🎯 Current Status
+## Production Deployment
 
-- ✅ Backend API complete
-- ✅ Frontend UI complete
-- ✅ Email service configured
-- ✅ Video solutions feature added
-- ✅ Performance optimized (1000+ users)
-- ⏳ Payment integration (planned)
-- ⏳ Content creation (in progress)
+**For Ubuntu Server/VPS deployment**, see:
 
-## 💰 Pricing
+- 📖 **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Complete deployment guide
+- ⚡ **[deploy/QUICK_REFERENCE.md](./deploy/QUICK_REFERENCE.md)** - Quick reference
+- 🔧 **[ENV_VARIABLES.md](./ENV_VARIABLES.md)** - Environment variables documentation
 
-- **Free:** 2023 PYQ + 1 Mock Test
-- **Premium (₹149):** All 3 PYQs + 10 Mock Tests + Video Solutions
+### Quick Deploy (Ubuntu VM)
 
-## 🛠️ Tech Stack
+```bash
+# 1. Run initial setup
+sudo ./deploy/setup_server.sh
 
-- **Backend:** Django, MySQL, Redis
-- **Frontend:** Next.js, TypeScript, Tailwind CSS
-- **Payment:** Razorpay (planned)
-- **Deployment:** Nginx + Gunicorn (production)
+# 2. Configure .env files
+cp backend/.env.example backend/.env
+# Edit backend/.env with your credentials
 
-## 📞 Support
+# 3. Deploy
+sudo ./deploy/deploy.sh
 
-For documentation and guides, see the [`docs/`](docs/) folder.
+# Access at: http://192.168.54.75
+```
 
----
+## Project Structure
 
-**Last Updated:** December 12, 2024
+```
+apollo12/
+├── backend/          # Django REST API
+├── frontend/         # Next.js application
+├── deploy/           # Deployment scripts & configs
+├── docs/             # Documentation
+├── nginx.conf        # Nginx configuration
+└── DEPLOYMENT.md     # Deployment guide
+```
+
+## Documentation
+
+- [Backend Schema](./backend_schema.md)
+- [Database Documentation](./backend/DATABASE_DOCUMENTATION.md)
+- [Deployment Guide](./DEPLOYMENT.md)
+- [Environment Variables](./ENV_VARIABLES.md)
+
+## License
+
+Private - All Rights Reserved

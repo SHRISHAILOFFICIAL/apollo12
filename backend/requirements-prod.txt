@@ -1,0 +1,14 @@
+django
+djangorestframework
+djangorestframework-simplejwt
+mysqlclient
+django-cors-headers
+pandas
+django-redis
+redis
+razorpay
+python-dotenv
+django-anymail
+gunicorn
+gevent
+django-extensions

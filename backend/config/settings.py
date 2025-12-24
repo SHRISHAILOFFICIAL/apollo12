@@ -28,9 +28,9 @@ load_dotenv(dotenv_path=BASE_DIR / '.env')
 SECRET_KEY = os.getenv('SECRET_KEY', "django-insecure-jhd^i!q34%-s1w65pc#z-6(0hj(z$y5_lxet5&266p$t&(u=umy")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -99,12 +99,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "dcet_platform",
-        "USER": "root",
-        "PASSWORD": "password",
-        "HOST": "localhost",
-        "PORT": "3306",
+        "ENGINE": os.getenv('DB_ENGINE', 'django.db.backends.mysql'),
+        "NAME": os.getenv('DB_NAME', 'dcet_platform'),
+        "USER": os.getenv('DB_USER', 'root'),
+        "PASSWORD": os.getenv('DB_PASSWORD', 'password'),
+        "HOST": os.getenv('DB_HOST', 'localhost'),
+        "PORT": os.getenv('DB_PORT', '3306'),
         # Connection pooling - reuse connections for better performance
         "CONN_MAX_AGE": 600,  # Keep connections alive for 10 minutes
         "OPTIONS": {
@@ -151,7 +151,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = os.getenv('STATIC_ROOT', BASE_DIR / 'staticfiles')
+
+# Media files (user uploads)
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.getenv('MEDIA_ROOT', BASE_DIR / 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -164,15 +169,13 @@ AUTHENTICATION_BACKENDS = [
     'users.backends.CustomUserBackend',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
 
 # Redis Cache Configuration (Optimized for Performance)
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": os.getenv('REDIS_URL', 'redis://127.0.0.1:6379/1'),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             # Connection pool settings
