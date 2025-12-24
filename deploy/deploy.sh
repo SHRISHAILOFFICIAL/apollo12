@@ -50,9 +50,9 @@ sudo chown -R www-data:www-data staticfiles media
 echo "Deploying frontend..."
 cd $FRONTEND_DIR
 
-# Install Node dependencies
+# Install Node dependencies (only missing ones)
 echo "Installing Node dependencies..."
-npm ci --production=false
+npm install
 
 # Build frontend
 echo "Building frontend..."
