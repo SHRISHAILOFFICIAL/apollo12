@@ -6,7 +6,7 @@
 
 ```bash
 # 1. Clone from GitHub (run once)
-ssh user@192.168.54.75
+ssh user@192.168.1.18
 cd /var/www
 sudo git clone https://github.com/YOUR_USERNAME/apollo12.git dcet-platform
 sudo chown -R $USER:$USER dcet-platform
@@ -97,10 +97,10 @@ sudo ./deploy/deploy.sh
 
 ## 🌐 Access Points
 
-- **Frontend**: http://192.168.54.75
-- **Admin Panel**: http://192.168.54.75/admin/
-- **API**: http://192.168.54.75/api/
-- **Health Check**: http://192.168.54.75/health
+- **Frontend**: http://192.168.1.18
+- **Admin Panel**: http://192.168.1.18/admin/
+- **API**: http://192.168.1.18/api/
+- **Health Check**: http://192.168.1.18/health
 
 ## ⚙️ Configuration Files
 
@@ -108,15 +108,15 @@ sudo ./deploy/deploy.sh
 ```bash
 SECRET_KEY=<generate-new-key>
 DEBUG=False
-ALLOWED_HOSTS=192.168.54.75,localhost,127.0.0.1
+ALLOWED_HOSTS=192.168.1.18,localhost,127.0.0.1
 DB_USER=dcet_user
 DB_PASSWORD=<your-password>
-CORS_ALLOWED_ORIGINS=http://192.168.54.75
+CORS_ALLOWED_ORIGINS=http://192.168.1.18
 ```
 
 ### Frontend (.env.production)
 ```bash
-NEXT_PUBLIC_API_URL=http://192.168.54.75/api
+NEXT_PUBLIC_API_URL=http://192.168.1.18/api
 NEXT_PUBLIC_DEBUG=false
 ```
 

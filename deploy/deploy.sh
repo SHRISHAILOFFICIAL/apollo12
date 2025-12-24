@@ -106,5 +106,5 @@ sudo systemctl status dcet-backend --no-pager -l
 echo ""
 sudo systemctl status nginx --no-pager -l
 echo ""
-echo "Application should be accessible at: http://192.168.54.75"
+echo "Application should be accessible at: http://192.168.1.18"
 echo ""
