@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCET 2023 Question Paper</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        
+        @media print {
+            .no-print { display: none !important; }
+            body { 
+                font-size: 9pt;
+                margin: 0;
+                padding: 0;
+            }
+            .page {
+                page-break-after: always;
+                margin: 0;
+            }
+            .question {
+                page-break-inside: avoid;
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Times New Roman', serif;
+            line-height: 1.35;
+            background: #f5f5f5;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 10mm auto;
+            background: white;
+            border: 3px solid #000;
+            padding: 10mm;
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 22pt;
+            margin: 4px 0;
+        }
+        
+        h2 {
+            font-size: 13pt;
+            margin: 3px 0;
+        }
+        
+        .instructions {
+            border: 1px solid #000;
+            padding: 6px;
+            margin-bottom: 10px;
+            font-size: 8.5pt;
+        }
+        
+        .instructions ul {
+            margin-left: 18px;
+            margin-top: 3px;
+        }
+        
+        .section-title {
+            background: #000;
+            color: white;
+            padding: 5px 8px;
+            font-size: 10pt;
+            font-weight: bold;
+            margin: 10px 0 6px 0;
+            text-align: center;
+        }
+        
+        .questions-container {
+            display: flex;
+            gap: 0;
+        }
+        
+        .column-left {
+            flex: 1;
+            padding-right: 6px;
+        }
+        
+        .column-divider {
+            width: 2px;
+            background: #000;
+            flex-shrink: 0;
+        }
+        
+        .column-right {
+            flex: 1;
+            padding-left: 6px;
+        }
+        
+        .question {
+            border: 1.5px solid #333;
+            padding: 6px;
+            margin-bottom: 6px;
+            background: white;
+            font-size: 8.5pt;
+            page-break-inside: avoid;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            margin-bottom: 3px;
+            font-size: 9pt;
+        }
+        
+        .question-text {
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+        
+        .options {
+            margin-left: 4px;
+        }
+        
+        .option {
+            margin: 1.5px 0;
+            line-height: 1.25;
+        }
+        
+        .answer-key-page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 10mm auto;
+            background: white;
+            border: 3px solid #000;
+            padding: 12mm;
+        }
+        
+        .answer-key-title {
+            text-align: center;
+            font-size: 18pt;
+            font-weight: bold;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #000;
+        }
+        
+        .answer-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+        }
+        
+        .answer-item {
+            border: 1px solid #666;
+            padding: 3px;
+            text-align: center;
+            font-size: 8.5pt;
+        }
+        
+        .answer-number {
+            font-weight: bold;
+        }
+        
+        .answer-value {
+            color: #006400;
+            font-weight: bold;
+        }
+        
+        .no-print {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2196F3;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 1000;
+            font-size: 14pt;
+            border: none;
+            font-weight: bold;
+        }
+        
+        .no-print:hover {
+            background: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <button class="no-print" onclick="window.print()">🖨️ Print to PDF</button>
+    
+    <div class="page">
+        <div class="header">
+            <h1>DCET 2023</h1>
+            <h2>Diploma Common Entrance Test</h2>
+            <p><strong>Question Paper</strong></p>
+        </div>
+        
+        <div class="instructions">
+            <strong>Instructions:</strong>
+            <ul>
+                <li>Total Questions: 100 | Maximum Marks: 100 | Duration: 3 hours</li>
+                <li>Each question carries 1 mark | Answer key provided at the end</li>
+            </ul>
+        </div>
+<div class="section-title">IT Skills</div>
+<div class="questions-container">
+<div class="column-left">
+<div class="question">
+<div class="question-number">Q1.</div>
+<div class="question-text">Which of the following is not a cyber crime?</div>
+<div class="options">
+<div class="option">(A) Cryptography</div>
+<div class="option">(B) Denial of Service</div>
+<div class="option">(C) Man-in-the-middle attack</div>
+<div class="option">(D) Phishing</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q2.</div>
+<div class="question-text">DoS is abbreviated as ________.</div>
+<div class="options">
+<div class="option">(A) Denial of Service</div>
+<div class="option">(B) Distribution of Server</div>
+<div class="option">(C) Distribution of Service</div>
+<div class="option">(D) Denial of Server</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q3.</div>
+<div class="question-text">____ protects interconnected systems including hardware, software and programs and data from cyber attacks.</div>
+<div class="options">
+<div class="option">(A) Cyber Security</div>
+<div class="option">(B) Computer Security</div>
+<div class="option">(C) Resource Security</div>
+<div class="option">(D) Hardware Security</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q4.</div>
+<div class="question-text">Basic functionality of the network device firewall is:</div>
+<div class="options">
+<div class="option">(A) scans mobile applications</div>
+<div class="option">(B) monitoring database</div>
+<div class="option">(C) privatizes the computers</div>
+<div class="option">(D) monitoring incoming and outgoing networks</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q5.</div>
+<div class="question-text">An algorithm represented in the form of programming language is called:</div>
+<div class="options">
+<div class="option">(A) Flowchart</div>
+<div class="option">(B) Pseudocode</div>
+<div class="option">(C) Program</div>
+<div class="option">(D) Instruction</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q6.</div>
+<div class="question-text">The _____ symbol is used when the flowchart is starting or ending.</div>
+<div class="options">
+<div class="option">(A) Connector/Arrow</div>
+<div class="option">(B) Terminal box/Rounded rectangle</div>
+<div class="option">(C) Input/Output</div>
+<div class="option">(D) Process</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q7.</div>
+<div class="question-text">MIT App Inventor allows user to</div>
+<div class="options">
+<div class="option">(A) Create web application</div>
+<div class="option">(B) Build Android application</div>
+<div class="option">(C) Create System Software</div>
+<div class="option">(D) Develop Operating System</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q8.</div>
+<div class="question-text">What is the function of the ``when green flag clicked'' command block?</div>
+<div class="options">
+<div class="option">(A) Points Sprite in the specified direction</div>
+<div class="option">(B) If condition is true, runs the blocks inside</div>
+<div class="option">(C) Runs the script</div>
+<div class="option">(D) Stops the execution of script</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q9.</div>
+<div class="question-text">The correct sequence of HTML tags for starting a webpage is:</div>
+<div class="options">
+<div class="option">(A) Head, Title, Html, Body</div>
+<div class="option">(B) Html, Head, Title, Body</div>
+<div class="option">(C) Html, Body, Title, Head</div>
+<div class="option">(D) Html, Title, Head, Body</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q10.</div>
+<div class="question-text">Web server:</div>
+<div class="options">
+<div class="option">(A) is a computer system that delivers web pages</div>
+<div class="option">(B) is delivery news</div>
+<div class="option">(C) provides options for those seeking real-time discussions</div>
+<div class="option">(D) prints documents</div>
+</div>
+</div>
+
+</div>
+<div class="column-divider"></div>
+<div class="column-right">
+<div class="question">
+<div class="question-number">Q11.</div>
+<div class="question-text">Which of the following is used to style the appearance of web pages?</div>
+<div class="options">
+<div class="option">(A) Html</div>
+<div class="option">(B) JavaScript</div>
+<div class="option">(C) PHP</div>
+<div class="option">(D) CSS</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q12.</div>
+<div class="question-text">Which of the following is an example of web browser?</div>
+<div class="options">
+<div class="option">(A) Google</div>
+<div class="option">(B) Firefox</div>
+<div class="option">(C) Apache</div>
+<div class="option">(D) MySQL</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q13.</div>
+<div class="question-text">Which of the following is an open source and free workflow management software?</div>
+<div class="options">
+<div class="option">(A) Trello</div>
+<div class="option">(B) MS Excel</div>
+<div class="option">(C) Windows</div>
+<div class="option">(D) Linux</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q14.</div>
+<div class="question-text">ERP package will handle ______ business functionality/functionalities.</div>
+<div class="options">
+<div class="option">(A) One</div>
+<div class="option">(B) Two</div>
+<div class="option">(C) Three</div>
+<div class="option">(D) Multiple/all</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q15.</div>
+<div class="question-text">____ is a visual diagram of a company that describes what employees do, whom they report to and how decisions are made.</div>
+<div class="options">
+<div class="option">(A) Physical Structure</div>
+<div class="option">(B) Organizational Structure</div>
+<div class="option">(C) Logical Structure</div>
+<div class="option">(D) Hybrid Structure</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q16.</div>
+<div class="question-text">____ is a methodology used in system analysis to identify, clarify, and organize system requirements.</div>
+<div class="options">
+<div class="option">(A) Workflow</div>
+<div class="option">(B) Use case</div>
+<div class="option">(C) Algorithm</div>
+<div class="option">(D) Software</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q17.</div>
+<div class="question-text">Which of the following is not an application of IoT?</div>
+<div class="options">
+<div class="option">(A) Web browser</div>
+<div class="option">(B) Smart home</div>
+<div class="option">(C) Smart city</div>
+<div class="option">(D) Self-driven cars</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q18.</div>
+<div class="question-text">Which of the following is not a cloud service option?</div>
+<div class="options">
+<div class="option">(A) VaaS</div>
+<div class="option">(B) IaaS</div>
+<div class="option">(C) PaaS</div>
+<div class="option">(D) SaaS</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q19.</div>
+<div class="question-text">How many types of services are offered by cloud computing to the users?</div>
+<div class="options">
+<div class="option">(A) 2</div>
+<div class="option">(B) 4</div>
+<div class="option">(C) 3</div>
+<div class="option">(D) 5</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q20.</div>
+<div class="question-text">Combination of Public and Private deployment is called</div>
+<div class="options">
+<div class="option">(A) Hybrid</div>
+<div class="option">(B) Hyper</div>
+<div class="option">(C) Public</div>
+<div class="option">(D) Private</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="section-title">FUNDAMENTALS OF ELECTRICAL & ELECTRONICS ENGINEERING</div>
+<div class="questions-container">
+<div class="column-left">
+<div class="question">
+<div class="question-number">Q21.</div>
+<div class="question-text">Unit of electrical power is</div>
+<div class="options">
+<div class="option">(A) Volt</div>
+<div class="option">(B) Watt</div>
+<div class="option">(C) Watt-hour</div>
+<div class="option">(D) Ampere-hour</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q22.</div>
+<div class="question-text">In pipe earthing, the diameter of GI pipe embedded in the pit is</div>
+<div class="options">
+<div class="option">(A) 32 mm</div>
+<div class="option">(B) 38 mm</div>
+<div class="option">(C) 48 mm</div>
+<div class="option">(D) 56 mm</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q23.</div>
+<div class="question-text">If a resistor of \(100\,\Omega\) is connected in series with a parallel combination of two \(200\,\Omega\) resistors, the effective resistance is</div>
+<div class="options">
+<div class="option">(A) 200 ohms</div>
+<div class="option">(B) 250 ohms</div>
+<div class="option">(C) 350 ohms</div>
+<div class="option">(D) 150 ohms</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q24.</div>
+<div class="question-text">If a resistor of \(20\,\Omega\) is connected across a source of \(5\text{ V\), the current in the circuit is</div>
+<div class="options">
+<div class="option">(A) 1 Ampere</div>
+<div class="option">(B) 4 Amperes</div>
+<div class="option">(C) 0.5 Amperes</div>
+<div class="option">(D) 0.25 Amperes</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q25.</div>
+<div class="question-text">Power factor is</div>
+<div class="options">
+<div class="option">(A) ratio of resistance to inductance</div>
+<div class="option">(B) ratio of apparent power to true power</div>
+<div class="option">(C) ratio of resistance to impedance</div>
+<div class="option">(D) ratio of inductance to capacitance</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q26.</div>
+<div class="question-text">The phase–neutral voltage in a 3-phase star system is \(230\text{ V\). The line voltage is</div>
+<div class="options">
+<div class="option">(A) 230 V</div>
+<div class="option">(B) 398.37 V</div>
+<div class="option">(C) 400 V</div>
+<div class="option">(D) 440 V</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q27.</div>
+<div class="question-text">The time period of an AC wave at \(50\text{ Hz\) is</div>
+<div class="options">
+<div class="option">(A) 2 ms</div>
+<div class="option">(B) 10 ms</div>
+<div class="option">(C) 20 ms</div>
+<div class="option">(D) 50 ms</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q28.</div>
+<div class="question-text">The type of fuse used for domestic purpose is</div>
+<div class="options">
+<div class="option">(A) HRC fuse</div>
+<div class="option">(B) Kit-kat fuse</div>
+<div class="option">(C) Ceramic cartridge fuse</div>
+<div class="option">(D) Glass cartridge fuse</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q29.</div>
+<div class="question-text">MCCB stands for</div>
+<div class="options">
+<div class="option">(A) Moulded Case Circuit Breaker</div>
+<div class="option">(B) Miniature Case Circuit Breaker</div>
+<div class="option">(C) Maximum Current Circuit Breaker</div>
+<div class="option">(D) Minimum Current Circuit Breaker</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q30.</div>
+<div class="question-text">ELCB is used for detecting current leakage</div>
+<div class="options">
+<div class="option">(A) above 8 kVA</div>
+<div class="option">(B) below 5 kVA</div>
+<div class="option">(C) above 5 kVA</div>
+<div class="option">(D) below 8 kVA</div>
+</div>
+</div>
+
+</div>
+<div class="column-divider"></div>
+<div class="column-right">
+<div class="question">
+<div class="question-number">Q31.</div>
+<div class="question-text">A static machine that transfers electrical power from one circuit to another without changing frequency is called</div>
+<div class="options">
+<div class="option">(A) DC machine</div>
+<div class="option">(B) Alternator</div>
+<div class="option">(C) Induction motor</div>
+<div class="option">(D) Transformer</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q32.</div>
+<div class="question-text">The initial type of connection of motor windings in a star-delta starter is</div>
+<div class="options">
+<div class="option">(A) Star connection</div>
+<div class="option">(B) Delta connection</div>
+<div class="option">(C) Series</div>
+<div class="option">(D) Parallel</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q33.</div>
+<div class="question-text">The cause for a 3-phase motor producing mechanical noise is</div>
+<div class="options">
+<div class="option">(A) Interchanged supply terminals</div>
+<div class="option">(B) High load on motor</div>
+<div class="option">(C) High voltage on motor winding</div>
+<div class="option">(D) Incorrect coupling</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q34.</div>
+<div class="question-text">Cell is an ______ device.</div>
+<div class="options">
+<div class="option">(A) electro-mechanical</div>
+<div class="option">(B) electro-chemical</div>
+<div class="option">(C) electro-magnetic</div>
+<div class="option">(D) electro-dynamic</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q35.</div>
+<div class="question-text">The most commonly used battery in electric vehicles is</div>
+<div class="options">
+<div class="option">(A) Lithium-ion battery</div>
+<div class="option">(B) Lead-acid battery</div>
+<div class="option">(C) Nickel-Cadmium battery</div>
+<div class="option">(D) Alkaline rechargeable battery</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q36.</div>
+<div class="question-text">Digital signals are characterized by</div>
+<div class="options">
+<div class="option">(A) Continuous voltage levels</div>
+<div class="option">(B) Infinite resolution</div>
+<div class="option">(C) Discrete voltage levels</div>
+<div class="option">(D) Variable voltage levels</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q37.</div>
+<div class="question-text">According to Boolean Algebra, \(A + A =\)</div>
+<div class="options">
+<div class="option">(A) 2A</div>
+<div class="option">(B) A</div>
+<div class="option">(C) 1</div>
+<div class="option">(D) A^{2</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q38.</div>
+<div class="question-text">Photo diode is used in which application?</div>
+<div class="options">
+<div class="option">(A) Voltage regulation</div>
+<div class="option">(B) Temperature measurement</div>
+<div class="option">(C) Light detection</div>
+<div class="option">(D) RF amplification</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q39.</div>
+<div class="question-text">If resistor band = Brown (1), Black (0), Red (\(\times 100\)), resistance is</div>
+<div class="options">
+<div class="option">(A) 1 k\Omega</div>
+<div class="option">(B) 10 k\Omega</div>
+<div class="option">(C) 100 \Omega</div>
+<div class="option">(D) 100 k\Omega</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q40.</div>
+<div class="question-text">Binary equivalent of decimal 9 is</div>
+<div class="options">
+<div class="option">(A) 1001</div>
+<div class="option">(B) 1000</div>
+<div class="option">(C) 1100</div>
+<div class="option">(D) 1010</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="section-title">PROJECT MANAGEMENT SKILLS</div>
+<div class="questions-container">
+<div class="column-left">
+<div class="question">
+<div class="question-number">Q41.</div>
+<div class="question-text">Project Management is a combination of</div>
+<div class="options">
+<div class="option">(A) human and non-human resources</div>
+<div class="option">(B) only human resources</div>
+<div class="option">(C) only non-human resources</div>
+<div class="option">(D) no resources at all</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q42.</div>
+<div class="question-text">The consultant appointed to carry out the project work is</div>
+<div class="options">
+<div class="option">(A) Compound house consultant</div>
+<div class="option">(B) In-house consultant</div>
+<div class="option">(C) Out-house consultant</div>
+<div class="option">(D) Bridge consultant</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q43.</div>
+<div class="question-text">The type of project which requires minimum amount of capital is</div>
+<div class="options">
+<div class="option">(A) Crash project</div>
+<div class="option">(B) Normal project</div>
+<div class="option">(C) Disaster project</div>
+<div class="option">(D) Consultant project</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q44.</div>
+<div class="question-text">Projects like building a hospital, park, playground and highway construction are examples of</div>
+<div class="options">
+<div class="option">(A) Social needs</div>
+<div class="option">(B) Customer needs</div>
+<div class="option">(C) Market needs</div>
+<div class="option">(D) Ecological needs</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q45.</div>
+<div class="question-text">In Project Management, WBS stands for</div>
+<div class="options">
+<div class="option">(A) Work Breakdown Structure</div>
+<div class="option">(B) Waste Breakdown Structure</div>
+<div class="option">(C) Window Breakdown Structure</div>
+<div class="option">(D) Wireless Breakdown Structure</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q46.</div>
+<div class="question-text">The first step in Project Execution Plan is</div>
+<div class="options">
+<div class="option">(A) Work packaging plan</div>
+<div class="option">(B) Contracting plan</div>
+<div class="option">(C) Organization plan</div>
+<div class="option">(D) Procedure plan</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q47.</div>
+<div class="question-text">The team which gives the idea to start a project is</div>
+<div class="options">
+<div class="option">(A) Core project team</div>
+<div class="option">(B) Full project team</div>
+<div class="option">(C) Advising project team</div>
+<div class="option">(D) Initial project team</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q48.</div>
+<div class="question-text">In PEP, the letter 'E' stands for</div>
+<div class="options">
+<div class="option">(A) Execution</div>
+<div class="option">(B) Estimation</div>
+<div class="option">(C) Evaluation</div>
+<div class="option">(D) Enthusiasm</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q49.</div>
+<div class="question-text">In Project Life Cycle, more time is required for</div>
+<div class="options">
+<div class="option">(A) Project closure</div>
+<div class="option">(B) Project initiation</div>
+<div class="option">(C) Project execution</div>
+<div class="option">(D) Project planning</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q50.</div>
+<div class="question-text">Innovation is the hallmark of every project. Innovation means</div>
+<div class="options">
+<div class="option">(A) New ideas</div>
+<div class="option">(B) Project success</div>
+<div class="option">(C) Professional approach</div>
+<div class="option">(D) Project Management</div>
+</div>
+</div>
+
+</div>
+<div class="column-divider"></div>
+<div class="column-right">
+<div class="question">
+<div class="question-number">Q51.</div>
+<div class="question-text">The Project Life Cycle Curve indicates</div>
+<div class="options">
+<div class="option">(A) Work packaging</div>
+<div class="option">(B) Number of workers in the project</div>
+<div class="option">(C) Growth, maturity and decline</div>
+<div class="option">(D) Project manual</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q52.</div>
+<div class="question-text">Taking actions to measure the quality accurately is the function of</div>
+<div class="options">
+<div class="option">(A) Quality management</div>
+<div class="option">(B) Cost management</div>
+<div class="option">(C) Review management</div>
+<div class="option">(D) Risk management</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q53.</div>
+<div class="question-text">Project planning methodologies involve</div>
+<div class="options">
+<div class="option">(A) Planning by non-incentive and direction</div>
+<div class="option">(B) Planning by incentive and direction</div>
+<div class="option">(C) Unplanned initiation</div>
+<div class="option">(D) Changing the project policies</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q54.</div>
+<div class="question-text">Identify the incorrect statement</div>
+<div class="options">
+<div class="option">(A) Project objective should be specific</div>
+<div class="option">(B) Project objective should be realistic</div>
+<div class="option">(C) Project objective should not be framed timely</div>
+<div class="option">(D) Project objective should be measurable</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q55.</div>
+<div class="question-text">WBS, PEP and PPM are the tools used to design</div>
+<div class="options">
+<div class="option">(A) Project plan</div>
+<div class="option">(B) Project work system</div>
+<div class="option">(C) Project diary</div>
+<div class="option">(D) Project direction</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q56.</div>
+<div class="question-text">The earliest method used for planning of project was</div>
+<div class="options">
+<div class="option">(A) CPM</div>
+<div class="option">(B) PERT</div>
+<div class="option">(C) Bar Chart</div>
+<div class="option">(D) Milestone Chart</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q57.</div>
+<div class="question-text">The expansion of PERT is</div>
+<div class="options">
+<div class="option">(A) Programme Evaluation and Review Technique</div>
+<div class="option">(B) Project Estimation and Recording Tool</div>
+<div class="option">(C) Project Estimation and Resource Technology</div>
+<div class="option">(D) Performance Estimation and Resource Tool</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q58.</div>
+<div class="question-text">For non-repetitive projects, ______ tool is used in production planning and scheduling</div>
+<div class="options">
+<div class="option">(A) CPM</div>
+<div class="option">(B) PERT</div>
+<div class="option">(C) Both CPM and PERT</div>
+<div class="option">(D) Bar Chart</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q59.</div>
+<div class="question-text">The purpose of conducting a project review is</div>
+<div class="options">
+<div class="option">(A) To close the project</div>
+<div class="option">(B) To initiate the project</div>
+<div class="option">(C) To develop the project scope</div>
+<div class="option">(D) To assess project performance</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q60.</div>
+<div class="question-text">A project review does not contain</div>
+<div class="options">
+<div class="option">(A) Performance evaluation</div>
+<div class="option">(B) Evaluating the capital budget</div>
+<div class="option">(C) Data collection</div>
+<div class="option">(D) Initial review</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="section-title">ENGINEERING MATHEMATICS</div>
+<div class="questions-container">
+<div class="column-left">
+<div class="question">
+<div class="question-number">Q61.</div>
+<div class="question-text">In a square matrix, if the elements above the principal diagonal are zero, then it is called</div>
+<div class="options">
+<div class="option">(A) Identity matrix</div>
+<div class="option">(B) Lower triangular matrix</div>
+<div class="option">(C) Upper triangular matrix</div>
+<div class="option">(D) Diagonal matrix</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q62.</div>
+<div class="question-text">The value of x if \( \begin{vmatrix x-1 & 2 \\ 2 & 4 \end{vmatrix \) is singular</div>
+<div class="options">
+<div class="option">(A) 3</div>
+<div class="option">(B) 8</div>
+<div class="option">(C) -2</div>
+<div class="option">(D) 2</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q63.</div>
+<div class="question-text">The inverse of the matrix \( A=\begin{bmatrix-1&0\\5&7\end{bmatrix \) is</div>
+<div class="options">
+<div class="option">(A) \( -\frac{1{7\begin{bmatrix7&0\\-5&-1\end{bmatrix \)</div>
+<div class="option">(B) \( \frac{1{7\begin{bmatrix7&0\\-5&-1\end{bmatrix \)</div>
+<div class="option">(C) \( -\frac{1{7\begin{bmatrix-7&0\\-5&-1\end{bmatrix \)</div>
+<div class="option">(D) \( \frac{1{7\begin{bmatrix7&0\\5&1\end{bmatrix \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q64.</div>
+<div class="question-text">The eigenvalues of matrix \( A=\begin{bmatrix3&0\\1&3\end{bmatrix \) are</div>
+<div class="options">
+<div class="option">(A) 2,2</div>
+<div class="option">(B) -3,-3</div>
+<div class="option">(C) 3,3</div>
+<div class="option">(D) -3,3</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q65.</div>
+<div class="question-text">The two lines \( ax+by=c \) and \( a'x+b'y=c' \) are perpendicular if</div>
+<div class="options">
+<div class="option">(A) \( ab'=ba' \)</div>
+<div class="option">(B) \( aa'+bb'=0 \)</div>
+<div class="option">(C) \( a'b+a b'=0 \)</div>
+<div class="option">(D) \( ab'+ba'=0 \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q66.</div>
+<div class="question-text">The y-intercept of any line passing through origin is</div>
+<div class="options">
+<div class="option">(A) 0</div>
+<div class="option">(B) 1</div>
+<div class="option">(C) -1</div>
+<div class="option">(D) 2</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q67.</div>
+<div class="question-text">Slope form of straight line is</div>
+<div class="options">
+<div class="option">(A) \( y+mx-c=0 \)</div>
+<div class="option">(B) \( x=my+c \)</div>
+<div class="option">(C) \( y=x+m \)</div>
+<div class="option">(D) \( y=mx+c \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q68.</div>
+<div class="question-text">The tangent of the angle between two lines having slopes \( m_1,m_2 \) is</div>
+<div class="options">
+<div class="option">(A) \( \frac{m_1+m_2{1-m_1m_2 \)</div>
+<div class="option">(B) \( \frac{m_1+m_2{1+m_1m_2 \)</div>
+<div class="option">(C) \( \frac{m_1-m_2{1-m_1m_2 \)</div>
+<div class="option">(D) \( \frac{m_1-m_2{1+m_1m_2 \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q69.</div>
+<div class="question-text">If the ladder is inclined making \(135^\circ\) with wall, the inclination in radians is</div>
+<div class="options">
+<div class="option">(A) \( \frac{4\pi{3 \)</div>
+<div class="option">(B) \( \frac{3\pi{4 \)</div>
+<div class="option">(C) \( \frac{2\pi{4 \)</div>
+<div class="option">(D) \( \frac{4\pi{5 \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q70.</div>
+<div class="question-text">The value of \( \sin 60^\circ \cos 30^\circ - \cos 60^\circ \sin 30^\circ \) is</div>
+<div class="options">
+<div class="option">(A) \( \frac{1{2 \)</div>
+<div class="option">(B) \( -\frac{1{2 \)</div>
+<div class="option">(C) \( \frac{\sqrt{3{2 \)</div>
+<div class="option">(D) 0</div>
+</div>
+</div>
+
+</div>
+<div class="column-divider"></div>
+<div class="column-right">
+<div class="question">
+<div class="question-number">Q71.</div>
+<div class="question-text">The simplified value of \( \frac{\sin 3A + \sin A{\sin 3A - \sin A \) is</div>
+<div class="options">
+<div class="option">(A) \( \cot A \tan 5A \)</div>
+<div class="option">(B) \( \tan A \cot 2A \)</div>
+<div class="option">(C) \( \tan 2A \cot A \)</div>
+<div class="option">(D) \( \tan 3A \cot 2A \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q72.</div>
+<div class="question-text">If \( y=\log x + \sec 2x \), then \( \frac{dy{dx \) is</div>
+<div class="options">
+<div class="option">(A) \( -\frac{1{x+\sec 2x \tan x \)</div>
+<div class="option">(B) \( \frac{1{x+2\sec 2x \tan 2x \)</div>
+<div class="option">(C) \( \frac{1{\sqrt{x+\sec x \tan x \)</div>
+<div class="option">(D) \( -\frac{1{\sqrt{x+\sec 3x \tan 2x \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q73.</div>
+<div class="question-text">The derivative of \( \frac{1+x{1-x \) is</div>
+<div class="options">
+<div class="option">(A) \( -\frac{2{(1-x)^2 \)</div>
+<div class="option">(B) \( \frac{2x{(1-x)^2 \)</div>
+<div class="option">(C) \( -\frac{2x{(1-x)^2 \)</div>
+<div class="option">(D) \( \frac{2{(1-x)^2 \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q74.</div>
+<div class="question-text">Find the second order derivative of \( y=e^{2x-e^{-x \)</div>
+<div class="options">
+<div class="option">(A) \( 4e^{2x-e^{-x \)</div>
+<div class="option">(B) \( 4e^{2x+e^{-x \)</div>
+<div class="option">(C) \( -4e^{2x-e^{-x \)</div>
+<div class="option">(D) \( 4e^{2x+e^x \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q75.</div>
+<div class="question-text">Equation of tangent to \( y=2x^2+x \) at (1,2) is</div>
+<div class="options">
+<div class="option">(A) \( 5x-y-3=0 \)</div>
+<div class="option">(B) \( 5x+y+3=0 \)</div>
+<div class="option">(C) \( 5x+y-6=0 \)</div>
+<div class="option">(D) \( 5x+y+6=0 \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q76.</div>
+<div class="question-text">The value of \( \int (\sec x \tan x + \sec^2 x )dx \) is</div>
+<div class="options">
+<div class="option">(A) \( \sec 2x+\tan x+c \)</div>
+<div class="option">(B) \( \sec x+\cosec x+c \)</div>
+<div class="option">(C) \( \sec x+\tan x+c \)</div>
+<div class="option">(D) \( \sec x- \cosec^2 x+c \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q77.</div>
+<div class="question-text">The value of \( \int (2x^3+3x^2+2x)^{10 (3x^2+3x+1)\,dx \) is</div>
+<div class="options">
+<div class="option">(A) \( \frac{1{22(6x+3x^2+2x)^{11+c \)</div>
+<div class="option">(B) \( \frac{1{22(2x^3+3x^2+2x)^{11+c \)</div>
+<div class="option">(C) \( \frac{1{22(2x^3+3x^2-2x)^{12+c \)</div>
+<div class="option">(D) \( \frac{1{12(2x^3+3x^2-2x)^{12+c \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q78.</div>
+<div class="question-text">The value of \( \int_0^{\pi/4\tan^2 x\,dx \) is</div>
+<div class="options">
+<div class="option">(A) \( 1+\frac{\pi{4 \)</div>
+<div class="option">(B) \( 1+\frac{4\pi{2 \)</div>
+<div class="option">(C) \( 1-\frac{\pi{4 \)</div>
+<div class="option">(D) \( 1-\frac{4\pi{2 \)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q79.</div>
+<div class="question-text">Area bounded by \( y=\sin x \) and x-axis from \( x=0 \) to \( x=\pi \) is</div>
+<div class="options">
+<div class="option">(A) 2</div>
+<div class="option">(B) -2</div>
+<div class="option">(C) 3</div>
+<div class="option">(D) 1</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q80.</div>
+<div class="question-text">The value of \( \tan 45^\circ \cot 225^\circ + \tan^2 60^\circ \) is</div>
+<div class="options">
+<div class="option">(A) -4</div>
+<div class="option">(B) 4</div>
+<div class="option">(C) 2</div>
+<div class="option">(D) 3</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="section-title">STATISTICS & ANALYTICS</div>
+<div class="questions-container">
+<div class="column-left">
+<div class="question">
+<div class="question-number">Q81.</div>
+<div class="question-text">_____ is an example of quantitative data.</div>
+<div class="options">
+<div class="option">(A) Volume</div>
+<div class="option">(B) Words</div>
+<div class="option">(C) Symbols</div>
+<div class="option">(D) Colour</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q82.</div>
+<div class="question-text">Data cleaning is the process of</div>
+<div class="options">
+<div class="option">(A) removing viruses</div>
+<div class="option">(B) correctly formatting data</div>
+<div class="option">(C) removing duplicate data</div>
+<div class="option">(D) properly formatting data</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q83.</div>
+<div class="question-text">_____ is not a data collection tool.</div>
+<div class="options">
+<div class="option">(A) Word</div>
+<div class="option">(B) Focus Group Discussion</div>
+<div class="option">(C) Survey</div>
+<div class="option">(D) Questionnaire</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q84.</div>
+<div class="question-text">The graph of cumulative frequency is called</div>
+<div class="options">
+<div class="option">(A) Frequency polygon</div>
+<div class="option">(B) Histogram</div>
+<div class="option">(C) Cumulative frequency polygon</div>
+<div class="option">(D) Frequency histogram</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q85.</div>
+<div class="question-text">To calculate percentage frequency, we use _____ formula.</div>
+<div class="options">
+<div class="option">(A) P.f. = (f × n) ÷ 100</div>
+<div class="option">(B) P.f. = (f ÷ n) × 100</div>
+<div class="option">(C) P.f. = (100) ÷ (f × n)</div>
+<div class="option">(D) P.f. = (100) × (f ÷ n)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q86.</div>
+<div class="question-text">If X₁, X₂, X₃ ... Xₙ are the observations of a given data, then the mean will be:</div>
+<div class="options">
+<div class="option">(A) $$\\frac{\\text{Total number of observations{\\text{Sum of observations$$</div>
+<div class="option">(B) Sum of observations + Total number of observations</div>
+<div class="option">(C) $$\\frac{\\text{Sum of observations{\\text{Total number of observations$$</div>
+<div class="option">(D) Total number of observations − Sum of observations</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q87.</div>
+<div class="question-text">The end points of a class interval are the _____ and _____ values a variable can take.</div>
+<div class="options">
+<div class="option">(A) Lowest and Highest</div>
+<div class="option">(B) Minimum and Maximum</div>
+<div class="option">(C) Numeral and Average</div>
+<div class="option">(D) Mean and Mode</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q88.</div>
+<div class="question-text">In which years did the girls participate more than the boys?</div>
+<div class="options">
+<div class="option">(A) 2020, 2023</div>
+<div class="option">(B) 2021, 2022</div>
+<div class="option">(C) 2022, 2023</div>
+<div class="option">(D) 2020, 2021</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q89.</div>
+<div class="question-text">In which two years did an equal number of boys participate?</div>
+<div class="options">
+<div class="option">(A) 2020, 2021</div>
+<div class="option">(B) 2020, 2022</div>
+<div class="option">(C) 2020, 2023</div>
+<div class="option">(D) 2021, 2022</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q90.</div>
+<div class="question-text">To find third quartile in Excel, we use _____ formula.</div>
+<div class="options">
+<div class="option">(A) = QUARTER (3, Range)</div>
+<div class="option">(B) = QUARTILE (3, Range)</div>
+<div class="option">(C) = QUARTER (Range, 3)</div>
+<div class="option">(D) = QUARTILE (Range, 3)</div>
+</div>
+</div>
+
+</div>
+<div class="column-divider"></div>
+<div class="column-right">
+<div class="question">
+<div class="question-number">Q91.</div>
+<div class="question-text">The percentile divides a series into _____ equal parts.</div>
+<div class="options">
+<div class="option">(A) fifty</div>
+<div class="option">(B) twenty</div>
+<div class="option">(C) ten</div>
+<div class="option">(D) hundred</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q92.</div>
+<div class="question-text">If the first quartile is 23 and interquartile range is 20, the third quartile is</div>
+<div class="options">
+<div class="option">(A) 23</div>
+<div class="option">(B) 33</div>
+<div class="option">(C) 43</div>
+<div class="option">(D) 53</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q93.</div>
+<div class="question-text">The algebraic sum of the deviations of a frequency distribution from its mean is always</div>
+<div class="options">
+<div class="option">(A) a non-zero number</div>
+<div class="option">(B) zero</div>
+<div class="option">(C) less than zero</div>
+<div class="option">(D) greater than zero</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q94.</div>
+<div class="question-text">The Excel formula for ‘Mean’ is</div>
+<div class="options">
+<div class="option">(A) = MEDIAN (array of numbers)</div>
+<div class="option">(B) = AVERAGE (array of numbers)</div>
+<div class="option">(C) = MEAN (array of numbers)</div>
+<div class="option">(D) = MODE (array of numbers)</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q95.</div>
+<div class="question-text">What is output syntax in Python?</div>
+<div class="options">
+<div class="option">(A) Print()</div>
+<div class="option">(B) PRINT()</div>
+<div class="option">(C) print()</div>
+<div class="option">(D) Printf()</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q96.</div>
+<div class="question-text">'str' is a</div>
+<div class="options">
+<div class="option">(A) Text Type</div>
+<div class="option">(B) Numeric Type</div>
+<div class="option">(C) Binary Type</div>
+<div class="option">(D) Sequence Type</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q97.</div>
+<div class="question-text">In Python, _____ standard data types are commonly used.</div>
+<div class="options">
+<div class="option">(A) three</div>
+<div class="option">(B) five</div>
+<div class="option">(C) ten</div>
+<div class="option">(D) four</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q98.</div>
+<div class="question-text">The result of Python program gets displayed in _____</div>
+<div class="options">
+<div class="option">(A) IDLE Shell 3.9.1 window</div>
+<div class="option">(B) IDLE Shell 3.1.9 window</div>
+<div class="option">(C) ILDE Shell 3.9.1 window</div>
+<div class="option">(D) IELD Shell 3.9.1 window</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q99.</div>
+<div class="question-text">Which Python quotation does not accept quotes to denote strings?</div>
+<div class="options">
+<div class="option">(A) (' ')</div>
+<div class="option">(B) (\ \")"</div>
+<div class="option">(C) ( )</div>
+<div class="option">(D) (\\" \"\")"</div>
+</div>
+</div>
+
+<div class="question">
+<div class="question-number">Q100.</div>
+<div class="question-text">In Python, _____ is used to end the physical line or ignore the comment.</div>
+<div class="options">
+<div class="option">(A) **</div>
+<div class="option">(B) #</div>
+<div class="option">(C) &</div>
+<div class="option">(D) \\\\</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+
+<div class="answer-key-page">
+    <div class="answer-key-title">ANSWER KEY</div>
+    <div class="answer-grid">
+
+        <div class="answer-item">
+            <span class="answer-number">1.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">2.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">3.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">4.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">5.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">6.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">7.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">8.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">9.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">10.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">11.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">12.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">13.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">14.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">15.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">16.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">17.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">18.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">19.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">20.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">21.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">22.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">23.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">24.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">25.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">26.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">27.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">28.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">29.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">30.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">31.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">32.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">33.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">34.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">35.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">36.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">37.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">38.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">39.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">40.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">41.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">42.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">43.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">44.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">45.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">46.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">47.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">48.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">49.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">50.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">51.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">52.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">53.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">54.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">55.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">56.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">57.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">58.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">59.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">60.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">61.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">62.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">63.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">64.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">65.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">66.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">67.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">68.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">69.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">70.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">71.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">72.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">73.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">74.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">75.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">76.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">77.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">78.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">79.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">80.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">81.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">82.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">83.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">84.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">85.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">86.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">87.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">88.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">89.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">90.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">91.</span>
+            <span class="answer-value">(D)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">92.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">93.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">94.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">95.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">96.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">97.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">98.</span>
+            <span class="answer-value">(A)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">99.</span>
+            <span class="answer-value">(C)</span>
+        </div>
+
+        <div class="answer-item">
+            <span class="answer-number">100.</span>
+            <span class="answer-value">(B)</span>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

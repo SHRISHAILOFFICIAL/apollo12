@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User, PasswordResetRequest, UserActivity, Notification
+from .disposable_emails import is_allowed_email, get_allowed_domains_list
 
 
 class SignupSerializer(serializers.Serializer):
@@ -9,7 +10,7 @@ class SignupSerializer(serializers.Serializer):
     username = serializers.CharField(required=True, max_length=100)
     email = serializers.EmailField(required=True, max_length=150)
     name = serializers.CharField(required=True, max_length=150)
-    mobile = serializers.CharField(required=False, allow_blank=True, max_length=20)
+    mobile = serializers.CharField(required=True, max_length=20, min_length=10)
     password = serializers.CharField(required=True, write_only=True, min_length=6)
     confirm_password = serializers.CharField(required=True, write_only=True, min_length=6)
     
@@ -20,9 +21,19 @@ class SignupSerializer(serializers.Serializer):
         return value
     
     def validate_email(self, value):
-        """Validate email is unique"""
+        """Validate email is unique and from allowed provider"""
+        # Check if email already exists
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Email already exists")
+        
+        # Check if email is from an allowed provider (whitelist)
+        if not is_allowed_email(value):
+            allowed_providers = ['Gmail', 'Outlook', 'Yahoo', 'iCloud', 'ProtonMail', 'Zoho', 'AOL']
+            raise serializers.ValidationError(
+                f"Please use an email from a trusted provider (e.g., {', '.join(allowed_providers[:3])}, etc.). "
+                "Temporary email addresses are not allowed."
+            )
+        
         return value
     
     def validate(self, data):
@@ -68,9 +79,8 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'name', 'mobile', 'role', 
-                  'email_verified', 'mobile_verified', 'is_active', 'last_login']
-        read_only_fields = ['id', 'email_verified', 'mobile_verified', 'role', 'last_login']
+        fields = ['id', 'username', 'email', 'phone', 'email_verified', 'is_staff', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'email_verified', 'is_staff', 'created_at', 'updated_at']
 
 
 class UserLoginSerializer(serializers.Serializer):

@@ -61,7 +61,7 @@ export default function LoginPage() {
             <div className="space-y-2">
               <Input
                 type="text"
-                placeholder="Username"
+                placeholder="Username or Email"
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 required
@@ -77,6 +77,11 @@ export default function LoginPage() {
                 required
                 className="bg-background/50"
               />
+              <div className="text-right">
+                <Link href="/auth/forgot-password" className="text-xs text-primary hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
             </div>
 
             {error && (

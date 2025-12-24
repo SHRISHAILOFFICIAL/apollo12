@@ -50,15 +50,17 @@ class AttemptResultsView(APIView):
         
         exam = attempt.exam
         
-        # Get all answers for this attempt
-        answers = AttemptAnswer.objects.filter(attempt=attempt).select_related('question', 'question__section')
+        # Get all answers with optimized query (select_related to avoid N+1)
+        answers = AttemptAnswer.objects.filter(attempt=attempt).select_related(
+            'question', 'question__section'
+        )
         
         # Calculate scores
         total_score = sum(answer.question.marks for answer in answers if answer.is_correct)
         total_marks = exam.total_marks
         percentage = (total_score / total_marks * 100) if total_marks > 0 else 0
         
-        # Section-wise performance
+        # Section-wise performance (optimized with prefetch_related)
         sections = Section.objects.filter(exam=exam).prefetch_related('questions')
         section_performance = []
         
@@ -132,7 +134,9 @@ class AttemptResultsView(APIView):
                 'strengths': strengths,
                 'improvements': improvements,
                 'overall_performance': 'Excellent' if percentage >= 80 else 'Good' if percentage >= 60 else 'Needs Improvement',
-            }
+            },
+            # Video solution (only for completed exams)
+            'solution_video_url': exam.solution_video_url if exam.solution_video_url else None,
         }
         
         logger.info(f"Results retrieved for attempt {attempt_id} by user {request.user.id}")
@@ -186,6 +190,8 @@ class UserDashboardView(APIView):
                 'total_marks': exam.total_marks,
                 'total_questions': total_questions,
                 'sections_count': sections_count,
+                'access_tier': exam.access_tier,
+                'is_premium': exam.is_premium,
             })
         
         # Recent attempts (last 10)
@@ -217,10 +223,28 @@ class UserDashboardView(APIView):
             })
         
         # Build response
+        from payments.models import Subscription
+        from django.utils import timezone
+        
+        # Get active subscription
+        active_sub = Subscription.objects.filter(
+            user=user,
+            status='active',
+            end_date__gt=timezone.now()
+        ).select_related('plan').first()
+        
         dashboard_data = {
             'user': {
                 'username': user.username,
                 'email': user.email,
+                'tier': user.current_tier,
+                'is_pro': user.is_pro(),
+            },
+            'subscription': {
+                'plan': active_sub.plan.name if active_sub else None,
+                'subscription_end': active_sub.end_date.isoformat() if active_sub else None,
+                'is_active': active_sub.is_active if active_sub else False,
+                'days_remaining': active_sub.days_remaining if active_sub else 0,
             },
             'stats': {
                 'total_attempts': total_attempts,

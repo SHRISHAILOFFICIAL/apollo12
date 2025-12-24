@@ -1,47 +1,102 @@
 @import "tailwindcss";
 
 @theme {
-  --color-border: hsl(240 5.9% 90%);
-  --color-input: hsl(240 5.9% 90%);
-  --color-ring: hsl(240 5.9% 10%);
-  --color-background: hsl(0 0% 100%);
-  --color-foreground: hsl(240 10% 3.9%);
+  /* Fonts */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
 
-  --color-primary: hsl(240 5.9% 10%);
-  --color-primary-foreground: hsl(0 0% 98%);
+  /* Colors - Premium Education Theme (Deep Blue & Clean White) */
+  /* Backgrounds: Clean, slight cool tint for freshness */
+  --color-background: hsl(210 40% 98%);
+  --color-foreground: hsl(222 47% 11%);
 
-  --color-secondary: hsl(240 4.8% 95.9%);
-  --color-secondary-foreground: hsl(240 5.9% 10%);
-
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(0 0% 98%);
-
-  --color-muted: hsl(240 4.8% 95.9%);
-  --color-muted-foreground: hsl(240 3.8% 46.1%);
-
-  --color-accent: hsl(240 4.8% 95.9%);
-  --color-accent-foreground: hsl(240 5.9% 10%);
+  /* Cards & Surfaces: Pure white for contrast against the slightly tinted background */
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(222 47% 11%);
 
   --color-popover: hsl(0 0% 100%);
-  --color-popover-foreground: hsl(240 10% 3.9%);
+  --color-popover-foreground: hsl(222 47% 11%);
 
-  --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(240 10% 3.9%);
+  /* Primary: Trustworthy Deep Royal Blue */
+  --color-primary: hsl(221 83% 53%);
+  /* #3b82f6 - vibrant but serious */
+  --color-primary-foreground: hsl(210 40% 98%);
+
+  /* Secondary: Soft Slate/Blue for subtle elements */
+  --color-secondary: hsl(210 40% 96.1%);
+  --color-secondary-foreground: hsl(222 47% 11.2%);
+
+  /* Muted: For secondary text */
+  --color-muted: hsl(210 40% 96.1%);
+  --color-muted-foreground: hsl(215 16% 47%);
+
+  /* Accent: A bit of vibrancy (Purple/Indigo) for "Wow" factor */
+  --color-accent: hsl(210 40% 96.1%);
+  --color-accent-foreground: hsl(222 47% 11.2%);
+
+  /* Destructive */
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+
+  /* Borders & Inputs */
+  --color-border: hsl(214.3 31.8% 91.4%);
+  --color-input: hsl(214.3 31.8% 91.4%);
+  --color-ring: hsl(221 83% 53%);
+
+  /* Chart Colors (Optional) */
+  --color-chart-1: hsl(221 83% 53%);
+  --color-chart-2: hsl(262 83% 58%);
+  --color-chart-3: hsl(199 89% 48%);
+  --color-chart-4: hsl(340 75% 55%);
+  --color-chart-5: hsl(26 90% 55%);
+
+  --radius-lg: 0.75rem;
+  --radius-md: 0.6rem;
+  --radius-sm: 0.4rem;
 }
 
 @utility glass {
-  background-color: rgb(255 255 255 / 0.1);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
-  border: 1px solid rgb(255 255 255 / 0.2);
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans tracking-tight;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading tracking-tight;
+  }
+}
+
+/* Force KaTeX math to wrap properly */
+.katex-display,
+.katex {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  max-width: 100% !important;
+}
+
+.katex-html {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Ensure inline math wraps */
+.katex .base {
+  display: inline !important;
+  white-space: normal !important;
 }

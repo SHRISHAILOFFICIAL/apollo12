@@ -13,6 +13,7 @@ class User(models.Model):
     password_hash = models.CharField(max_length=255)
     
     email_verified = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False, help_text="Admin/staff access")
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -36,14 +37,9 @@ class User(models.Model):
         return True
     
     @property
-    def is_staff(self):
-        """Required for admin access"""
-        return False
-    
-    @property
     def is_superuser(self):
         """Required for admin access"""
-        return False
+        return self.is_staff  # Superuser if staff
     
     # JWT expects 'password' field, so we create a property
     @property
@@ -79,32 +75,49 @@ class User(models.Model):
         """Required for Django admin"""
         return True
     
+    @property
+    def current_tier(self):
+        """Compute current tier from active subscriptions (single source of truth)"""
+        from django.utils import timezone
+        
+        # Avoid circular import
+        from payments.models import Subscription
+        
+        # Check for active subscription
+        active_sub = Subscription.objects.filter(
+            user=self,
+            status='active',
+            end_date__gt=timezone.now()
+        ).exists()
+        
+        return 'PRO' if active_sub else 'FREE'
+    
+    def is_pro(self):
+        """Check if user has PRO tier"""
+        return self.current_tier == 'PRO'
+    
+    def has_tier_access(self, required_tier):
+        """Check if user's tier meets the required tier"""
+        tier_hierarchy = {'FREE': 0, 'PRO': 1}
+        user_level = tier_hierarchy.get(self.current_tier, 0)
+        required_level = tier_hierarchy.get(required_tier, 0)
+        return user_level >= required_level
+    
     def __str__(self):
         return self.username
 
 
 class Profile(models.Model):
-    """User profile with subscription information"""
+    """User profile - simplified, subscription data moved to Subscription model"""
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', db_index=True)
-    is_paid = models.BooleanField(default=False, db_index=True)
-    plan = models.ForeignKey('payments.Plan', on_delete=models.SET_NULL, null=True, blank=True, related_name='subscribers')
-    subscription_start = models.DateTimeField(null=True, blank=True)
-    subscription_end = models.DateTimeField(null=True, blank=True)
+    # Future: Add profile-specific fields like avatar, bio, preferences, etc.
     
     class Meta:
         db_table = 'profiles'
     
     def __str__(self):
-        return f"{self.user.username} - {'Paid' if self.is_paid else 'Free'}"
-    
-    @property
-    def is_subscription_active(self):
-        """Check if subscription is currently active"""
-        from django.utils import timezone
-        if self.subscription_end:
-            return self.subscription_end > timezone.now()
-        return False
+        return f"{self.user.username} - {self.user.current_tier}"
 
 
 class PasswordResetRequest(models.Model):
@@ -137,6 +150,41 @@ class UserActivity(models.Model):
     
     def __str__(self):
         return f"{self.user.username} - {self.activity}"
+
+
+class EmailOTP(models.Model):
+    """Email OTP verification codes for signup and password reset"""
+    
+    email = models.EmailField(db_index=True)
+    otp = models.CharField(max_length=6)
+    purpose = models.CharField(max_length=20, choices=[
+        ('signup', 'Signup Verification'),
+        ('password_reset', 'Password Reset'),
+    ], default='signup')
+    is_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    
+    class Meta:
+        db_table = 'email_otps'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['email', 'created_at']),
+            models.Index(fields=['email', 'purpose', 'is_verified']),
+        ]
+    
+    def is_valid(self):
+        """Check if OTP is still valid (10 minutes expiration)"""
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        if self.is_verified:
+            return False
+        
+        expiry_time = self.created_at + timedelta(minutes=10)
+        return timezone.now() < expiry_time
+    
+    def __str__(self):
+        return f"OTP for {self.email} - {self.purpose}"
 
 
 class Notification(models.Model):

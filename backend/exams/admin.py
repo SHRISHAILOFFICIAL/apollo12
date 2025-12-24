@@ -1,62 +1,62 @@
+"""
+Django admin configuration for exam models
+"""
 from django.contrib import admin
 from .models import Exam, Section, Question
-
-# Register your models here.
-
-
-class SectionInline(admin.TabularInline):
-    model = Section
-    extra = 1
-    fields = ['name', 'order', 'max_marks']
-
-
-class QuestionInline(admin.TabularInline):
-    model = Question
-    extra = 0
-    fields = ['question_number', 'question_text', 'correct_option', 'marks']
-    show_change_link = True
 
 
 @admin.register(Exam)
 class ExamAdmin(admin.ModelAdmin):
-    list_display = ['name', 'year', 'total_marks', 'duration_minutes', 'is_published', 'created_at']
-    list_filter = ['is_published', 'year', 'created_at']
-    search_fields = ['name']
-    inlines = [SectionInline]
+    list_display = ['name', 'year', 'access_tier', 'total_marks', 'duration_minutes', 'is_published', 'created_at']
+    list_filter = ['access_tier', 'is_published', 'year']
+    search_fields = ['name', 'year']
+    readonly_fields = ['created_at', 'updated_at']
+    
+    fieldsets = (
+        ('Basic Info', {
+            'fields': ('name', 'year', 'total_marks', 'duration_minutes')
+        }),
+        ('Access Control', {
+            'fields': ('access_tier', 'is_published')
+        }),
+        ('Solution Video', {
+            'fields': ('solution_video_url',),
+            'classes': ('collapse',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
 
 
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
-    list_display = ['exam', 'name', 'order', 'max_marks', 'question_count']
+    list_display = ['exam', 'name', 'order', 'max_marks']
     list_filter = ['exam']
     search_fields = ['name', 'exam__name']
-    raw_id_fields = ['exam']
-    inlines = [QuestionInline]
-    
-    def question_count(self, obj):
-        return obj.questions.count()
-    question_count.short_description = 'Questions'
+    ordering = ['exam', 'order']
 
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ['section', 'question_number', 'short_text', 'correct_option', 'marks']
-    list_filter = ['section__exam', 'section', 'correct_option']
-    search_fields = ['question_text', 'plain_text']
-    raw_id_fields = ['section']
+    list_display = ['section', 'question_number', 'correct_option', 'marks']
+    list_filter = ['section__exam', 'correct_option']
+    search_fields = ['question_text', 'section__name']
+    readonly_fields = ['created_at']
     
-    fieldsets = [
+    fieldsets = (
         ('Question Info', {
-            'fields': ['section', 'question_number', 'marks']
+            'fields': ('section', 'question_number', 'marks')
         }),
-        ('Question Content', {
-            'fields': ['question_text', 'plain_text', 'diagram_url']
+        ('Question Text', {
+            'fields': ('question_text', 'plain_text', 'diagram_url')
         }),
         ('Options', {
-            'fields': ['option_a', 'option_b', 'option_c', 'option_d', 'correct_option']
+            'fields': ('option_a', 'option_b', 'option_c', 'option_d', 'correct_option')
         }),
-    ]
-    
-    def short_text(self, obj):
-        return obj.question_text[:50] + '...' if len(obj.question_text) > 50 else obj.question_text
-    short_text.short_description = 'Question'
+        ('Timestamps', {
+            'fields': ('created_at',),
+            'classes': ('collapse',)
+        }),
+    )

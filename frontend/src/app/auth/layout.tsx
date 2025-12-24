@@ -4,8 +4,19 @@ export default function AuthLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
+        <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background">
+            {/* Background Effects */}
+            <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-100/50 via-background to-background dark:from-blue-900/20"></div>
+            <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-200/30 rounded-full blur-3xl opacity-50 pointer-events-none mix-blend-multiply"></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-200/30 rounded-full blur-3xl opacity-50 pointer-events-none mix-blend-multiply"></div>
+
+            <div className="w-full max-w-md px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="mb-8 text-center">
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary text-white font-bold text-2xl mb-4 shadow-lg shadow-primary/30">
+                        D
+                    </div>
+                    <h2 className="text-2xl font-bold text-foreground">DCET Prep</h2>
+                </div>
                 {children}
             </div>
         </div>

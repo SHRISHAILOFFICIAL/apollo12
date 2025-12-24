@@ -35,26 +35,14 @@ class AttemptAnswerCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
     
     def create(self, validated_data):
-        """Create answer and check if it's correct"""
+        """Create answer (is_correct computed automatically)"""
         answer = AttemptAnswer(**validated_data)
-        
-        # Check if selected option is correct
-        if answer.selected_option:
-            answer.is_correct = (answer.selected_option == answer.question.correct_option)
-        
         answer.save()
         return answer
     
     def update(self, instance, validated_data):
-        """Update answer and recheck correctness"""
+        """Update answer (is_correct recomputed automatically)"""
         instance.selected_option = validated_data.get('selected_option', instance.selected_option)
-        
-        # Recheck correctness
-        if instance.selected_option:
-            instance.is_correct = (instance.selected_option == instance.question.correct_option)
-        else:
-            instance.is_correct = False
-        
         instance.save()
         return instance
 
@@ -113,7 +101,9 @@ class AttemptDetailSerializer(serializers.ModelSerializer):
         return obj.answers.filter(selected_option__isnull=False).count()
     
     def get_correct_answers(self, obj):
-        return obj.answers.filter(is_correct=True).count()
+        # Count answers where selected_option matches correct_option
+        from django.db.models import F
+        return obj.answers.filter(selected_option=F('question__correct_option')).count()
 
 
 class AttemptStartSerializer(serializers.Serializer):
@@ -175,10 +165,15 @@ class ExamResultSerializer(serializers.ModelSerializer):
         return Question.objects.filter(section__exam=obj.exam).count()
     
     def get_correct_answers(self, obj):
-        return obj.answers.filter(is_correct=True).count()
+        from django.db.models import F
+        return obj.answers.filter(selected_option=F('question__correct_option')).count()
     
     def get_wrong_answers(self, obj):
-        return obj.answers.filter(is_correct=False, selected_option__isnull=False).count()
+        from django.db.models import F, Q
+        return obj.answers.filter(
+            ~Q(selected_option=F('question__correct_option')),
+            selected_option__isnull=False
+        ).count()
     
     def get_unanswered(self, obj):
         return obj.answers.filter(selected_option__isnull=True).count()

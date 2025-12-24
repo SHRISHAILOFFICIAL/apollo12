@@ -22,8 +22,12 @@ class AttemptViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """Return attempts for current user"""
-        return Attempt.objects.filter(user=self.request.user)
+        """Return attempts for current user with optimized queries"""
+        return Attempt.objects.filter(user=self.request.user).select_related(
+            'user', 'exam'
+        ).prefetch_related(
+            'answers__question__section'
+        )
     
     def get_serializer_class(self):
         """Return appropriate serializer based on action"""
@@ -67,13 +71,13 @@ class AttemptViewSet(viewsets.ModelViewSet):
                 status='in_progress'
             )
             
-            # Create empty answers for all questions
-            questions = Question.objects.filter(section__exam=exam)
-            for question in questions:
-                AttemptAnswer.objects.create(
-                    attempt=attempt,
-                    question=question
-                )
+            # Create empty answers for all questions (optimized bulk create)
+            questions = Question.objects.filter(section__exam=exam).select_related('section')
+            answers_to_create = [
+                AttemptAnswer(attempt=attempt, question=question)
+                for question in questions
+            ]
+            AttemptAnswer.objects.bulk_create(answers_to_create)
             
             return Response({
                 'message': 'Exam started successfully',
@@ -115,15 +119,8 @@ class AttemptViewSet(viewsets.ModelViewSet):
                 question_id=question_id
             )
             
-            # Update selected option
+            # Update selected option (is_correct is computed automatically)
             answer.selected_option = selected_option
-            
-            # Check if answer is correct
-            if selected_option:
-                answer.is_correct = (selected_option == answer.question.correct_option)
-            else:
-                answer.is_correct = False
-            
             answer.save()
             
             return Response({
@@ -154,11 +151,11 @@ class AttemptViewSet(viewsets.ModelViewSet):
                 'error': 'This attempt is already completed'
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        # Calculate score
-        total_marks = sum([
-            answer.question.marks 
-            for answer in attempt.answers.filter(is_correct=True)
-        ])
+        # Calculate score by comparing selected_option with correct_option
+        correct_answers = attempt.answers.filter(
+            selected_option=models.F('question__correct_option')
+        ).select_related('question')
+        total_marks = sum(answer.question.marks for answer in correct_answers)
         
         # Update attempt
         attempt.finished_at = timezone.now()
@@ -231,8 +228,10 @@ class AttemptAnswerViewSet(viewsets.ModelViewSet):
         return AttemptAnswerSerializer
     
     def get_queryset(self):
-        """Filter answers by attempt if provided"""
-        queryset = AttemptAnswer.objects.all()
+        """Filter answers by attempt if provided (optimized)"""
+        queryset = AttemptAnswer.objects.select_related(
+            'attempt__user', 'attempt__exam', 'question__section'
+        )
         attempt_id = self.request.query_params.get('attempt_id')
         
         if attempt_id:

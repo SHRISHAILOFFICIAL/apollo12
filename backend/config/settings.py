@@ -11,16 +11,21 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-jhd^i!q34%-s1w65pc#z-6(0hj(z$y5_lxet5&&6p$t&(u=umy"
+SECRET_KEY = os.getenv('SECRET_KEY', "django-insecure-jhd^i!q34%-s1w65pc#z-6(0hj(z$y5_lxet5&266p$t&(u=umy")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
+    "anymail",  # Email backend
     # Local apps
     "core",
     "api",
@@ -63,6 +69,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Custom middleware
+    "core.middleware.SubscriptionExpiryMiddleware",
+    "core.middleware.ActiveExamSessionMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -96,7 +105,14 @@ DATABASES = {
         "PASSWORD": "password",
         "HOST": "localhost",
         "PORT": "3306",
-        "CONN_MAX_AGE": 60,  # Keep connections alive for 60s to reduce overhead
+        # Connection pooling - reuse connections for better performance
+        "CONN_MAX_AGE": 600,  # Keep connections alive for 10 minutes
+        "OPTIONS": {
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+            "charset": "utf8mb4",
+            # Connection timeout
+            "connect_timeout": 10,
+        },
     }
 }
 
@@ -152,14 +168,21 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-# Redis Cache Configuration
+# Redis Cache Configuration (Optimized for Performance)
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # Connection pool settings
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 50,
+                "retry_on_timeout": True,
+            },
         },
+        # Default timeout: 1 hour
+        "TIMEOUT": 3600,
     }
 }
 
@@ -167,6 +190,18 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/hour",
+        "user": "1000/hour",
+        "login": "5/min",
+        "otp": "3/5min",
+        "payment": "10/min",
+        "exam_start": "5/min",
+    },
 }
 
 # Simple JWT Configuration
@@ -181,3 +216,24 @@ SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+# Email Configuration (Brevo)
+import os
+
+# Brevo email backend via Anymail
+EMAIL_BACKEND = 'anymail.backends.brevo.EmailBackend'
+
+ANYMAIL = {
+    'BREVO_API_KEY': os.getenv('BREVO_API_KEY', ''),
+}
+
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@apollo11.com')
+
+# Note: Make sure BREVO_API_KEY starts with 'xkeysib-' (API key)
+# NOT 'xsmtpsib-' (SMTP key)
+
+# Razorpay Configuration
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', '')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', '')
+RAZORPAY_WEBHOOK_SECRET = os.getenv('RAZORPAY_WEBHOOK_SECRET', '')
+

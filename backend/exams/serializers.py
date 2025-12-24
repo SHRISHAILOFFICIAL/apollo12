@@ -62,12 +62,13 @@ class ExamSerializer(serializers.ModelSerializer):
     question_count = serializers.SerializerMethodField()
     title = serializers.ReadOnlyField()
     description = serializers.ReadOnlyField()
+    is_premium = serializers.ReadOnlyField()
     
     class Meta:
         model = Exam
         fields = [
             'id', 'name', 'year', 'title', 'description', 'total_marks', 'duration_minutes',
-            'is_published', 'section_count', 'question_count',
+            'is_published', 'access_tier', 'is_premium', 'section_count', 'question_count',
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
@@ -83,10 +84,12 @@ class ExamListSerializer(serializers.ModelSerializer):
     """Simplified serializer for listing exams"""
     title = serializers.ReadOnlyField()
     description = serializers.ReadOnlyField()
+    is_premium = serializers.ReadOnlyField()
     
     class Meta:
         model = Exam
-        fields = ['id', 'name', 'year', 'title', 'description', 'total_marks', 'duration_minutes', 'is_published']
+        fields = ['id', 'name', 'year', 'title', 'description', 'total_marks', 
+                  'duration_minutes', 'is_published', 'access_tier', 'is_premium']
 
 
 class ExamDetailSerializer(serializers.ModelSerializer):

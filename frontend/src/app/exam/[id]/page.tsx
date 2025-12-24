@@ -67,10 +67,7 @@ export default function ExamPage() {
         clearInterval(localCountdownRef.current);
       }
 
-      alert(
-        `Exam Submitted!\n\nScore: ${result.score}/${result.total_marks}\nPercentage: ${result.percentage}%\nCorrect Answers: ${result.correct_answers}/${result.total_questions}`
-      );
-
+      // Redirect directly to results page (no popup needed)
       router.push(`/results/${attemptId}`);
     } catch (err: any) {
       console.error("Failed to submit exam", err);
@@ -105,6 +102,9 @@ export default function ExamPage() {
         const questionsResponse = await examTimerService.getExamQuestions(
           startResponse.attempt_id
         );
+
+        console.log("Questions response:", questionsResponse);
+        console.log("First question:", questionsResponse.questions[0]);
 
         setQuestions(questionsResponse.questions);
         setAnswers(questionsResponse.saved_answers || {});
@@ -401,7 +401,7 @@ export default function ExamPage() {
           </div>
 
           {/* Question Area */}
-          <div className="flex-1 overflow-y-auto p-6 md:p-10">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden p-6 md:p-10">
             <div className="max-w-4xl mx-auto">
               <div className="flex justify-between items-start mb-6">
                 <div className="text-gray-500 font-medium">
@@ -428,10 +428,16 @@ export default function ExamPage() {
                 </div>
               </div>
 
-              <div className="mb-8">
-                <h2 className="text-xl md:text-2xl font-medium text-gray-800 leading-relaxed">
-                  {currentQuestionIndex + 1}. <MathText text={currentQuestion.text} />
-                </h2>
+              <div className="mb-8 w-full">
+                <p className="text-xl md:text-2xl font-medium text-gray-800 leading-relaxed" style={{
+                  wordWrap: 'break-word',
+                  whiteSpace: 'pre-wrap',
+                  maxWidth: '100%',
+                  overflowWrap: 'break-word'
+                }}>
+                  <span style={{ display: 'inline' }}>{currentQuestionIndex + 1}. </span>
+                  <span style={{ display: 'inline' }}><MathText text={currentQuestion.text} /></span>
+                </p>
               </div>
 
               <div className="space-y-4">
@@ -507,7 +513,9 @@ export default function ExamPage() {
                 {typeof window !== 'undefined' ? localStorage.getItem('username')?.charAt(0).toUpperCase() || 'U' : 'U'}
               </div>
               <div>
-                <h3 className="font-bold text-gray-900">Student</h3>
+                <h3 className="font-bold text-gray-900">
+                  {localStorage.getItem("username") || "Student"}
+                </h3>
                 <div className="text-xs text-gray-500 mt-1">
                   <span className="text-blue-600 font-medium">{answeredCount}/{questions.length}</span> Attempted
                 </div>

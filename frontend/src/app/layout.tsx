@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
+import { Outfit, Inter } from "next/font/google";
 import "./globals.css";
 import "katex/dist/katex.min.css";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "DCET Prep - Mock Test Platform",
@@ -18,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
+      <body className={`${outfit.variable} ${inter.variable} antialiased font-sans bg-background text-foreground`}>
         {children}
       </body>
     </html>
