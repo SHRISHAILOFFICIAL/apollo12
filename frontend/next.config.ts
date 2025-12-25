@@ -1,16 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Static export for production deployment
-  output: 'export',
+  // Standalone output for production deployment with Node.js server
+  output: 'standalone',
 
-  // Disable image optimization for static export
+  // Disable image optimization for better performance
   images: {
     unoptimized: true,
   },
-
-  // Trailing slash for better nginx compatibility
-  trailingSlash: true,
 };
 
 export default nextConfig;
