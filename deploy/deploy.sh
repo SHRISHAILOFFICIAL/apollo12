@@ -58,10 +58,18 @@ npm install
 echo "Building frontend..."
 npm run build:prod
 
-# Copy static assets and public files to standalone directory
-echo "Copying static assets..."
-cp -r public .next/standalone/
+# The standalone build creates everything in .next/standalone
+# We need to copy static assets and the .next folder structure
+echo "Setting up standalone server..."
+
+# Copy public folder to standalone
+if [ -d "public" ]; then
+    cp -r public .next/standalone/
+fi
+
+# Copy the entire .next folder to standalone/.next
 cp -r .next/static .next/standalone/.next/
+cp -r .next/server .next/standalone/.next/
 
 # Set proper permissions for standalone directory
 sudo chown -R www-data:www-data .next
