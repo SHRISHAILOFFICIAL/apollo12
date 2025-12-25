@@ -1,3 +1,4 @@
+import React from 'react';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
@@ -27,7 +28,7 @@ export function MathText({ text, className = '' }: MathTextProps) {
         .replace(/\\textbf\{([^}]+)\}/g, '**$1**');
 
     // Split text by LaTeX delimiters
-    const parts: JSX.Element[] = [];
+    const parts: React.ReactElement[] = [];
     let currentIndex = 0;
     let key = 0;
 
