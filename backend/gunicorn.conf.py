@@ -9,8 +9,8 @@ backlog = 2048
 
 # Worker processes
 workers = 2  # Number of CPU cores
-worker_class = "gevent"  # Async worker for high concurrency
-worker_connections = 1000  # Connections per worker
+worker_class = "sync"  # Sync worker (gevent causes database threading issues)
+# worker_connections = 1000  # Not needed for sync workers
 max_requests = 1000  # Restart workers after 1000 requests (prevent memory leaks)
 max_requests_jitter = 50  # Add randomness to prevent all workers restarting at once
 
