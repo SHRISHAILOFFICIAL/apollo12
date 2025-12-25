@@ -1,0 +1,18 @@
+[Unit]
+Description=DCET Platform Next.js Frontend Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/dcet-platform/frontend/.next/standalone
+Environment="NODE_ENV=production"
+Environment="PORT=3000"
+Environment="HOSTNAME=0.0.0.0"
+ExecStart=/usr/bin/node /var/www/dcet-platform/frontend/.next/standalone/server.js
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

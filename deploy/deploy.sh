@@ -54,12 +54,17 @@ cd $FRONTEND_DIR
 echo "Installing Node dependencies..."
 npm install
 
-# Build frontend
+# Build frontend in standalone mode
 echo "Building frontend..."
 npm run build:prod
 
-# Set proper permissions
-sudo chown -R www-data:www-data out
+# Copy static assets and public files to standalone directory
+echo "Copying static assets..."
+cp -r public .next/standalone/
+cp -r .next/static .next/standalone/.next/
+
+# Set proper permissions for standalone directory
+sudo chown -R www-data:www-data .next
 
 # Copy Nginx configuration
 echo "Updating Nginx configuration..."
@@ -79,9 +84,10 @@ fi
 echo "Testing Nginx configuration..."
 sudo nginx -t
 
-# Copy systemd service file
-echo "Updating systemd service..."
+# Copy systemd service files
+echo "Updating systemd services..."
 sudo cp $PROJECT_DIR/deploy/dcet-backend.service /etc/systemd/system/
+sudo cp $PROJECT_DIR/deploy/dcet-frontend.service /etc/systemd/system/
 
 # Reload systemd
 sudo systemctl daemon-reload
@@ -89,10 +95,12 @@ sudo systemctl daemon-reload
 # Restart services
 echo "Restarting services..."
 sudo systemctl restart dcet-backend
+sudo systemctl restart dcet-frontend
 sudo systemctl restart nginx
 
 # Enable services to start on boot
 sudo systemctl enable dcet-backend
+sudo systemctl enable dcet-frontend
 sudo systemctl enable nginx
 
 # Check service status
@@ -103,6 +111,8 @@ echo "========================================="
 echo ""
 echo "Service status:"
 sudo systemctl status dcet-backend --no-pager -l
+echo ""
+sudo systemctl status dcet-frontend --no-pager -l
 echo ""
 sudo systemctl status nginx --no-pager -l
 echo ""
