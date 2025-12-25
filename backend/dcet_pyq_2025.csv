@@ -1,5 +1,4 @@
 section_name,question_number,question_text,plain_text,option_a,option_b,option_c,option_d,correct_option,marks,diagram_url
-section_name,question_number,question_text,plain_text,option_a,option_b,option_c,option_d,correct_option,marks,diagram_url
 ENGINEERING MATHEMATICS,1,"$\text{Choose the correct answer from the following: Every identity matrix is a scalar matrix}$","Choose the correct answer Every identity matrix is a scalar matrix","Every identity matrix is a scalar matrix","Every scalar matrix is an identity matrix","Every diagonal matrix is an identity matrix","A square matrix whose each element is one is an identity matrix","A",1,
 ENGINEERING MATHEMATICS,2,"$\text{The value of } \begin{vmatrix} -1 & 2 & 3 \\ 2 & 1 & -6 \\ 3 & 1 & -9 \end{vmatrix} \text{ is}$","Find the value of the determinant","45","-45","0","90","C",1,
 ENGINEERING MATHEMATICS,3,"$\text{The characteristic equation of } A=\begin{bmatrix}1 & -2 \\ 3 & 4\end{bmatrix} \text{ is}$","Find the characteristic equation of matrix A","$\lambda^2-3\lambda-2=0$","$\lambda^2-5\lambda+10=0$","$\lambda^2-5\lambda-2=0$","$\lambda^2+3\lambda+10=0$","B",1,
