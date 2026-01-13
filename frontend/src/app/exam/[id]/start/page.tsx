@@ -405,7 +405,7 @@ export default function ExamPage() {
                     </div>
 
                     {/* Question Area */}
-                    <div className="flex-1 overflow-y-auto overflow-x-hidden p-6 md:p-10">
+                    <div className="flex-1 overflow-y-auto overflow-x-hidden p-6 md:p-10 pb-24 lg:pb-10">
                         <div className="max-w-4xl mx-auto">
                             <div className="flex justify-between items-start mb-6">
                                 <div className="text-gray-500 font-medium">
@@ -617,10 +617,10 @@ export default function ExamPage() {
             {/* Mobile Floating Button - Show Question Palette */}
             <button
                 onClick={() => setShowMobilePalette(true)}
-                className="lg:hidden fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-2xl flex items-center gap-2 font-bold"
+                className="lg:hidden fixed bottom-20 right-4 z-40 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-2xl flex items-center gap-2 font-bold"
             >
-                <span className="text-2xl">📋</span>
-                <span className="text-sm">{answeredCount}/{questions.length}</span>
+                <span className="text-xl">📋</span>
+                <span className="text-xs">{answeredCount}/{questions.length}</span>
             </button>
 
             {/* Mobile Question Palette Modal */}
