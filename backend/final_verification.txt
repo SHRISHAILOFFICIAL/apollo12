@@ -1,0 +1,28 @@
+================================================================================
+MATH MOCK TEST 1 - FINAL VERIFICATION
+================================================================================
+Exam: Math Mock Test 1
+Duration: 15 minutes
+Total Marks: 8
+Published: True
+Sections: 1
+Total Questions: 8
+
+SECTION DETAILS:
+--------------------------------------------------------------------------------
+ENGINEERING MATHEMATICS: 8 questions, 8 marks
+
+ALL QUESTIONS:
+--------------------------------------------------------------------------------
+Q1: True statement about matrices (Answer: B, 1 mark)
+Q2: Find determinant of 2x2 matrix (Answer: A, 1 mark)
+Q3: Adjoint of 2x2 matrix (Answer: C, 1 mark)
+Q4: Solve linear equations (Answer: D, 1 mark)
+Q5: Slope of a straight line (Answer: B, 1 mark)
+Q6: Slope-intercept form of a straight line (Answer: B, 1 mark)
+Q7: Equation of a line parallel to a given line (Answer: D, 1 mark)
+Q8: Angle between two straight lines (Answer: C, 1 mark)
+
+================================================================================
+STATUS: All questions successfully updated in Math Mock Test 1!
+================================================================================

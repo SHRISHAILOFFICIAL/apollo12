@@ -608,7 +608,7 @@ class GetExamQuestionsView(APIView):
                 .values(
                     'id', 'question_text', 'option_a', 'option_b',
                     'option_c', 'option_d', 'marks', 'question_number',
-                    'section__name', 'section__order'
+                    'section__name', 'section__order', 'diagram_url'
                 )
                 .order_by('section__order', 'question_number')
             )

@@ -20,6 +20,18 @@ from .views_question_issue import ReportQuestionIssueView
 # Results and dashboard
 from .views_results import AttemptResultsView, UserDashboardView
 
+# Notes
+from .views_notes import list_notes, serve_note
+
+# PYQs
+from .views_pyqs import list_pyqs, serve_pyq
+
+# Videos
+from .views_videos import list_videos
+
+# Announcements
+from .views_announcements import list_announcements
+
 urlpatterns = [
     # Authentication endpoints
     path('auth/register/', RegisterView.as_view(), name='register'),
@@ -49,6 +61,20 @@ urlpatterns = [
     
     # Results endpoint
     path('results/<int:attempt_id>/', AttemptResultsView.as_view(), name='attempt_results'),
+    
+    # Notes endpoints
+    path('notes/', list_notes, name='list_notes'),
+    path('notes/<int:note_id>/view/', serve_note, name='serve_note'),
+    
+    # PYQs endpoints
+    path('pyqs/', list_pyqs, name='list_pyqs'),
+    path('pyqs/<int:pyq_id>/view/', serve_pyq, name='serve_pyq'),
+    
+    # Video Solutions endpoint
+    path('videos/', list_videos, name='list_videos'),
+    
+    # Announcements endpoint
+    path('announcements/', list_announcements, name='list_announcements'),
 ]
 
 

@@ -12,10 +12,9 @@ export default function AuthLayout({
 
             <div className="w-full max-w-md px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="mb-8 text-center">
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary text-white font-bold text-2xl mb-4 shadow-lg shadow-primary/30">
-                        D
+                    <div className="inline-flex items-center justify-center mb-4">
+                        <img src="/logo_sample.png" alt="DCEThelper Logo" className="h-24 w-auto object-contain" />
                     </div>
-                    <h2 className="text-2xl font-bold text-foreground">DCET Prep</h2>
                 </div>
                 {children}
             </div>

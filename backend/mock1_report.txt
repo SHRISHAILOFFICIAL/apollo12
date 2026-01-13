@@ -1,0 +1,54 @@
+================================================================================
+MOCK TEST 1 - VERIFICATION REPORT
+================================================================================
+Exam Name: Mock Test 1
+Duration: 180 minutes
+Total Marks: 8
+Published: True
+Number of Sections: 1
+Total Questions: 8
+
+SECTION DETAILS:
+--------------------------------------------------------------------------------
+Section: ENGINEERING MATHEMATICS
+  Questions: 8
+  Max Marks: 8
+
+QUESTIONS LIST:
+--------------------------------------------------------------------------------
+Q1: True statement about matrices
+  Correct Answer: B
+  Marks: 1
+
+Q2: Find determinant of 2x2 matrix
+  Correct Answer: A
+  Marks: 1
+
+Q3: Adjoint of 2x2 matrix
+  Correct Answer: C
+  Marks: 1
+
+Q4: Solve linear equations
+  Correct Answer: D
+  Marks: 1
+
+Q5: Slope of a straight line
+  Correct Answer: B
+  Marks: 1
+
+Q6: Slope-intercept form of a straight line
+  Correct Answer: B
+  Marks: 1
+
+Q7: Equation of a line parallel to a given line
+  Correct Answer: D
+  Marks: 1
+
+Q8: Angle between two straight lines
+  Correct Answer: C
+  Marks: 1
+
+================================================================================
+IMPORT STATUS: SUCCESS
+All questions from mock1.csv have been imported successfully!
+================================================================================

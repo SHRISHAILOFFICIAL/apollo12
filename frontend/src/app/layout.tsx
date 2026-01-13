@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   title: "DCET Prep - Mock Test Platform",
   description: "Prepare for DCET with our comprehensive mock test platform",
   icons: {
-    icon: '/logo.jpg',
-    apple: '/logo.jpg',
+    icon: '/logo_sample.png',
+    apple: '/logo_sample.png',
   },
 };
 
@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${outfit.variable} ${inter.variable} antialiased font-sans bg-background text-foreground`}>
+      <body className={`${outfit.variable} ${inter.variable} antialiased font-sans bg-background text-foreground`} suppressHydrationWarning>
         {children}
       </body>
     </html>

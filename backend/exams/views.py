@@ -111,6 +111,37 @@ class ExamViewSet(viewsets.ModelViewSet):
         cache.set(cache_key, serializer.data, 3600)
         
         return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
+    def attempts(self, request, pk=None):
+        """Get user's previous attempts for this exam"""
+        from results.models import Attempt
+        
+        exam = self.get_object()
+        
+        # Get user's attempts for this exam
+        attempts = Attempt.objects.filter(
+            user=request.user,
+            exam=exam
+        ).exclude(status='in_progress').order_by('-started_at')[:10]  # Last 10 completed attempts
+        
+        attempts_data = []
+        for attempt in attempts:
+            percentage = round((attempt.score / exam.total_marks * 100), 1) if exam.total_marks > 0 else 0
+            attempts_data.append({
+                'id': attempt.id,
+                'attempt_number': attempt.attempt_number,
+                'exam_name': f"{exam.name} {exam.year}",
+                'started_at': attempt.started_at.isoformat(),
+                'score': attempt.score or 0,
+                'total_marks': exam.total_marks,
+                'percentage': percentage,
+                'status': attempt.status
+            })
+        
+        return Response({
+            'attempts': attempts_data
+        })
 
 
 class SectionViewSet(viewsets.ModelViewSet):

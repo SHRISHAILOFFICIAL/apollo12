@@ -2,7 +2,7 @@
 Django admin configuration for all models
 """
 from django.contrib import admin
-from .models import User, Profile, EmailOTP, UserActivity, Notification
+from .models import User, Profile, EmailOTP, UserActivity, Notification, Query
 
 
 @admin.register(User)
@@ -64,3 +64,25 @@ class NotificationAdmin(admin.ModelAdmin):
     list_filter = ['is_read', 'created_at']
     search_fields = ['user__username', 'title', 'message']
     readonly_fields = ['created_at']
+
+
+@admin.register(Query)
+class QueryAdmin(admin.ModelAdmin):
+    list_display = ['username', 'email', 'mobile', 'is_resolved', 'created_at']
+    list_filter = ['is_resolved', 'created_at']
+    search_fields = ['username', 'email', 'mobile', 'query']
+    readonly_fields = ['created_at', 'updated_at']
+    list_editable = ['is_resolved']
+    
+    fieldsets = (
+        ('Contact Information', {
+            'fields': ('username', 'email', 'mobile')
+        }),
+        ('Query Details', {
+            'fields': ('query', 'is_resolved')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )

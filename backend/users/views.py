@@ -6,11 +6,11 @@ from rest_framework.views import APIView
 from django.contrib.auth.hashers import check_password
 from django.utils import timezone
 
-from .models import User, Notification, UserActivity
+from .models import User, Notification, UserActivity, Query
 from .tokens import RefreshToken
 from .serializers import (
     SignupSerializer, LoginSerializer, UserSerializer,
-    NotificationSerializer, UserActivitySerializer
+    NotificationSerializer, UserActivitySerializer, QuerySerializer
 )
 
 
@@ -432,4 +432,24 @@ def reset_password(request):
             {'error': 'User not found'},
             status=status.HTTP_404_NOT_FOUND
         )
+
+
+@api_view(['POST'])
+def submit_query(request):
+    """
+    Submit a contact form query
+    POST /api/users/submit-query/
+    Body: {username, email, mobile, query}
+    """
+    serializer = QuerySerializer(data=request.data)
+    
+    if serializer.is_valid():
+        query = serializer.save()
+        return Response({
+            'message': 'Your query has been submitted successfully. We will get back to you soon.',
+            'query_id': query.id
+        }, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 

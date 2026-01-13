@@ -147,3 +147,125 @@ class Question(models.Model):
     
     def __str__(self):
         return f"{self.section.name} Q{self.question_number}"
+
+
+class Note(models.Model):
+    """Study notes for different subjects"""
+    
+    ACCESS_TIERS = [
+        ('FREE', 'Free'),
+        ('PRO', 'PRO Only'),
+    ]
+    
+    subject = models.CharField(max_length=200, help_text="Subject name (e.g., Engineering Mathematics)")
+    topic = models.CharField(max_length=200, help_text="Topic name (e.g., Matrices)")
+    description = models.TextField(blank=True)
+    file_path = models.CharField(max_length=500, help_text="Relative path from notes directory (e.g., engineering_mathematics/matrix_notes.pdf)")
+    access_tier = models.CharField(max_length=10, choices=ACCESS_TIERS, default='FREE', db_index=True)
+    is_active = models.BooleanField(default=True, db_index=True)
+    order = models.IntegerField(default=0, help_text="Display order within subject")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'notes'
+        ordering = ['subject', 'order', 'topic']
+        indexes = [
+            models.Index(fields=['subject', 'is_active']),
+            models.Index(fields=['access_tier']),
+        ]
+        
+    @property
+    def is_premium(self):
+        """Check if note requires PRO tier"""
+        return self.access_tier == 'PRO'
+        
+    def __str__(self):
+        return f"{self.subject} - {self.topic}"
+
+
+class PYQ(models.Model):
+    """Previous Year Question Papers"""
+    
+    ACCESS_TIERS = [
+        ('FREE', 'Free'),
+        ('PRO', 'PRO Only'),
+    ]
+    
+    exam_name = models.CharField(max_length=200, help_text="Exam name (e.g., DCET, Mock Test 1)")
+    year = models.IntegerField(help_text="Year of the exam (e.g., 2023, 2024)")
+    description = models.TextField(blank=True)
+    file_path = models.CharField(max_length=500, help_text="Relative path from pyqs directory")
+    access_tier = models.CharField(max_length=10, choices=ACCESS_TIERS, default='FREE', db_index=True)
+    is_active = models.BooleanField(default=True, db_index=True)
+    order = models.IntegerField(default=0, help_text="Display order within year")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'pyqs'
+        ordering = ['-year', 'order', 'exam_name']
+        indexes = [
+            models.Index(fields=['year', 'is_active']),
+            models.Index(fields=['access_tier']),
+        ]
+        
+    @property
+    def is_premium(self):
+        """Check if PYQ requires PRO tier"""
+        return self.access_tier == 'PRO'
+        
+    def __str__(self):
+        return f"{self.exam_name} {self.year}"
+
+
+class VideoSolution(models.Model):
+    """Video Solutions (PRO only)"""
+    
+    topic = models.CharField(max_length=200, help_text="Topic name (e.g., Matrices, Calculus)")
+    title = models.CharField(max_length=300, help_text="Video title")
+    description = models.TextField(blank=True)
+    youtube_url = models.URLField(help_text="YouTube video URL")
+    duration_minutes = models.IntegerField(default=0, help_text="Video duration in minutes")
+    is_active = models.BooleanField(default=True, db_index=True)
+    order = models.IntegerField(default=0, help_text="Display order within topic")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'video_solutions'
+        ordering = ['topic', 'order', 'title']
+        indexes = [
+            models.Index(fields=['topic', 'is_active']),
+        ]
+        
+    def __str__(self):
+        return f"{self.topic} - {self.title}"
+
+
+class Announcement(models.Model):
+    """Announcements for exam dates, results, and general updates"""
+    
+    TYPE_CHOICES = [
+        ('GENERAL', 'General'),
+        ('EXAM_DATE', 'Exam Date'),
+        ('RESULTS', 'Results'),
+        ('URGENT', 'Urgent'),
+    ]
+    
+    title = models.CharField(max_length=300)
+    message = models.TextField()
+    announcement_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='GENERAL')
+    is_active = models.BooleanField(default=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'announcements'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['is_active', '-created_at']),
+        ]
+        
+    def __str__(self):
+        return f"[{self.announcement_type}] {self.title}"

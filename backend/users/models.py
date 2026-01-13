@@ -202,3 +202,23 @@ class Notification(models.Model):
     
     def __str__(self):
         return f"{self.title} - {self.user.username}"
+
+
+class Query(models.Model):
+    """User queries/contact form submissions"""
+    
+    username = models.CharField(max_length=100)
+    email = models.EmailField(max_length=150)
+    mobile = models.CharField(max_length=20)
+    query = models.TextField()
+    is_resolved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'queries'
+        ordering = ['-created_at']
+        verbose_name_plural = 'Queries'
+    
+    def __str__(self):
+        return f"Query from {self.username} - {self.email}"

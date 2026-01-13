@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     AuthViewSet, NotificationViewSet, UserActivityViewSet,
     send_signup_otp, verify_signup_otp,
-    send_password_reset_otp, verify_password_reset_otp, reset_password
+    send_password_reset_otp, verify_password_reset_otp, reset_password,
+    submit_query
 )
 
 router = DefaultRouter()
@@ -19,4 +20,6 @@ urlpatterns = [
     path('send-password-reset-otp/', send_password_reset_otp, name='send-password-reset-otp'),
     path('verify-password-reset-otp/', verify_password_reset_otp, name='verify-password-reset-otp'),
     path('reset-password/', reset_password, name='reset-password'),
+    # Contact/Query endpoint
+    path('submit-query/', submit_query, name='submit-query'),
 ]

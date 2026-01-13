@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password, check_password
-from .models import User, PasswordResetRequest, UserActivity, Notification
+from .models import User, PasswordResetRequest, UserActivity, Notification, Query
 from .disposable_emails import is_allowed_email, get_allowed_domains_list
 
 
@@ -140,3 +140,27 @@ class UserProfileSerializer(serializers.ModelSerializer):
     
     def get_unread_notifications_count(self, obj):
         return obj.notifications.filter(is_read=False).count()
+
+
+class QuerySerializer(serializers.ModelSerializer):
+    """Serializer for user queries/contact form submissions"""
+    
+    class Meta:
+        model = Query
+        fields = ['id', 'username', 'email', 'mobile', 'query', 'is_resolved', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'is_resolved', 'created_at', 'updated_at']
+    
+    def validate_mobile(self, value):
+        """Validate mobile number"""
+        if not value.isdigit() or len(value) < 10:
+            raise serializers.ValidationError("Please enter a valid mobile number (minimum 10 digits)")
+        return value
+    
+    def validate_query(self, value):
+        """Validate query is not empty"""
+        if not value.strip():
+            raise serializers.ValidationError("Query cannot be empty")
+        if len(value.strip()) < 10:
+            raise serializers.ValidationError("Please provide more details (minimum 10 characters)")
+        return value.strip()
+
