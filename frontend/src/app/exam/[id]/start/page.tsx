@@ -448,7 +448,7 @@ export default function ExamPage() {
                             {currentQuestion.diagram_url && (
                                 <div className="mb-8 flex justify-center">
                                     <img
-                                        src={`http://localhost:8000${currentQuestion.diagram_url}`}
+                                        src={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:8000'}${currentQuestion.diagram_url}`}
                                         alt="Question diagram"
                                         className="max-w-full h-auto rounded-lg border-2 border-gray-300 shadow-md"
                                         onError={(e) => {
