@@ -1,11 +1,12 @@
 #!/bin/bash
-# DCET Platform - Deployment Script
-# Run this script to deploy/update the application
+# DCET Platform - Quick Deploy Script (No Dependencies)
+# Use this for quick updates when you haven't changed dependencies
+# Run this script to deploy/update the application WITHOUT reinstalling dependencies
 
 set -e  # Exit on error
 
 echo "========================================="
-echo "DCET Platform - Deployment"
+echo "DCET Platform - Quick Deployment"
 echo "========================================="
 
 # Configuration
@@ -28,31 +29,17 @@ cd $BACKEND_DIR
 # Activate virtual environment
 source $VENV_DIR/bin/activate
 
-# Install/update Python dependencies (only installs missing/updated packages)
-echo "Installing Python dependencies..."
-pip install --upgrade -r requirements-prod.txt
-
-# Run database migrations
+# Run database migrations (quick, only applies new migrations)
 echo "Running database migrations..."
 python manage.py migrate --noinput
 
-# Collect static files
+# Collect static files (quick, only copies changed files)
 echo "Collecting static files..."
-python manage.py collectstatic --noinput
-
-# Create necessary directories
-mkdir -p staticfiles media
-
-# Set proper permissions
-sudo chown -R www-data:www-data staticfiles media
+python manage.py collectstatic --noinput --clear
 
 # Frontend deployment
 echo "Deploying frontend..."
 cd $FRONTEND_DIR
-
-# Install Node dependencies (only missing ones)
-echo "Installing Node dependencies..."
-npm install
 
 # Build frontend in standalone mode
 echo "Building frontend..."
@@ -78,27 +65,9 @@ sudo chown -R www-data:www-data .next
 echo "Updating Nginx configuration..."
 sudo cp $PROJECT_DIR/nginx.conf /etc/nginx/sites-available/dcet-platform
 
-# Create symlink if it doesn't exist
-if [ ! -L /etc/nginx/sites-enabled/dcet-platform ]; then
-    sudo ln -s /etc/nginx/sites-available/dcet-platform /etc/nginx/sites-enabled/
-fi
-
-# Remove default nginx site if it exists
-if [ -L /etc/nginx/sites-enabled/default ]; then
-    sudo rm /etc/nginx/sites-enabled/default
-fi
-
 # Test Nginx configuration
 echo "Testing Nginx configuration..."
 sudo nginx -t
-
-# Copy systemd service files
-echo "Updating systemd services..."
-sudo cp $PROJECT_DIR/deploy/dcet-backend.service /etc/systemd/system/
-sudo cp $PROJECT_DIR/deploy/dcet-frontend.service /etc/systemd/system/
-
-# Reload systemd
-sudo systemctl daemon-reload
 
 # Restart services
 echo "Restarting services..."
@@ -106,23 +75,18 @@ sudo systemctl restart dcet-backend
 sudo systemctl restart dcet-frontend
 sudo systemctl restart nginx
 
-# Enable services to start on boot
-sudo systemctl enable dcet-backend
-sudo systemctl enable dcet-frontend
-sudo systemctl enable nginx
-
 # Check service status
 echo ""
 echo "========================================="
-echo "Deployment complete!"
+echo "Quick Deployment complete!"
 echo "========================================="
 echo ""
 echo "Service status:"
-sudo systemctl status dcet-backend --no-pager -l
+sudo systemctl status dcet-backend --no-pager -l | head -5
 echo ""
-sudo systemctl status dcet-frontend --no-pager -l
+sudo systemctl status dcet-frontend --no-pager -l | head -5
 echo ""
-sudo systemctl status nginx --no-pager -l
+sudo systemctl status nginx --no-pager -l | head -5
 echo ""
-echo "Application should be accessible at: http://192.168.54.75"
+echo "Application should be accessible at: http://192.168.1.18"
 echo ""
