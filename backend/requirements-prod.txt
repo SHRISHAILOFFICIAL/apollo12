@@ -10,5 +10,5 @@ razorpay
 python-dotenv
 django-anymail
 gunicorn
-gevent
+uvicorn[standard]
 django-extensions

@@ -10,7 +10,7 @@ A comprehensive EdTech platform for DCET exam preparation with mock tests, previ
 - **Cache**: Redis
 - **Payment**: Razorpay
 - **Email**: Brevo (Anymail)
-- **Server**: Nginx + Gunicorn
+- **Server**: Nginx + Gunicorn + Uvicorn (ASGI)
 
 ## Features
 

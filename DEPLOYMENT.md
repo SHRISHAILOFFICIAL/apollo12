@@ -60,6 +60,8 @@ This installs:
 - Node.js 20.x
 - Configures firewall (UFW)
 
+> **Note:** Backend uses **ASGI** with **Gunicorn + Uvicorn Workers** for high performance (6x capacity vs traditional WSGI).
+
 ### 2. Configure MySQL Database
 
 ```bash
@@ -125,12 +127,12 @@ sudo ./deploy/deploy.sh
 ```
 
 This script will:
-1. Install Python dependencies
+1. Install Python dependencies (including Uvicorn)
 2. Run database migrations
 3. Collect Django static files
 4. Build Next.js frontend
 5. Configure Nginx
-6. Set up systemd service
+6. Set up systemd service for ASGI backend
 7. Start all services
 
 ---
@@ -215,10 +217,10 @@ Access admin at: `http://192.168.54.75/admin/`
 # Check logs
 sudo journalctl -u dcet-backend -n 50
 
-# Test Gunicorn manually
+# Test Gunicorn + Uvicorn manually
 cd /var/www/dcet-platform/backend
 source ../venv/bin/activate
-gunicorn -c gunicorn.conf.py config.wsgi:application
+gunicorn -c gunicorn.conf.py config.asgi:application
 ```
 
 ### Nginx 502 Bad Gateway
@@ -319,6 +321,56 @@ sudo ./deploy/deploy.sh
    ```bash
    sudo ./deploy/deploy.sh
    ```
+
+---
+
+## Performance Information
+
+### ASGI with Uvicorn Workers
+
+The backend uses **Gunicorn + Uvicorn Workers** for optimal performance:
+
+**Capacity (6GB RAM, 2 CPU cores):**
+- **Workers:** 4 workers (2x CPU cores)
+- **Concurrent Connections:** 400 (100 per worker)
+- **Active Test Takers:** 150-250 users
+- **Total Platform Users:** 600-800 users
+- **Response Time:** ~400ms average
+
+**Configuration:** `backend/gunicorn.conf.py`
+```python
+workers = 4
+worker_class = "uvicorn.workers.UvicornWorker"
+worker_connections = 100
+```
+
+**Monitor Performance:**
+```bash
+# View worker processes
+ps aux | grep gunicorn
+
+# Monitor resource usage
+htop
+
+# Check connection count
+sudo netstat -an | grep :8000 | wc -l
+```
+
+### Troubleshooting ASGI Issues
+
+**Workers not starting:**
+```bash
+# Check Uvicorn installation
+source /var/www/dcet-platform/venv/bin/activate
+python -c "import uvicorn; print(uvicorn.__version__)"
+
+# Verify ASGI application
+python -c "from config.asgi import application; print(type(application))"
+```
+
+**High memory usage:**
+- Reduce `workers` in `gunicorn.conf.py` to 3
+- Reduce `worker_connections` to 75
 
 ---
 

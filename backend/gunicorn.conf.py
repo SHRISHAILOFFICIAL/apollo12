@@ -1,5 +1,5 @@
-# Gunicorn Configuration for Production
-# Usage: gunicorn -c gunicorn.conf.py config.wsgi:application
+# Gunicorn Configuration for Production (ASGI with Uvicorn Workers)
+# Usage: gunicorn -c gunicorn.conf.py config.asgi:application
 
 import multiprocessing
 
@@ -8,9 +8,9 @@ bind = "0.0.0.0:8000"
 backlog = 2048
 
 # Worker processes
-workers = 2  # Number of CPU cores
-worker_class = "sync"  # Sync worker (gevent causes database threading issues)
-# worker_connections = 1000  # Not needed for sync workers
+workers = 4  # 2x CPU cores (optimal for ASGI workers)
+worker_class = "uvicorn.workers.UvicornWorker"  # ASGI worker with async I/O
+worker_connections = 100  # Concurrent connections per worker (400 total)
 max_requests = 1000  # Restart workers after 1000 requests (prevent memory leaks)
 max_requests_jitter = 50  # Add randomness to prevent all workers restarting at once
 

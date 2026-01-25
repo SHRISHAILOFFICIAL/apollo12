@@ -19,8 +19,7 @@ hiredis==3.0.0  # Fast Redis parser
 
 # Production Server
 gunicorn==23.0.0
-gevent==24.11.1  # Async worker for high concurrency
-greenlet==3.1.1
+uvicorn[standard]==0.34.0  # ASGI server with uvloop + httptools for high performance
 
 # Monitoring & Performance
 psutil==6.1.1  # System monitoring
