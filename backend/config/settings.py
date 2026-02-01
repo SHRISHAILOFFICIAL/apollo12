@@ -30,7 +30,22 @@ SECRET_KEY = os.getenv('SECRET_KEY', "django-insecure-jhd^i!q34%-s1w65pc#z-6(0hj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# ALLOWED_HOSTS Configuration with development wildcard support
+allowed_hosts_env = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1')
+
+if allowed_hosts_env == '*':
+    if DEBUG:
+        ALLOWED_HOSTS = ['*']
+        print("⚠️  WARNING: ALLOWED_HOSTS set to ['*'] - DEVELOPMENT MODE ONLY")
+    else:
+        raise ValueError(
+            "❌ SECURITY ERROR: ALLOWED_HOSTS cannot be '*' in production!\n"
+            "   Set DEBUG=True for development or provide specific hosts."
+        )
+elif allowed_hosts_env:
+    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',')]
+else:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -172,7 +187,21 @@ AUTHENTICATION_BACKENDS = [
     'users.backends.CustomUserBackend',
 ]
 
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+# CORS Configuration with development wildcard support
+cors_origins_env = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000')
+
+if cors_origins_env == '*':
+    if DEBUG:
+        CORS_ALLOW_ALL_ORIGINS = True
+        print("⚠️  WARNING: CORS_ALLOW_ALL_ORIGINS enabled - DEVELOPMENT MODE ONLY")
+    else:
+        raise ValueError(
+            "❌ SECURITY ERROR: CORS_ALLOWED_ORIGINS cannot be '*' in production!\n"
+            "   Set DEBUG=True for development or provide specific origins."
+        )
+else:
+    CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOWED_ORIGINS = [origin.strip() for origin in cors_origins_env.split(',')]
 
 # Redis Cache Configuration (Optimized for Performance)
 CACHES = {
