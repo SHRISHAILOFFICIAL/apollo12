@@ -9,3 +9,4 @@ redis
 razorpay
 python-dotenv
 django-anymail
+django-extensions
