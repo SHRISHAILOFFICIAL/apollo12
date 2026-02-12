@@ -1,0 +1,51 @@
+name: dcet_app
+description: "DCET Mock Test Platform - Mobile App"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.8
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  
+  # State Management
+  flutter_riverpod: ^2.6.1
+  
+  # HTTP Client (fast & reliable)
+  dio: ^5.7.0
+  
+  # Secure Token Storage
+  flutter_secure_storage: ^9.2.2
+  
+  # Navigation
+  go_router: ^14.6.2
+  
+  # UI Components
+  google_fonts: ^6.2.1
+  shimmer: ^3.0.0
+  cached_network_image: ^3.4.1
+  
+  # LaTeX for math questions
+  flutter_math_fork: ^0.7.2
+  
+  # Utilities
+  shared_preferences: ^2.3.3
+  connectivity_plus: ^6.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/

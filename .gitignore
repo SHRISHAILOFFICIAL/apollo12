@@ -3,6 +3,13 @@
 .env.local
 .env.production
 .env.development
+.env.docker
+
+# Flutter
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
 
 # Python
 __pycache__/
