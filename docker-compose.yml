@@ -3,6 +3,8 @@ services:
   db:
     image: mysql:8.0
     restart: always
+    env_file:
+      - .env.docker
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
@@ -11,7 +13,7 @@ services:
     ports:
       - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -46,8 +48,8 @@ services:
   frontend:
     build: ./frontend
     restart: always
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost/api
+    env_file:
+      - .env.docker
     depends_on:
       - backend
     ports:
