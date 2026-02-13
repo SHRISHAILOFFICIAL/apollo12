@@ -5,9 +5,6 @@ services:
     restart: always
     env_file:
       - .env.docker
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
