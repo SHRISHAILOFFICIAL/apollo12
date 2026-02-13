@@ -8,63 +8,71 @@ def migrate_subscription_data(apps, schema_editor):
     """
     Migrate existing subscription data from User.user_tier and Profile fields
     to the Subscription model before removing those fields.
+    Safely skips if fields don't exist (fresh database).
     """
-    User = apps.get_model('users', 'User')
-    Profile = apps.get_model('users', 'Profile')
-    Subscription = apps.get_model('payments', 'Subscription')
-    Plan = apps.get_model('payments', 'Plan')
-    
-    # Get or create a default PRO plan for migration
-    default_plan, created = Plan.objects.get_or_create(
-        key='pro_migration',
-        defaults={
-            'name': 'PRO Plan (Migrated)',
-            'price_in_paisa': 99900,
-            'duration_days': 365,
-            'is_active': True
-        }
-    )
-    
-    migrated_count = 0
-    
-    # Migrate PRO users with profile subscription data
-    for user in User.objects.filter(user_tier='PRO'):
-        try:
-            profile = Profile.objects.get(user=user)
-            
-            # Skip if subscription already exists
-            if Subscription.objects.filter(user=user, status='active').exists():
-                continue
-            
-            # Determine dates
-            start_date = profile.subscription_start or timezone.now()
-            end_date = profile.subscription_end or (timezone.now() + timezone.timedelta(days=365))
-            
-            # Determine status
-            status = 'active' if end_date > timezone.now() else 'expired'
-            
-            # Use profile.plan if exists, otherwise use default
-            plan = profile.plan if profile.plan else default_plan
-            
-            # Create subscription
-            Subscription.objects.create(
-                user=user,
-                plan=plan,
-                status=status,
-                start_date=start_date,
-                end_date=end_date,
-                auto_renew=False
-            )
-            
-            migrated_count += 1
-            
-        except Profile.DoesNotExist:
-            # Create profile if it doesn't exist
-            Profile.objects.create(user=user)
-        except Exception as e:
-            print(f"Error migrating user {user.username}: {str(e)}")
-    
-    print(f"Migrated {migrated_count} PRO user subscriptions")
+    try:
+        User = apps.get_model('users', 'User')
+        Profile = apps.get_model('users', 'Profile')
+        Subscription = apps.get_model('payments', 'Subscription')
+        Plan = apps.get_model('payments', 'Plan')
+        
+        # Check if user_tier field exists - skip if not (fresh DB)
+        if not hasattr(User, 'user_tier'):
+            print("Skipping subscription migration - fresh database")
+            return
+        
+        # Get or create a default PRO plan for migration
+        default_plan, created = Plan.objects.get_or_create(
+            key='pro_migration',
+            defaults={
+                'name': 'PRO Plan (Migrated)',
+                'price_in_paisa': 99900,
+                'duration_days': 365,
+                'is_active': True
+            }
+        )
+        
+        migrated_count = 0
+        
+        # Migrate PRO users with profile subscription data
+        for user in User.objects.filter(user_tier='PRO'):
+            try:
+                profile = Profile.objects.get(user=user)
+                
+                # Skip if subscription already exists
+                if Subscription.objects.filter(user=user, status='active').exists():
+                    continue
+                
+                # Determine dates
+                start_date = profile.subscription_start or timezone.now()
+                end_date = profile.subscription_end or (timezone.now() + timezone.timedelta(days=365))
+                
+                # Determine status
+                status = 'active' if end_date > timezone.now() else 'expired'
+                
+                # Use profile.plan if exists, otherwise use default
+                plan = profile.plan if profile.plan else default_plan
+                
+                # Create subscription
+                Subscription.objects.create(
+                    user=user,
+                    plan=plan,
+                    status=status,
+                    start_date=start_date,
+                    end_date=end_date,
+                    auto_renew=False
+                )
+                
+                migrated_count += 1
+                
+            except Profile.DoesNotExist:
+                Profile.objects.create(user=user)
+            except Exception as e:
+                print(f"Error migrating user {user.username}: {str(e)}")
+        
+        print(f"Migrated {migrated_count} PRO user subscriptions")
+    except Exception as e:
+        print(f"Skipping subscription migration: {str(e)}")
 
 
 def reverse_migration(apps, schema_editor):
