@@ -4,6 +4,32 @@ from django.contrib.auth.hashers import make_password, check_password
 # Create your models here.
 
 
+class UserManager(models.Manager):
+    """Custom manager for User model - required for createsuperuser"""
+    
+    def get_by_natural_key(self, username):
+        return self.get(username=username)
+    
+    def create_user(self, username, email, password=None, **extra_fields):
+        if not username:
+            raise ValueError('Username is required')
+        if not email:
+            raise ValueError('Email is required')
+        user = self.model(username=username, email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+    
+    def create_superuser(self, username, email, password=None, **extra_fields):
+        user = self.create_user(username, email, password, **extra_fields)
+        user.is_staff = True
+        user.save(using=self._db)
+        # Create profile if it doesn't exist
+        Profile = self.model._meta.apps.get_model('users', 'Profile')
+        Profile.objects.get_or_create(user=user)
+        return user
+
+
 class User(models.Model):
     """User model for authentication and profile management"""
     
@@ -17,6 +43,8 @@ class User(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    objects = UserManager()
     
     # Required for Django's auth system
     USERNAME_FIELD = 'username'
