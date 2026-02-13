@@ -9,6 +9,9 @@ RUN npm ci
 # Copy project
 COPY . .
 
+# Set API URL at build time (relative URL works with any IP)
+ENV NEXT_PUBLIC_API_URL=/api
+
 # Build the Next.js app
 RUN npm run build
 
