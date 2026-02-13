@@ -17,8 +17,8 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environment variables from .env file
-load_dotenv(dotenv_path=BASE_DIR / '.env')
+# Load environment variables from .env file (don't override existing env vars)
+load_dotenv(dotenv_path=BASE_DIR / '.env', override=False)
 
 
 # Quick-start development settings - unsuitable for production
