@@ -54,9 +54,7 @@ def serve_pyq(request, pyq_id):
             return Response({'error': 'PRO membership required'}, status=403)
     
     # Build file path
-    # TODO: Change to 'pyqs' directory when actual PYQ PDFs are uploaded
-    # Currently using notes directory as placeholder
-    pyqs_root = os.path.join(settings.BASE_DIR, 'notes')
+    pyqs_root = os.path.join(settings.BASE_DIR, 'pyq')
     file_path = os.path.join(pyqs_root, pyq.file_path)
     
     if not os.path.exists(file_path):

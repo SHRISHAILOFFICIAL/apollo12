@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DCET 2023 — Previous Year Questions</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+};
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+/* ── RESET & BASE ── */
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  font-size:11px;line-height:1.5;color:#1e293b;
+  background:#f1f5f9;
+}
+
+/* ── PRINT ── */
+@page{size:A4;margin:12mm 14mm}
+@media print{
+  body{background:#fff;font-size:10px}
+  .no-print{display:none!important}
+  .paper{box-shadow:none;margin:0;padding:0;border:none;max-width:none}
+  .q-item{break-inside:avoid}
+  .sec-hdr{break-after:avoid}
+}
+
+/* ── PAPER ── */
+.paper{
+  max-width:210mm;margin:16px auto;background:#fff;
+  padding:24px 28px;
+}
+
+/* ── HEADER ── */
+.hdr{text-align:center;padding-bottom:14px;margin-bottom:14px;
+     border-bottom:2.5px solid #4f46e5;position:relative}
+.hdr::after{content:'';position:absolute;bottom:-2.5px;left:25%;
+            width:50%;height:2.5px;background:linear-gradient(90deg,#a855f7,#4f46e5)}
+.hdr h1{font-size:28px;font-weight:800;color:#1e1b4b;letter-spacing:1.5px}
+.hdr .sub{font-size:13px;color:#64748b;margin-top:2px;font-weight:500}
+.badge{display:inline-block;margin-top:8px;
+       background:linear-gradient(135deg,#4f46e5,#7c3aed);
+       color:#fff;padding:3px 18px;border-radius:20px;
+       font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+
+/* ── INFO BAR ── */
+.info{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;
+      padding:6px 0 10px;margin-bottom:10px;font-size:10px;color:#475569;
+      border-bottom:1px dashed #e2e8f0}
+.info b{color:#312e81}
+
+/* ── SECTION HEADER ── */
+.sec-hdr{
+  color:#fff;padding:6px 14px;font-size:11px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;margin:14px 0 8px;
+  border-radius:3px;
+}
+
+/* ── QUESTION LIST ── */
+.q-list{padding:0;list-style:none}
+
+.q-item{
+  display:flex;gap:8px;align-items:flex-start;
+  padding:6px 0;
+  border-bottom:1px solid #f1f5f9;
+}
+.q-item:last-child{border-bottom:none}
+
+.q-num{
+  flex-shrink:0;width:32px;
+  font-weight:800;font-size:11px;
+  padding-top:1px;
+}
+
+.q-body{flex:1;min-width:0}
+.q-text{font-size:11px;color:#1e293b;margin-bottom:4px;line-height:1.55}
+
+/* ── OPTIONS GRID ── */
+.opts{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:2px 12px;margin-left:2px;
+}
+.opt{font-size:10.5px;color:#334155;padding:1px 0;line-height:1.45;display:flex;gap:4px}
+.opt-lbl{font-weight:700;flex-shrink:0}
+
+/* ── FOOTER ── */
+.ftr{text-align:center;margin-top:18px;padding-top:8px;
+     border-top:2px solid #4f46e5;font-size:9px;color:#94a3b8}
+
+/* ── PRINT BUTTON ── */
+.no-print{
+  position:fixed;top:16px;right:16px;z-index:999;
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;
+  padding:10px 24px;border-radius:24px;font-size:13px;font-weight:700;
+  cursor:pointer;box-shadow:0 4px 16px rgba(79,70,229,.35);
+  letter-spacing:.3px;
+}
+.no-print:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(79,70,229,.45)}
+</style>
+</head>
+<body>
+<button class="no-print" onclick="window.print()">&#128424; Save as PDF</button>
+<div class="paper">
+
+<div class="hdr">
+  <h1>DCET 2023</h1>
+  <div class="sub">Diploma Common Entrance Test &mdash; Previous Year Questions</div>
+  <div class="badge">Questions Only &bull; Practice Paper</div>
+</div>
+
+<div class="info">
+  Total Questions: <b>&nbsp;100&nbsp;</b> &vert;
+  Maximum Marks: <b>&nbsp;100&nbsp;</b> &vert;
+  Duration: <b>&nbsp;3 Hours&nbsp;</b> &vert;
+  Each Question: <b>&nbsp;1 Mark</b>
+</div>
+<div class="sec-hdr" style="background:#4f46e5">IT Skills</div>
+<ol class="q-list">
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q1.</div>
+  <div class="q-body">
+    <div class="q-text">Which of the following is not cyber crime?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Cryptography</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Denial of Service</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Man-in-the-middle attack</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Phishing</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q2.</div>
+  <div class="q-body">
+    <div class="q-text">DoS is abbreviated as \_\_\_\_\_\_\_\_.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Denial of Service</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Distribution of Server</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Distribution of Service</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Denial of Server</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q3.</div>
+  <div class="q-body">
+    <div class="q-text">\_\_\_\_ protects interconnected systems including hardware, software and programs and data from cyber attacks.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Cyber Security</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Computer Security</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Resource Security</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Hardware Security</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q4.</div>
+  <div class="q-body">
+    <div class="q-text">Basic functionality of the network device firewall is:</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>scans mobile applications</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>monitoring database</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>privatizes the computers</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>monitoring incoming and outgoing networks</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q5.</div>
+  <div class="q-body">
+    <div class="q-text">An algorithm represented in the form of programming language is called:</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Flowchart</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Pseudocode</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Program</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Instruction</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q6.</div>
+  <div class="q-body">
+    <div class="q-text">The \_\_\_\_\_ symbol is used when the flowchart is starting or ending.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Connector/Arrow</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Terminal box/Rounded rectangle</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Input/Output</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Process</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q7.</div>
+  <div class="q-body">
+    <div class="q-text">MIT App Inventor allows user to</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Create web application</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Build Android application</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Create System Software</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Develop Operating System</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q8.</div>
+  <div class="q-body">
+    <div class="q-text">What is the function of the ``when green flag clicked'' command block?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Points Sprite in the specified direction</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>If condition is true, runs the blocks inside</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Runs the script</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Stops the execution of script</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q9.</div>
+  <div class="q-body">
+    <div class="q-text">The correct sequence of HTML tags for starting a webpage is:</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Head, Title, Html, Body</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Html, Head, Title, Body</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Html, Body, Title, Head</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Html, Title, Head, Body</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q10.</div>
+  <div class="q-body">
+    <div class="q-text">Web server:</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>is a computer system that delivers web pages</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>is delivery news</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>provides options for those seeking real-time discussions</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>prints documents</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q11.</div>
+  <div class="q-body">
+    <div class="q-text">Which of the following is used to style the appearance of web pages?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Html</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>JavaScript</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>PHP</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>CSS</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q12.</div>
+  <div class="q-body">
+    <div class="q-text">Which of the following is an example of web browser?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Google</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Firefox</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Apache</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>MySQL</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q13.</div>
+  <div class="q-body">
+    <div class="q-text">Which of the following is an open source and free workflow management software?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Trello</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>MS Excel</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Windows</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Linux</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q14.</div>
+  <div class="q-body">
+    <div class="q-text">ERP package will handle \_\_\_\_\_\_ business functionality/functionalities.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>One</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Two</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Three</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Multiple/all</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q15.</div>
+  <div class="q-body">
+    <div class="q-text">\_\_\_\_ is a visual diagram of a company that describes what employees do, whom they report to and how decisions are made.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Physical Structure</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Organizational Structure</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Logical Structure</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Hybrid Structure</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q16.</div>
+  <div class="q-body">
+    <div class="q-text">\_\_\_\_ is a methodology used in system analysis to identify, clarify, and organize system requirements.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Workflow</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Use case</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Algorithm</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Software</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q17.</div>
+  <div class="q-body">
+    <div class="q-text">Which of the following is not an application of IoT?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Web browser</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Smart home</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Smart city</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Self-driven cars</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q18.</div>
+  <div class="q-body">
+    <div class="q-text">Which of the following is not a cloud service option?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>VaaS</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>IaaS</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>PaaS</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>SaaS</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q19.</div>
+  <div class="q-body">
+    <div class="q-text">How many types of services are offered by cloud computing to the users?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>2</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>4</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>3</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>5</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#4f46e5">Q20.</div>
+  <div class="q-body">
+    <div class="q-text">Combination of Public and Private deployment is called</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(A)</span> <span>Hybrid</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(B)</span> <span>Hyper</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(C)</span> <span>Public</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#4f46e5">(D)</span> <span>Private</span></div>
+    </div>
+  </div>
+</li>
+</ol>
+<div class="sec-hdr" style="background:#0891b2">FUNDAMENTALS OF ELECTRICAL & ELECTRONICS ENGINEERING</div>
+<ol class="q-list">
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q21.</div>
+  <div class="q-body">
+    <div class="q-text">Unit of electrical power is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>Volt</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>Watt</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>Watt-hour</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>Ampere-hour</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q22.</div>
+  <div class="q-body">
+    <div class="q-text">In pipe earthing, the diameter of GI pipe embedded in the pit is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>32 mm</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>38 mm</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>48 mm</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>56 mm</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q23.</div>
+  <div class="q-body">
+    <div class="q-text">If a resistor of \(100\,\Omega\) is connected in series with a parallel combination of two \(200\,\Omega\) resistors, the effective resistance is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>200 ohms</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>250 ohms</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>350 ohms</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>150 ohms</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q24.</div>
+  <div class="q-body">
+    <div class="q-text">If a resistor of \(20\,\Omega\) is connected across a source of \(5\text{ V}\), the current in the circuit is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>1 Ampere</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>4 Amperes</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>0.5 Amperes</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>0.25 Amperes</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q25.</div>
+  <div class="q-body">
+    <div class="q-text">Power factor is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>ratio of resistance to inductance</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>ratio of apparent power to true power</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>ratio of resistance to impedance</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>ratio of inductance to capacitance</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q26.</div>
+  <div class="q-body">
+    <div class="q-text">The phase–neutral voltage in a 3-phase star system is \(230\text{ V}\). The line voltage is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>230 V</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>398.37 V</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>400 V</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>440 V</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q27.</div>
+  <div class="q-body">
+    <div class="q-text">The time period of an AC wave at \(50\text{ Hz}\) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>2 ms</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>10 ms</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>20 ms</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>50 ms</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q28.</div>
+  <div class="q-body">
+    <div class="q-text">The type of fuse used for domestic purpose is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>HRC fuse</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>Kit-kat fuse</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>Ceramic cartridge fuse</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>Glass cartridge fuse</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q29.</div>
+  <div class="q-body">
+    <div class="q-text">MCCB stands for</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>Moulded Case Circuit Breaker</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>Miniature Case Circuit Breaker</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>Maximum Current Circuit Breaker</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>Minimum Current Circuit Breaker</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q30.</div>
+  <div class="q-body">
+    <div class="q-text">ELCB is used for detecting current leakage</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>above 8 kVA</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>below 5 kVA</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>above 5 kVA</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>below 8 kVA</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q31.</div>
+  <div class="q-body">
+    <div class="q-text">A static machine that transfers electrical power from one circuit to another without changing frequency is called</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>DC machine</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>Alternator</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>Induction motor</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>Transformer</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q32.</div>
+  <div class="q-body">
+    <div class="q-text">The initial type of connection of motor windings in a star-delta starter is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>Star connection</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>Delta connection</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>Series</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>Parallel</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q33.</div>
+  <div class="q-body">
+    <div class="q-text">The cause for a 3-phase motor producing mechanical noise is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>Interchanged supply terminals</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>High load on motor</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>High voltage on motor winding</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>Incorrect coupling</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q34.</div>
+  <div class="q-body">
+    <div class="q-text">Cell is an ______ device.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>electro-mechanical</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>electro-chemical</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>electro-magnetic</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>electro-dynamic</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q35.</div>
+  <div class="q-body">
+    <div class="q-text">The most commonly used battery in electric vehicles is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>Lithium-ion battery</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>Lead-acid battery</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>Nickel-Cadmium battery</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>Alkaline rechargeable battery</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q36.</div>
+  <div class="q-body">
+    <div class="q-text">Digital signals are characterized by</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>Continuous voltage levels</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>Infinite resolution</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>Discrete voltage levels</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>Variable voltage levels</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q37.</div>
+  <div class="q-body">
+    <div class="q-text">According to Boolean Algebra, \(A + A =\)</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>2A</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>A</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>1</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>A^{2}</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q38.</div>
+  <div class="q-body">
+    <div class="q-text">Photo diode is used in which application?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>Voltage regulation</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>Temperature measurement</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>Light detection</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>RF amplification</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q39.</div>
+  <div class="q-body">
+    <div class="q-text">If resistor band = Brown (1), Black (0), Red (\(\times 100\)), resistance is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>1 k\(\Omega\)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>10 k\(\Omega\)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>100 \(\Omega\)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>100 k\(\Omega\)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#0891b2">Q40.</div>
+  <div class="q-body">
+    <div class="q-text">Binary equivalent of decimal 9 is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(A)</span> <span>1001</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(B)</span> <span>1000</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(C)</span> <span>1100</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#0891b2">(D)</span> <span>1010</span></div>
+    </div>
+  </div>
+</li>
+</ol>
+<div class="sec-hdr" style="background:#059669">PROJECT MANAGEMENT SKILLS</div>
+<ol class="q-list">
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q41.</div>
+  <div class="q-body">
+    <div class="q-text">Project Management is a combination of</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>human and non-human resources</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>only human resources</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>only non-human resources</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>no resources at all</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q42.</div>
+  <div class="q-body">
+    <div class="q-text">The consultant appointed to carry out the project work is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Compound house consultant</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>In-house consultant</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Out-house consultant</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Bridge consultant</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q43.</div>
+  <div class="q-body">
+    <div class="q-text">The type of project which requires minimum amount of capital is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Crash project</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Normal project</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Disaster project</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Consultant project</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q44.</div>
+  <div class="q-body">
+    <div class="q-text">Projects like building a hospital, park, playground and highway construction are examples of</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Social needs</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Customer needs</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Market needs</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Ecological needs</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q45.</div>
+  <div class="q-body">
+    <div class="q-text">In Project Management, WBS stands for</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Work Breakdown Structure</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Waste Breakdown Structure</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Window Breakdown Structure</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Wireless Breakdown Structure</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q46.</div>
+  <div class="q-body">
+    <div class="q-text">The first step in Project Execution Plan is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Work packaging plan</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Contracting plan</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Organization plan</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Procedure plan</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q47.</div>
+  <div class="q-body">
+    <div class="q-text">The team which gives the idea to start a project is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Core project team</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Full project team</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Advising project team</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Initial project team</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q48.</div>
+  <div class="q-body">
+    <div class="q-text">In PEP, the letter 'E' stands for</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Execution</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Estimation</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Evaluation</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Enthusiasm</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q49.</div>
+  <div class="q-body">
+    <div class="q-text">In Project Life Cycle, more time is required for</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Project closure</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Project initiation</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Project execution</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Project planning</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q50.</div>
+  <div class="q-body">
+    <div class="q-text">Innovation is the hallmark of every project. Innovation means</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>New ideas</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Project success</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Professional approach</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Project Management</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q51.</div>
+  <div class="q-body">
+    <div class="q-text">The Project Life Cycle Curve indicates</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Work packaging</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Number of workers in the project</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Growth, maturity and decline</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Project manual</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q52.</div>
+  <div class="q-body">
+    <div class="q-text">Taking actions to measure the quality accurately is the function of</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Quality management</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Cost management</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Review management</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Risk management</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q53.</div>
+  <div class="q-body">
+    <div class="q-text">Project planning methodologies involve</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Planning by non-incentive and direction</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Planning by incentive and direction</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Unplanned initiation</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Changing the project policies</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q54.</div>
+  <div class="q-body">
+    <div class="q-text">Identify the incorrect statement</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Project objective should be specific</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Project objective should be realistic</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Project objective should not be framed timely</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Project objective should be measurable</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q55.</div>
+  <div class="q-body">
+    <div class="q-text">WBS, PEP and PPM are the tools used to design</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Project plan</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Project work system</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Project diary</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Project direction</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q56.</div>
+  <div class="q-body">
+    <div class="q-text">The earliest method used for planning of project was</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>CPM</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>PERT</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Bar Chart</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Milestone Chart</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q57.</div>
+  <div class="q-body">
+    <div class="q-text">The expansion of PERT is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Programme Evaluation and Review Technique</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Project Estimation and Recording Tool</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Project Estimation and Resource Technology</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Performance Estimation and Resource Tool</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q58.</div>
+  <div class="q-body">
+    <div class="q-text">For non-repetitive projects, ______ tool is used in production planning and scheduling</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>CPM</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>PERT</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Both CPM and PERT</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Bar Chart</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q59.</div>
+  <div class="q-body">
+    <div class="q-text">The purpose of conducting a project review is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>To close the project</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>To initiate the project</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>To develop the project scope</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>To assess project performance</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#059669">Q60.</div>
+  <div class="q-body">
+    <div class="q-text">A project review does not contain</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(A)</span> <span>Performance evaluation</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(B)</span> <span>Evaluating the capital budget</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(C)</span> <span>Data collection</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#059669">(D)</span> <span>Initial review</span></div>
+    </div>
+  </div>
+</li>
+</ol>
+<div class="sec-hdr" style="background:#d97706">ENGINEERING MATHEMATICS</div>
+<ol class="q-list">
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q61.</div>
+  <div class="q-body">
+    <div class="q-text">In a square matrix, if the elements above the principal diagonal are zero, then it is called</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>Identity matrix</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>Lower triangular matrix</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>Upper triangular matrix</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>Diagonal matrix</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q62.</div>
+  <div class="q-body">
+    <div class="q-text">The value of x if \( \begin{vmatrix} x-1 & 2 \\ 2 & 4 \end{vmatrix} \) is singular</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>3</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>8</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>-2</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>2</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q63.</div>
+  <div class="q-body">
+    <div class="q-text">The inverse of the matrix \( A=\begin{bmatrix}-1&0\\5&7\end{bmatrix} \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( -\frac{1}{7}\begin{bmatrix}7&0\\-5&-1\end{bmatrix} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( \frac{1}{7}\begin{bmatrix}7&0\\-5&-1\end{bmatrix} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( -\frac{1}{7}\begin{bmatrix}-7&0\\-5&-1\end{bmatrix} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( \frac{1}{7}\begin{bmatrix}7&0\\5&1\end{bmatrix} \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q64.</div>
+  <div class="q-body">
+    <div class="q-text">The eigenvalues of matrix \( A=\begin{bmatrix}3&0\\1&3\end{bmatrix} \) are</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>2,2</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>-3,-3</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>3,3</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>-3,3</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q65.</div>
+  <div class="q-body">
+    <div class="q-text">The two lines \( ax+by=c \) and \( a'x+b'y=c' \) are perpendicular if</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( ab'=ba' \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( aa'+bb'=0 \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( a'b+a b'=0 \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( ab'+ba'=0 \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q66.</div>
+  <div class="q-body">
+    <div class="q-text">The y-intercept of any line passing through origin is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>0</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>1</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>-1</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>2</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q67.</div>
+  <div class="q-body">
+    <div class="q-text">Slope form of straight line is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( y+mx-c=0 \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( x=my+c \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( y=x+m \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( y=mx+c \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q68.</div>
+  <div class="q-body">
+    <div class="q-text">The tangent of the angle between two lines having slopes \( m_1,m_2 \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( \frac{m_1+m_2}{1-m_1m_2} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( \frac{m_1+m_2}{1+m_1m_2} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( \frac{m_1-m_2}{1-m_1m_2} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( \frac{m_1-m_2}{1+m_1m_2} \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q69.</div>
+  <div class="q-body">
+    <div class="q-text">If the ladder is inclined making \(135^\circ\) with wall, the inclination in radians is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( \frac{4\pi}{3} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( \frac{3\pi}{4} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( \frac{2\pi}{4} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( \frac{4\pi}{5} \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q70.</div>
+  <div class="q-body">
+    <div class="q-text">The value of \( \sin 60^\circ \cos 30^\circ - \cos 60^\circ \sin 30^\circ \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( \frac{1}{2} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( -\frac{1}{2} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( \frac{\sqrt{3}}{2} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>0</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q71.</div>
+  <div class="q-body">
+    <div class="q-text">The simplified value of \( \frac{\sin 3A + \sin A}{\sin 3A - \sin A} \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( \cot A \tan 5A \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( \tan A \cot 2A \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( \tan 2A \cot A \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( \tan 3A \cot 2A \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q72.</div>
+  <div class="q-body">
+    <div class="q-text">If \( y=\log x + \sec 2x \), then \( \frac{dy}{dx} \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( -\frac{1}{x}+\sec 2x \tan x \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( \frac{1}{x}+2\sec 2x \tan 2x \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( \frac{1}{\sqrt{x}}+\sec x \tan x \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( -\frac{1}{\sqrt{x}}+\sec 3x \tan 2x \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q73.</div>
+  <div class="q-body">
+    <div class="q-text">The derivative of \( \frac{1+x}{1-x} \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( -\frac{2}{(1-x)^2} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( \frac{2x}{(1-x)^2} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( -\frac{2x}{(1-x)^2} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( \frac{2}{(1-x)^2} \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q74.</div>
+  <div class="q-body">
+    <div class="q-text">Find the second order derivative of \( y=e^{2x}-e^{-x} \)</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( 4e^{2x}-e^{-x} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( 4e^{2x}+e^{-x} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( -4e^{2x}-e^{-x} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( 4e^{2x}+e^x \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q75.</div>
+  <div class="q-body">
+    <div class="q-text">Equation of tangent to \( y=2x^2+x \) at (1,2) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( 5x-y-3=0 \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( 5x+y+3=0 \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( 5x+y-6=0 \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( 5x+y+6=0 \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q76.</div>
+  <div class="q-body">
+    <div class="q-text">The value of \( \int (\sec x \tan x + \sec^2 x )dx \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( \sec 2x+\tan x+c \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( \sec x+\cosec x+c \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( \sec x+\tan x+c \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( \sec x- \cosec^2 x+c \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q77.</div>
+  <div class="q-body">
+    <div class="q-text">The value of \( \int (2x^3+3x^2+2x)^{10} (3x^2+3x+1)\,dx \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( \frac{1}{22}(6x+3x^2+2x)^{11}+c \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( \frac{1}{22}(2x^3+3x^2+2x)^{11}+c \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( \frac{1}{22}(2x^3+3x^2-2x)^{12}+c \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( \frac{1}{12}(2x^3+3x^2-2x)^{12}+c \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q78.</div>
+  <div class="q-body">
+    <div class="q-text">The value of \( \int_0^{\pi/4}\tan^2 x\,dx \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>\( 1+\frac{\pi}{4} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>\( 1+\frac{4\pi}{2} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>\( 1-\frac{\pi}{4} \)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>\( 1-\frac{4\pi}{2} \)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q79.</div>
+  <div class="q-body">
+    <div class="q-text">Area bounded by \( y=\sin x \) and x-axis from \( x=0 \) to \( x=\pi \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>2</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>-2</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>3</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>1</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#d97706">Q80.</div>
+  <div class="q-body">
+    <div class="q-text">The value of \( \tan 45^\circ \cot 225^\circ + \tan^2 60^\circ \) is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(A)</span> <span>-4</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(B)</span> <span>4</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(C)</span> <span>2</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#d97706">(D)</span> <span>3</span></div>
+    </div>
+  </div>
+</li>
+</ol>
+<div class="sec-hdr" style="background:#dc2626">STATISTICS & ANALYTICS</div>
+<ol class="q-list">
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q81.</div>
+  <div class="q-body">
+    <div class="q-text">_____ is an example of quantitative data.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>Volume</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>Words</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>Symbols</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>Colour</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q82.</div>
+  <div class="q-body">
+    <div class="q-text">Data cleaning is the process of</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>removing viruses</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>correctly formatting data</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>removing duplicate data</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>properly formatting data</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q83.</div>
+  <div class="q-body">
+    <div class="q-text">_____ is not a data collection tool.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>Word</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>Focus Group Discussion</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>Survey</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>Questionnaire</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q84.</div>
+  <div class="q-body">
+    <div class="q-text">The graph of cumulative frequency is called</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>Frequency polygon</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>Histogram</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>Cumulative frequency polygon</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>Frequency histogram</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q85.</div>
+  <div class="q-body">
+    <div class="q-text">To calculate percentage frequency, we use _____ formula.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>P.f. = (f × n) ÷ 100</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>P.f. = (f ÷ n) × 100</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>P.f. = (100) ÷ (f × n)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>P.f. = (100) × (f ÷ n)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q86.</div>
+  <div class="q-body">
+    <div class="q-text">If X₁, X₂, X₃ ... Xₙ are the observations of a given data, then the mean will be:</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>\(\frac{\text{Total number of observations}}{\text{Sum of observations}}\)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>Sum of observations + Total number of observations</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>\(\frac{\text{Sum of observations}}{\text{Total number of observations}}\)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>Total number of observations − Sum of observations</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q87.</div>
+  <div class="q-body">
+    <div class="q-text">The end points of a class interval are the _____ and _____ values a variable can take. *The graph given below, shows the participation of students of a school in outdoor games in different years. By using the data given below, answer the following questions (88 - 89):*</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>Lowest and Highest</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>Minimum and Maximum</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>Numeral and Average</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>Mean and Mode</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q88.</div>
+  <div class="q-body">
+    <div class="q-text">In which years did the girls participate more than the boys?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>2020, 2023</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>2021, 2022</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>2022, 2023</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>2020, 2021</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q89.</div>
+  <div class="q-body">
+    <div class="q-text">In which two years did an equal number of boys participate?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>2020, 2021</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>2020, 2022</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>2020, 2023</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>2021, 2022</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q90.</div>
+  <div class="q-body">
+    <div class="q-text">To find third quartile in Excel, we use _____ formula.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>= QUARTER (3, Range)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>= QUARTILE (3, Range)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>= QUARTER (Range, 3)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>= QUARTILE (Range, 3)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q91.</div>
+  <div class="q-body">
+    <div class="q-text">The percentile divides a series into _____ equal parts.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>fifty</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>twenty</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>ten</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>hundred</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q92.</div>
+  <div class="q-body">
+    <div class="q-text">If the first quartile is 23 and interquartile range is 20, the third quartile is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>23</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>33</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>43</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>53</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q93.</div>
+  <div class="q-body">
+    <div class="q-text">The algebraic sum of the deviations of a frequency distribution from its mean is always</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>a non-zero number</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>zero</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>less than zero</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>greater than zero</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q94.</div>
+  <div class="q-body">
+    <div class="q-text">The Excel formula for ‘Mean’ is</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>= MEDIAN (array of numbers)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>= AVERAGE (array of numbers)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>= MEAN (array of numbers)</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>= MODE (array of numbers)</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q95.</div>
+  <div class="q-body">
+    <div class="q-text">What is output syntax in Python?</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>Print( )</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>PRINT( )</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>print( )</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>Printf( )</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q96.</div>
+  <div class="q-body">
+    <div class="q-text">'str' is a</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>Text Type</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>Numeric Type</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>Binary Type</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>Sequence Type</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q97.</div>
+  <div class="q-body">
+    <div class="q-text">In Python, _____ standard data types are commonly used.</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>three</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>five</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>ten</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>four</span></div>
+    </div>
+  </div>
+</li>
+<li class="q-item">
+  <div class="q-num" style="color:#dc2626">Q98.</div>
+  <div class="q-body">
+    <div class="q-text">The result of Python program gets displayed in _____</div>
+    <div class="opts">
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(A)</span> <span>IDLE Shell 3.9.1 window</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(B)</span> <span>IDLE Shell 3.1.9 window</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(C)</span> <span>ILDE Shell 3.9.1 window</span></div>
+      <div class="opt"><span class="opt-lbl" style="color:#dc2626">(D)</span> <span>IELD Shell 3.9.1 window</span></div>
+    </div>
+  </div>
+</li>
+</ol>
+
+<div class="ftr">
+  DCET 2023 &mdash; Previous Year Questions &bull; For Practice Purpose Only &bull; apollo12
+</div>
+</div>
+</body>
+</html>
