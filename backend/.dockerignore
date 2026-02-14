@@ -6,7 +6,6 @@ __pycache__/
 .env.*
 *.md
 docs/
-math_mock_tests/
 *.sqlite3
 .git/
 .gitignore
@@ -17,3 +16,4 @@ create_*.py
 setup_*.py
 auto_extract_csv.py
 *.ps1
+dcet_pyq_2025_converted.csv

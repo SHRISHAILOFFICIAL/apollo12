@@ -25,14 +25,28 @@ class Command(BaseCommand):
             default=180,
             help='Exam duration in minutes (default: 180)'
         )
+        parser.add_argument(
+            '--access-tier',
+            type=str,
+            choices=['FREE', 'PRO'],
+            default='PRO',
+            help='Access tier: FREE or PRO (default: PRO)'
+        )
+        parser.add_argument(
+            '--publish',
+            action='store_true',
+            help='Automatically publish the exam after import'
+        )
 
     def handle(self, *args, **options):
         exam_name = options['exam_name']
         year = options['year']
         csv_file = options['csv_file']
         duration = options['duration']
+        access_tier = options['access_tier']
+        publish = options['publish']
 
-        self.stdout.write(self.style.SUCCESS(f'\n📚 Importing questions for {exam_name} {year}...'))
+        self.stdout.write(self.style.SUCCESS(f'\n📚 Importing questions for {exam_name} {year} (tier: {access_tier})...'))
 
         # Create or get exam
         exam, created = Exam.objects.get_or_create(
@@ -40,10 +54,18 @@ class Command(BaseCommand):
             year=year,
             defaults={
                 'duration_minutes': duration,
-                'is_published': False,  # Set to False initially
-                'total_marks': 0  # Will calculate later
+                'is_published': publish,
+                'access_tier': access_tier,
+                'total_marks': 0
             }
         )
+
+        if not created:
+            # Update access tier and publish status on existing exam
+            exam.access_tier = access_tier
+            if publish:
+                exam.is_published = True
+            exam.save()
 
         if created:
             self.stdout.write(self.style.SUCCESS(f'✅ Created new exam: {exam}'))
