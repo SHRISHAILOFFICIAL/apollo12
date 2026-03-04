@@ -2,6 +2,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response as APIResponse
 from rest_framework.views import APIView
 from django.utils import timezone
+from django.db.models import Sum
 from exams.models import Exam, Question
 from results.models import Attempt, AttemptAnswer
 from exams.serializers import ExamSerializer
@@ -19,9 +20,15 @@ class StartExamView(APIView):
                 exam=exam,
                 status='in_progress'
             )
+            # Fetch questions once with select_related to avoid N+1 queries
+            questions = list(
+                Question.objects.filter(section__exam=exam)
+                .select_related('section')
+                .order_by('section__order', 'question_number')
+            )
+            
             if created:
                 # Create empty answers for all questions using bulk_create (optimized)
-                questions = Question.objects.filter(section__exam=exam)
                 answers = [
                     AttemptAnswer(
                         attempt=attempt,
@@ -33,8 +40,7 @@ class StartExamView(APIView):
                 ]
                 AttemptAnswer.objects.bulk_create(answers)
             
-            # Return exam data and attempt id
-            questions = Question.objects.filter(section__exam=exam).order_by('section__order', 'question_number')
+            # Return exam data and attempt id (reuse already-fetched questions)
             questions_data = [{
                 'id': q.id,
                 'section': q.section.name,
@@ -96,12 +102,10 @@ class SubmitExamView(APIView):
         if attempt.status == 'submitted':
             return APIResponse({'message': 'Already submitted'})
 
-        # Calculate Score
-        score = 0
-        answers = attempt.answers.all()
-        for answer in answers:
-            if answer.is_correct:
-                score += answer.question.marks
+        # Calculate Score using DB aggregation (single query instead of N+1)
+        score = attempt.answers.filter(is_correct=True).aggregate(
+            total=Sum('question__marks')
+        )['total'] or 0
         
         attempt.score = score
         attempt.status = 'submitted'

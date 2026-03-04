@@ -44,7 +44,8 @@ class SectionSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
     
     def get_question_count(self, obj):
-        return obj.questions.count()
+        # Use annotated value if available, otherwise fallback to query
+        return getattr(obj, '_question_count', obj.questions.count())
 
 
 class SectionWithQuestionsSerializer(serializers.ModelSerializer):
@@ -74,10 +75,12 @@ class ExamSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at', 'updated_at']
     
     def get_section_count(self, obj):
-        return obj.sections.count()
+        # Use annotated value if available, otherwise fallback to query
+        return getattr(obj, '_section_count', obj.sections.count())
     
     def get_question_count(self, obj):
-        return Question.objects.filter(section__exam=obj).count()
+        # Use annotated value if available, otherwise fallback to query
+        return getattr(obj, '_question_count', Question.objects.filter(section__exam=obj).count())
 
 
 class ExamListSerializer(serializers.ModelSerializer):
